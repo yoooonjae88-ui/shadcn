@@ -1,0 +1,2140 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "private-registry",
+  "homepage": "http://localhost:3000",
+  "items": [
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "meta": {
+        "group": "General"
+      },
+      "title": "Button",
+      "description": "A button built on Base UI Button, extended with ReUI-style features. Ten colour variants (default/primary, outline, secondary, ghost, destructive, link, teal, plus the neutral mono, dim and foreground), eight sizes (default/xs/sm/lg and matching icon/icon-xs/icon-sm/icon-lg squares), and a shape axis (default, circle, pill) that fully rounds the corners. A loading prop swaps in a centered spinner, sets aria-busy and disables the control while preserving its width, and leading/trailing icons size automatically. Ships a ButtonArrow subcomponent — a trailing chevron for dropdown/menu triggers that rotates 180° while the button is aria-expanded (pass icon to swap the glyph). Every colour resolves from existing theme tokens; only the teal variant adds cssVars.",
+      "dependencies": ["@base-ui/react", "class-variance-authority", "lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-button-teal": "var(--button-teal)",
+          "color-button-teal-foreground": "var(--button-teal-foreground)"
+        },
+        "light": {
+          "button-teal": "#334f4e",
+          "button-teal-foreground": "#ffffff"
+        },
+        "dark": {
+          "button-teal": "#334f4e",
+          "button-teal-foreground": "#ffffff"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/button/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "grid",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Layout"
+      },
+      "title": "Grid",
+      "description": "A 24-column responsive grid system modeled on Ant Design's Grid: Row/Col with span, offset, push/pull, order, horizontal and vertical gutters, justify/align/wrap flex alignment, flex sizing, mobile-first responsive props per breakpoint, and a useBreakpoint hook. Columns whose spans sum past 24 wrap onto a new line.",
+      "files": [
+        {
+          "path": "registry/grid/grid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "divider",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Layout"
+      },
+      "title": "Divider",
+      "description": "A divider modeled on Ant Design's Divider: a horizontal rule between content or an inline vertical separator, with an optional title placed at the start, center or end of the line (including a custom orientation margin), solid/dashed/dotted line styles, plain body-weight title text, and small/middle/large spacing presets.",
+      "files": [
+        {
+          "path": "registry/divider/divider.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "flex",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Layout"
+      },
+      "title": "Flex",
+      "description": "A flexbox container modeled on Ant Design's Flex: horizontal or vertical direction, justify/align placement with any CSS value, wrap, gap presets (small 8px, middle 16px, large 24px) or any number/CSS gap value, a flex shorthand for the container itself, and a component prop to render as any element.",
+      "files": [
+        {
+          "path": "registry/flex/flex.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "space",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Layout"
+      },
+      "title": "Space",
+      "description": "An inline spacing container modeled on Ant Design's Space: sets the gap between adjacent components horizontally or vertically, with size presets (small 8px, middle 16px, large 24px), any pixel number or a [horizontal, vertical] pair, start/end/center/baseline cross-axis alignment, wrapping onto new lines, an optional split node rendered between items, and per-item classNames/styles. Includes Space.Compact, which attaches adjacent controls (buttons, inputs, selects) into one visual group by squaring the radii where they meet, horizontally or vertically, with a block mode that fills the parent width.",
+      "files": [
+        {
+          "path": "registry/space/space.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "masonry",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Layout"
+      },
+      "title": "Masonry",
+      "description": "A masonry grid modeled on Ant Design's Masonry: items of varying heights pack tightly into columns without vertical gaps, flowing into the shortest column (or strictly in source order with sequential), with responsive column counts and horizontal/vertical gutters per breakpoint, a data-driven items/itemRender API alongside plain children, per-item column pinning, and an onLayoutChange callback. Items can be closable (a hover × removes them with the rest animating into the gap, firing onClose) and draggable in the iOS home-screen style: grabbing an item lifts it (mouse drags start immediately; touch uses press-and-hold so swipes still scroll), it follows the pointer while the other items glide out of the way live, an optional wobble makes resting items jiggle during the drag, and on release it settles into its slot, firing onReorder. Item heights are tracked with a ResizeObserver so the layout follows window resizes and content changes.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@private/grid"],
+      "files": [
+        {
+          "path": "registry/masonry/masonry.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "splitter",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Layout"
+      },
+      "title": "Splitter",
+      "description": "A resizable split-pane layout modeled on Ant Design's Splitter: panels separated by draggable bars in horizontal or vertical layout, with per-panel defaultSize/size (px or %), min/max clamps, controlled sizing via size + onResize, a resizable flag that locks a panel's bars, and collapsible panels whose bars grow arrow buttons that fold the panel away and restore its previous size. Supports a lazy mode that previews the drag as a ghost bar and only applies sizes on release, arrow-key resizing on a focused bar, and onResizeStart/onResize/onResizeEnd callbacks reporting pixel sizes. Sizes are kept as ratios so panels scale proportionally when the container resizes; the bar and its collapse arrows are tokenised via --splitter-* CSS variables.",
+      "dependencies": ["lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-splitter-bar": "var(--splitter-bar)",
+          "color-splitter-bar-hover": "var(--splitter-bar-hover)",
+          "color-splitter-bar-active": "var(--splitter-bar-active)",
+          "color-splitter-bar-preview": "var(--splitter-bar-preview)",
+          "color-splitter-collapse-trigger": "var(--splitter-collapse-trigger)",
+          "color-splitter-collapse-trigger-foreground": "var(--splitter-collapse-trigger-foreground)",
+          "color-splitter-collapse-trigger-hover": "var(--splitter-collapse-trigger-hover)",
+          "color-splitter-collapse-trigger-hover-foreground": "var(--splitter-collapse-trigger-hover-foreground)"
+        },
+        "light": {
+          "splitter-bar": "var(--border)",
+          "splitter-bar-hover": "color-mix(in srgb, var(--primary) 45%, transparent)",
+          "splitter-bar-active": "var(--primary)",
+          "splitter-bar-preview": "color-mix(in srgb, var(--primary) 45%, transparent)",
+          "splitter-collapse-trigger": "var(--muted)",
+          "splitter-collapse-trigger-foreground": "var(--muted-foreground)",
+          "splitter-collapse-trigger-hover": "var(--primary)",
+          "splitter-collapse-trigger-hover-foreground": "var(--primary-foreground)"
+        },
+        "dark": {
+          "splitter-bar": "var(--border)",
+          "splitter-bar-hover": "color-mix(in srgb, var(--primary) 45%, transparent)",
+          "splitter-bar-active": "var(--primary)",
+          "splitter-bar-preview": "color-mix(in srgb, var(--primary) 45%, transparent)",
+          "splitter-collapse-trigger": "var(--muted)",
+          "splitter-collapse-trigger-foreground": "var(--muted-foreground)",
+          "splitter-collapse-trigger-hover": "var(--primary)",
+          "splitter-collapse-trigger-hover-foreground": "var(--primary-foreground)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/splitter/splitter.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "use-debounce",
+      "type": "registry:hook",
+      "meta": {
+        "group": "Others"
+      },
+      "title": "Use Debounce",
+      "description": "A hook that debounces a value.",
+      "files": [
+        {
+          "path": "registry/use-debounce/use-debounce.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "anchor",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Navigation"
+      },
+      "title": "Anchor",
+      "description": "A hyperlink table of contents modeled on Ant Design's Anchor: it lists links to page sections, tracks the scroll position of a container (window by default, or any element via getContainer) and highlights the section under the reading line, with an ink indicator that slides along a side rail (vertical) or underline (horizontal). Clicking a link smooth-scrolls to the section and pushes (or replaces) the URL hash. Supports nested links, direction, sticky pinning via affix/offsetTop, targetOffset and bounds tuning, getCurrentAnchor to override the highlight, showInkInFixed, and onChange/onClick callbacks. All colours are tokenised via --anchor-* CSS variables.",
+      "cssVars": {
+        "theme": {
+          "color-anchor-rail": "var(--anchor-rail)",
+          "color-anchor-ink": "var(--anchor-ink)",
+          "color-anchor-link": "var(--anchor-link)",
+          "color-anchor-link-hover": "var(--anchor-link-hover)",
+          "color-anchor-link-active": "var(--anchor-link-active)"
+        },
+        "light": {
+          "anchor-rail": "var(--border)",
+          "anchor-ink": "var(--primary)",
+          "anchor-link": "var(--muted-foreground)",
+          "anchor-link-hover": "var(--foreground)",
+          "anchor-link-active": "var(--primary)"
+        },
+        "dark": {
+          "anchor-rail": "var(--border)",
+          "anchor-ink": "var(--primary)",
+          "anchor-link": "var(--muted-foreground)",
+          "anchor-link-hover": "var(--foreground)",
+          "anchor-link-active": "var(--primary)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/anchor/anchor.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Navigation"
+      },
+      "title": "Breadcrumb",
+      "description": "Displays the path to the current page as a hierarchy of links.",
+      "files": [
+        {
+          "path": "registry/breadcrumb/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dropdown",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Navigation"
+      },
+      "title": "Dropdown",
+      "description": "Two related dropdown surfaces in one item. (1) A form SELECT (Dropdown/DropdownTrigger/DropdownValue/DropdownContent/DropdownGroup/DropdownLabel/DropdownItem/DropdownSeparator) built on Base UI Select that submits its value with the form. (2) A popup ACTION MENU modeled on ReUI's Dropdown Menu, built on Base UI Menu: DropdownMenu/DropdownMenuTrigger/DropdownMenuContent with items (icons, an inset alignment, a destructive variant), DropdownMenuShortcut hints, DropdownMenuLinkItem anchors, DropdownMenuCheckboxItem and DropdownMenuRadioGroup/DropdownMenuRadioItem with tick/dot indicators, DropdownMenuGroup/DropdownMenuLabel/DropdownMenuSeparator, and nested DropdownMenuSub/DropdownMenuSubTrigger/DropdownMenuSubContent submenus. The menu trigger renders as any element (render={<Button/>}) and its popup animates via Base UI's starting/ending styles. The menu resolves every colour from existing theme tokens; the only cssVar is the select trigger's input-background fill.",
+      "dependencies": ["@base-ui/react", "class-variance-authority", "lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-input-background": "var(--input-background)"
+        },
+        "light": {
+          "input-background": "#f1f5f9"
+        },
+        "dark": {
+          "input-background": "#1d293d"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/dropdown/dropdown.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "masthead",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Others"
+      },
+      "title": "Masthead",
+      "description": "A full-bleed banner that spans the screen horizontally or docks full-height on the left or right, with left-aligned placeholder text on a black background and a decorative strip of white/grey/purple blocks on its trailing edge.",
+      "files": [
+        {
+          "path": "registry/masthead/masthead.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "menu",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Navigation"
+      },
+      "title": "Menu",
+      "description": "A vertical navigation menu with labels, separators and an active state.",
+      "files": [
+        {
+          "path": "registry/menu/menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "steps",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Navigation"
+      },
+      "title": "Steps",
+      "description": "A stepper that guides users through a multi-step flow, with horizontal or vertical orientation and numbered or progress-dot indicators. Runs controlled (value) or uncontrolled (defaultValue/onValueChange); steps can be clickable via StepsTrigger with full roving-focus keyboard navigation (arrows/Home/End) and ARIA tab semantics. Per-item completed, loading (spinner) and error (cross) states, disabled triggers, per-state indicator overrides, and StepsPanels/StepsPanel content panes that swap with the active step. Every colour resolves from a theme token.",
+      "cssVars": {
+        "theme": {
+          "color-steps-connector": "var(--steps-connector)",
+          "color-steps-connector-complete": "var(--steps-connector-complete)",
+          "color-steps-indicator-complete": "var(--steps-indicator-complete)",
+          "color-steps-indicator-complete-foreground": "var(--steps-indicator-complete-foreground)",
+          "color-steps-indicator-active": "var(--steps-indicator-active)",
+          "color-steps-indicator-active-foreground": "var(--steps-indicator-active-foreground)",
+          "color-steps-indicator-upcoming": "var(--steps-indicator-upcoming)",
+          "color-steps-indicator-upcoming-foreground": "var(--steps-indicator-upcoming-foreground)",
+          "color-steps-indicator-error": "var(--steps-indicator-error)",
+          "color-steps-indicator-error-foreground": "var(--steps-indicator-error-foreground)",
+          "color-steps-dot-complete": "var(--steps-dot-complete)",
+          "color-steps-dot-active": "var(--steps-dot-active)",
+          "color-steps-dot-active-ring": "var(--steps-dot-active-ring)",
+          "color-steps-dot-upcoming": "var(--steps-dot-upcoming)",
+          "color-steps-dot-error": "var(--steps-dot-error)",
+          "color-steps-dot-icon": "var(--steps-dot-icon)",
+          "color-steps-dot-icon-upcoming": "var(--steps-dot-icon-upcoming)"
+        },
+        "light": {
+          "steps-connector": "var(--border)",
+          "steps-connector-complete": "var(--primary)",
+          "steps-indicator-complete": "var(--primary)",
+          "steps-indicator-complete-foreground": "var(--primary-foreground)",
+          "steps-indicator-active": "var(--accent)",
+          "steps-indicator-active-foreground": "var(--accent-foreground)",
+          "steps-indicator-upcoming": "var(--muted)",
+          "steps-indicator-upcoming-foreground": "var(--muted-foreground)",
+          "steps-indicator-error": "var(--destructive)",
+          "steps-indicator-error-foreground": "var(--primary-foreground)",
+          "steps-dot-complete": "var(--primary)",
+          "steps-dot-active": "var(--primary)",
+          "steps-dot-active-ring": "color-mix(in srgb, var(--primary) 20%, transparent)",
+          "steps-dot-upcoming": "color-mix(in srgb, var(--muted-foreground) 30%, transparent)",
+          "steps-dot-error": "var(--destructive)",
+          "steps-dot-icon": "var(--primary)",
+          "steps-dot-icon-upcoming": "color-mix(in srgb, var(--muted-foreground) 40%, transparent)"
+        },
+        "dark": {
+          "steps-connector": "var(--border)",
+          "steps-connector-complete": "var(--primary)",
+          "steps-indicator-complete": "var(--primary)",
+          "steps-indicator-complete-foreground": "var(--primary-foreground)",
+          "steps-indicator-active": "var(--accent)",
+          "steps-indicator-active-foreground": "var(--accent-foreground)",
+          "steps-indicator-upcoming": "var(--muted)",
+          "steps-indicator-upcoming-foreground": "var(--muted-foreground)",
+          "steps-indicator-error": "var(--destructive)",
+          "steps-indicator-error-foreground": "var(--primary-foreground)",
+          "steps-dot-complete": "var(--primary)",
+          "steps-dot-active": "var(--primary)",
+          "steps-dot-active-ring": "color-mix(in srgb, var(--primary) 20%, transparent)",
+          "steps-dot-upcoming": "color-mix(in srgb, var(--muted-foreground) 30%, transparent)",
+          "steps-dot-error": "var(--destructive)",
+          "steps-dot-icon": "var(--primary)",
+          "steps-dot-icon-upcoming": "color-mix(in srgb, var(--muted-foreground) 40%, transparent)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/steps/steps.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Navigation"
+      },
+      "title": "Tabs",
+      "description": "Switch between layered sections of content, built on Base UI Tabs. TabsList takes a variant — the default segmented pill or a line (underline) style — and both work in horizontal or vertical orientation. Triggers accept icons and inline badge counts.",
+      "files": [
+        {
+          "path": "registry/tabs/tabs.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Navigation"
+      },
+      "title": "Pagination",
+      "description": "A long-list pager modeled on Ant Design's Pagination: a windowed row of page numbers with prev/next chevrons and ••• ellipsis jumpers that morph into double chevrons on hover and hop 5 pages (3 with showLessItems), controlled or uncontrolled current/pageSize, a page-size select (auto-shown when total > 50), a Go-to quick-jump input, a showTotal range summary, a simple mode with an inline editable page input, small size, disabled state, hideOnSinglePage, start/center/end alignment, and itemRender to swap any item for a custom element such as a router link. Colours are tokenised via --pagination-* CSS variables.",
+      "dependencies": ["@base-ui/react", "lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-pagination-item-hover": "var(--pagination-item-hover)",
+          "color-pagination-item-active": "var(--pagination-item-active)",
+          "color-pagination-item-active-foreground": "var(--pagination-item-active-foreground)",
+          "color-pagination-ellipsis": "var(--pagination-ellipsis)",
+          "color-pagination-jump": "var(--pagination-jump)",
+          "color-input-background": "var(--input-background)"
+        },
+        "light": {
+          "pagination-item-hover": "color-mix(in srgb, var(--foreground) 6%, transparent)",
+          "pagination-item-active": "var(--primary)",
+          "pagination-item-active-foreground": "var(--primary-foreground)",
+          "pagination-ellipsis": "var(--muted-foreground)",
+          "pagination-jump": "var(--primary)",
+          "input-background": "#f1f5f9"
+        },
+        "dark": {
+          "pagination-item-hover": "color-mix(in srgb, var(--foreground) 10%, transparent)",
+          "pagination-item-active": "var(--primary)",
+          "pagination-item-active-foreground": "var(--primary-foreground)",
+          "pagination-ellipsis": "var(--muted-foreground)",
+          "pagination-jump": "var(--primary)",
+          "input-background": "#1d293d"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/pagination/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Card",
+      "description": "A composable content container modeled on ReUI's Card. Composes Card/CardHeader/CardHeading/CardTitle/CardDescription/CardAction/CardToolbar/CardMedia/CardMediaOverlay/CardContent/CardTable/CardFooter. Card is outlined by default and clips its children (overflow-hidden) and takes a variant: default, accent (a muted tinted surface), or ghost (no outline). The header is a grid that auto-places a CardAction or CardToolbar (a flex row for header buttons, dropdown menus or actions) to the top-right and stacks CardHeading (title + description) on the left; CardHeader and CardFooter each accept an opt-in separator that draws a divider line. CardMedia bleeds a cover image to the card edges and CardMediaOverlay fades it into the surface with a from-card gradient; CardTable wraps a full-bleed, horizontally scrollable table. Supports composed patterns like expandable/collapsible content, header dropdown menus and image cards. Every colour is tokenised via --card-accent and --card-border. Fully backward compatible with the previous Card exports.",
+      "dependencies": ["class-variance-authority"],
+      "cssVars": {
+        "theme": {
+          "color-card-accent": "var(--card-accent)",
+          "color-card-border": "var(--card-border)"
+        },
+        "light": {
+          "card-accent": "#f1f5f9",
+          "card-border": "#e2e8f0"
+        },
+        "dark": {
+          "card-accent": "#1d293d",
+          "card-border": "#1d293d"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/card/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Accordion",
+      "description": "A vertically stacked set of collapsible panels modeled on ReUI's Accordion, built on Base UI Accordion. Composes Accordion/AccordionItem/AccordionTrigger/AccordionContent with three variants (default hairline-separated rows, solid filled surfaces, outlined cards), single or multiple open panels (multiple), controlled/uncontrolled open state (value/defaultValue/onValueChange) and default-open items, a chevron indicator that rotates or a plus that morphs into a minus, indicator placement at the start or end of the header, disabled items and a disabled root, height-animated open/close via Base UI's --accordion-panel-height, and full keyboard support. Every colour is tokenised via --accordion-* CSS variables.",
+      "dependencies": ["@base-ui/react", "class-variance-authority", "lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-accordion-border": "var(--accordion-border)",
+          "color-accordion-solid": "var(--accordion-solid)",
+          "color-accordion-indicator": "var(--accordion-indicator)",
+          "color-accordion-trigger-hover": "var(--accordion-trigger-hover)"
+        },
+        "light": {
+          "accordion-border": "var(--border)",
+          "accordion-solid": "var(--muted)",
+          "accordion-indicator": "var(--muted-foreground)",
+          "accordion-trigger-hover": "var(--foreground)"
+        },
+        "dark": {
+          "accordion-border": "var(--border)",
+          "accordion-solid": "var(--muted)",
+          "accordion-indicator": "var(--muted-foreground)",
+          "accordion-trigger-hover": "var(--foreground)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/accordion/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "data-grid",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Data Grid",
+      "description": "A full-featured data grid with sorting, filtering, search, column visibility, server-side pagination, inline editing, row/cell selection, and custom styles — all individually toggleable.",
+      "cssVars": {
+        "theme": {
+          "color-input-background": "var(--input-background)"
+        },
+        "light": {
+          "input-background": "#f1f5f9"
+        },
+        "dark": {
+          "input-background": "#1d293d"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/data-grid/data-grid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "registry/data-grid/use-data-grid.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "chat-bubble",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Chat Bubble",
+      "description": "WhatsApp-style incoming and outgoing chat bubbles with corner tails, in-bubble timestamps and delivery ticks, driven by a single variant prop. Each bubble can carry a ChatBubbleMenu — a chevron in the top-right corner, revealed on hover, opening a popover of message actions: Reply, Forward, Select messages, Copy (writes copyText to the clipboard) and Delete. Every item is opt-in, rendering only when its handler is passed. Delete opens ChatBubbleDeleteDialog, which asks how the delete should run — unsend for everyone, or clear from this device only — and reports the chosen scope; it takes a count for bulk deletes and hides \"Delete for everyone\" for messages you didn't send. ChatBubbleQuote renders the quoted message a reply is attached to, tinted for the bubble it sits in, and ChatBubble's selectable/selected/onSelectedChange props turn the thread into WhatsApp's multi-select mode, where a tick appears at the start of each row and the whole row toggles on click or Enter/Space. All colours resolve from existing theme tokens.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@private/popover",
+        "@private/alert-dialog"
+      ],
+      "files": [
+        {
+          "path": "registry/chat-bubble/chat-bubble.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "conversation-card",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Conversation Card",
+      "description": "A rectangular conversation list item with a direct/group icon, title, truncated last-message preview and timestamp, plus pinned and selected/hover highlight states.",
+      "dependencies": ["lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-conversation-card": "var(--conversation-card)",
+          "color-conversation-card-active": "var(--conversation-card-active)",
+          "color-conversation-card-active-foreground": "var(--conversation-card-active-foreground)",
+          "color-conversation-card-badge": "var(--conversation-card-badge)",
+          "color-conversation-card-badge-foreground": "var(--conversation-card-badge-foreground)"
+        },
+        "light": {
+          "conversation-card": "rgba(186, 230, 253, 0.45)",
+          "conversation-card-active": "#334f4e",
+          "conversation-card-active-foreground": "#ffffff",
+          "conversation-card-badge": "#00a63e",
+          "conversation-card-badge-foreground": "#ffffff"
+        },
+        "dark": {
+          "conversation-card": "rgba(56, 189, 248, 0.12)",
+          "conversation-card-active": "#334f4e",
+          "conversation-card-active-foreground": "#ffffff",
+          "conversation-card-badge": "#00a63e",
+          "conversation-card-badge-foreground": "#ffffff"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/conversation-card/conversation-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Input",
+      "description": "A text input suite modeled on Ant Design's Input: Input, Input.TextArea, Input.Search, Input.Password and Input.OTP. Supports three sizes (small/middle/large), four variants (filled by default, plus outlined, borderless and underlined), error/warning status colouring, prefix/suffix nodes inside the frame, addonBefore/addonAfter attached outside it, allowClear with a custom clear icon, showCount/maxLength plus an advanced count config (custom strategy, exceedFormatter hard-cutting, custom render), onPressEnter and onClear. TextArea adds autoSize with minRows/maxRows clamping and onResize; Search adds a default or primary enter button, loading state and onSearch with input/clear source info; Password adds a visibility toggle (controllable, custom iconRender); OTP renders per-character cells with paste distribution, arrow/backspace navigation, masking, a formatter and separators. Colours are tokenised via --input-* CSS variables.",
+      "dependencies": ["lucide-react", "class-variance-authority"],
+      "cssVars": {
+        "theme": {
+          "color-input-background": "var(--input-background)",
+          "color-input-addon": "var(--input-addon)",
+          "color-input-warning": "var(--input-warning)"
+        },
+        "light": {
+          "input-background": "#f1f5f9",
+          "input-addon": "#e2e8f0",
+          "input-warning": "#d97706"
+        },
+        "dark": {
+          "input-background": "#1d293d",
+          "input-addon": "#314158",
+          "input-warning": "#f59e0b"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/input/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Input Group",
+      "description": "A composable input container modeled on ReUI's Input Group. Wrap an InputGroupInput or InputGroupTextarea with any number of InputGroupAddon slots to hang icons, text affixes (InputGroupText, e.g. https:// or .com), buttons (InputGroupButton, reusing @private/button as inline or icon buttons), kbd hints, spinners, tooltips or dropdown menus off the field. Addons take an align of inline-start/inline-end to sit at either edge, or block-start/block-end which stack the control above/below a full-width toolbar — ideal for a textarea composer. The frame owns the border, focus ring and invalid/disabled states through has-* selectors that read the inner control's own focus-visible/aria-invalid/disabled, so the control stays borderless and transparent and clicking the padding focuses it. Every colour resolves from existing theme tokens, so the item ships no cssVars.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["@private/button"],
+      "files": [
+        {
+          "path": "registry/input-group/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Field",
+      "description": "A form-field composition layer modeled on ReUI's Field: it arranges a label, a control, a description and validation errors into consistent layouts around the registry's own data-entry controls (@private/input, @private/checkbox, @private/radio-group, @private/switch, @private/slider, @private/dropdown, @private/button) via the shared data-slot contract, carrying no control-specific logic itself. Composes Field/FieldContent/FieldLabel/FieldTitle/FieldDescription/FieldError/FieldSeparator/FieldSet/FieldLegend/FieldGroup. Field takes a vertical, horizontal or responsive orientation; FieldGroup opens a container-query context so responsive fields flip from stacked to side-by-side at the group's own @md width (not the viewport) and offers a default or outline (carded, hairline-separated) variant; FieldSet/FieldLegend caption a group of related fields as a native fieldset; FieldLabel doubles as a selectable, highlight-on-checked choice card when it wraps a Field; FieldSeparator draws a hairline rule with optional centered inline content; and FieldError renders either custom children or a react-hook-form-style errors array (one message inline, several as a bulleted list). Every colour resolves from existing theme tokens, so the item ships no cssVars.",
+      "dependencies": ["class-variance-authority"],
+      "files": [
+        {
+          "path": "registry/field/field.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "file-upload",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "File Upload",
+      "description": "A file upload suite modeled on ReUI's File Upload: a headless useFileUpload hook (multiple, accept, maxFiles, maxSize, custom validate, initialFiles restored from metadata, duplicate detection, drag state, object-URL image previews with cleanup, and per-file upload lifecycle with progress/success/error plus retry via an onUpload transport callback) and composable parts — FileUpload root with hidden input, a click/keyboard/drag-and-drop FileUploadDropzone, a button-style FileUploadTrigger, FileUploadList in stacked-row or thumbnail-grid orientation, FileUploadItem with image-preview or file-type-icon Preview, name/size/error Metadata, a progress bar, Retry and Delete actions, plus Clear-all and validation-error readouts. Fully tokenised via --file-upload-* CSS variables.",
+      "dependencies": ["lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-file-upload-dropzone": "var(--file-upload-dropzone)",
+          "color-file-upload-dropzone-hover": "var(--file-upload-dropzone-hover)",
+          "color-file-upload-dropzone-active": "var(--file-upload-dropzone-active)",
+          "color-file-upload-item": "var(--file-upload-item)",
+          "color-file-upload-preview": "var(--file-upload-preview)",
+          "color-file-upload-track": "var(--file-upload-track)",
+          "color-file-upload-progress": "var(--file-upload-progress)",
+          "color-file-upload-success": "var(--file-upload-success)"
+        },
+        "light": {
+          "file-upload-dropzone": "#f1f5f9",
+          "file-upload-dropzone-hover": "#e2e8f0",
+          "file-upload-dropzone-active": "color-mix(in srgb, var(--primary) 10%, transparent)",
+          "file-upload-item": "#f8fafc",
+          "file-upload-preview": "#e2e8f0",
+          "file-upload-track": "color-mix(in srgb, var(--muted-foreground) 20%, transparent)",
+          "file-upload-progress": "var(--primary)",
+          "file-upload-success": "#16a34a"
+        },
+        "dark": {
+          "file-upload-dropzone": "color-mix(in srgb, var(--foreground) 8%, transparent)",
+          "file-upload-dropzone-hover": "color-mix(in srgb, var(--foreground) 12%, transparent)",
+          "file-upload-dropzone-active": "color-mix(in srgb, var(--primary) 16%, transparent)",
+          "file-upload-item": "color-mix(in srgb, var(--foreground) 6%, transparent)",
+          "file-upload-preview": "color-mix(in srgb, var(--foreground) 10%, transparent)",
+          "file-upload-track": "color-mix(in srgb, var(--muted-foreground) 25%, transparent)",
+          "file-upload-progress": "var(--primary)",
+          "file-upload-success": "#22c55e"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/file-upload/file-upload.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Combobox",
+      "description": "A searchable select for data entry with composable parts, modeled on the ReUI combobox: single or multiple selection, popup search input, check indicator at either side, disabled options, grouped options with separators, custom item rendering (icons), a clear button, removable/expandable selection badges in the trigger, and on-the-fly option creation. Built on Base UI Combobox.",
+      "dependencies": ["@base-ui/react", "lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-input-background": "var(--input-background)"
+        },
+        "light": {
+          "input-background": "#f1f5f9"
+        },
+        "dark": {
+          "input-background": "#1d293d"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/combobox/combobox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "multi-select",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Multi Select",
+      "description": "A multi-select input with async search: typing calls your API (debounced, with stale-request aborting) and streams matches into a columned option list — checkbox, name, user id and domain — that stays open for picking several options in a row. Selected chips show the name or \"Name (userid@domain)\". Built on Base UI Combobox.",
+      "dependencies": ["@base-ui/react", "lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-input-background": "var(--input-background)"
+        },
+        "light": {
+          "input-background": "#f1f5f9"
+        },
+        "dark": {
+          "input-background": "#1d293d"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/multi-select/multi-select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "mention",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Mention",
+      "description": "An @-mention textarea modeled on Ant Design's Mentions: type a trigger prefix (@ by default, or several like [\"@\", \"#\"]) to open a caret-anchored suggestion popup, filter it as you type, and pick with the mouse or arrow-key + Enter/Tab navigation to splice `prefix + value + split` into the text. Supports controlled/uncontrolled value, a plain `options` array or `Mention.Option` children, custom `filterOption` (or false for async loading) and `validateSearch`, async loading state, custom `optionRender`, `notFoundContent`, top/bottom popup placement, a `getPopupContainer` portal, autoSize with minRows/maxRows, filled/outlined/borderless/underlined variants, error/warning status, allowClear, disabled and readOnly, onChange/onSelect/onSearch/onResize callbacks, an imperative focus/blur ref, and a static `Mention.getMentions` helper. Colours are tokenised via --input-* CSS variables.",
+      "dependencies": ["lucide-react", "class-variance-authority"],
+      "cssVars": {
+        "theme": {
+          "color-input-background": "var(--input-background)",
+          "color-input-warning": "var(--input-warning)"
+        },
+        "light": {
+          "input-background": "#f1f5f9",
+          "input-warning": "#d97706"
+        },
+        "dark": {
+          "input-background": "#1d293d",
+          "input-warning": "#f59e0b"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/mention/mention.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Popover",
+      "description": "A floating panel anchored to a trigger, auto-flipping to fit the viewport, built on Base UI Popover — bundling three patterns in one file. (1) Base primitives: Popover/PopoverTrigger/PopoverContent plus PopoverItem/PopoverLink/PopoverSeparator for building an action menu of buttons and links. (2) PopoverFeedback: a feedback-collection popover that gathers a sentiment (a five-point emoji face scale or a five-star rating, both hover-previewed and arrow-key/Home/End navigable, or hidden), optional category chips, a comment and an optional email, then runs an async onSubmit with spinner / thank-you / inline-error states, required-field gating and configurable copy. (3) PopoverForm: a generic, composable \"popover with form\" shell (PopoverForm/PopoverFormTrigger/PopoverFormContent/PopoverFormHeader/PopoverFormTitle/PopoverFormDescription/PopoverFormBody/PopoverFormField/PopoverFormInput/PopoverFormFooter/PopoverFormCancel/PopoverFormSubmit) whose body is a slot you drop any controls into — the built-in PopoverFormInput or registry controls like @private/input, @private/slider and @private/dropdown — with a label-beside-control or stacked PopoverFormField, controlled/uncontrolled open state, Enter-to-submit and close-on-submit (unless onSubmit returns false). The feedback variant's colours are tokenised via --pf-* CSS variables (the red→green sentiment scale, the gold star fill, and the success check + badge); everything else resolves from theme tokens.",
+      "dependencies": ["@base-ui/react", "lucide-react"],
+      "registryDependencies": ["@private/button"],
+      "cssVars": {
+        "theme": {
+          "color-pf-1": "var(--pf-1)",
+          "color-pf-2": "var(--pf-2)",
+          "color-pf-3": "var(--pf-3)",
+          "color-pf-4": "var(--pf-4)",
+          "color-pf-5": "var(--pf-5)",
+          "color-pf-star": "var(--pf-star)",
+          "color-pf-success": "var(--pf-success)",
+          "color-pf-success-surface": "var(--pf-success-surface)"
+        },
+        "light": {
+          "pf-1": "#ef4444",
+          "pf-2": "#f97316",
+          "pf-3": "#eab308",
+          "pf-4": "#84cc16",
+          "pf-5": "#22c55e",
+          "pf-star": "#facc15",
+          "pf-success": "#16a34a",
+          "pf-success-surface": "color-mix(in srgb, #16a34a 12%, transparent)"
+        },
+        "dark": {
+          "pf-1": "#f87171",
+          "pf-2": "#fb923c",
+          "pf-3": "#facc15",
+          "pf-4": "#a3e635",
+          "pf-5": "#4ade80",
+          "pf-star": "#fdc700",
+          "pf-success": "#22c55e",
+          "pf-success-surface": "color-mix(in srgb, #22c55e 18%, transparent)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/popover/popover.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Tooltip",
+      "description": "A popup that reveals a short hint when the user hovers or focuses an element, built on Base UI Tooltip. Composes Tooltip/TooltipTrigger/TooltipContent with an optional TooltipProvider that shares open/close delays across a group (once one tooltip is showing, adjacent ones open instantly). TooltipContent opens on any side (top/right/bottom/left, auto-flipping to stay in the viewport) with start/center/end alignment and sideOffset/alignOffset tuning, toggles a connecting arrow via showArrow, animates in/out with scale+fade, and comes in seven colour variants (default dark chip, primary, secondary, destructive, success, warning, info). Per-trigger delay/closeDelay control the timing, the trigger can render as any element, disabled triggers suppress the tooltip, and rich content (title + description + shortcut keys) works as children. Every colour is tokenised via --tooltip-* CSS variables.",
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "cssVars": {
+        "theme": {
+          "color-tooltip": "var(--tooltip)",
+          "color-tooltip-foreground": "var(--tooltip-foreground)",
+          "color-tooltip-primary": "var(--tooltip-primary)",
+          "color-tooltip-primary-foreground": "var(--tooltip-primary-foreground)",
+          "color-tooltip-secondary": "var(--tooltip-secondary)",
+          "color-tooltip-secondary-foreground": "var(--tooltip-secondary-foreground)",
+          "color-tooltip-destructive": "var(--tooltip-destructive)",
+          "color-tooltip-destructive-foreground": "var(--tooltip-destructive-foreground)",
+          "color-tooltip-success": "var(--tooltip-success)",
+          "color-tooltip-success-foreground": "var(--tooltip-success-foreground)",
+          "color-tooltip-warning": "var(--tooltip-warning)",
+          "color-tooltip-warning-foreground": "var(--tooltip-warning-foreground)",
+          "color-tooltip-info": "var(--tooltip-info)",
+          "color-tooltip-info-foreground": "var(--tooltip-info-foreground)"
+        },
+        "light": {
+          "tooltip": "#0f172b",
+          "tooltip-foreground": "#f8fafc",
+          "tooltip-primary": "var(--primary)",
+          "tooltip-primary-foreground": "var(--primary-foreground)",
+          "tooltip-secondary": "var(--secondary)",
+          "tooltip-secondary-foreground": "var(--secondary-foreground)",
+          "tooltip-destructive": "var(--destructive)",
+          "tooltip-destructive-foreground": "#ffffff",
+          "tooltip-success": "#16a34a",
+          "tooltip-success-foreground": "#ffffff",
+          "tooltip-warning": "#d97706",
+          "tooltip-warning-foreground": "#ffffff",
+          "tooltip-info": "#2563eb",
+          "tooltip-info-foreground": "#ffffff"
+        },
+        "dark": {
+          "tooltip": "#1d293d",
+          "tooltip-foreground": "#f8fafc",
+          "tooltip-primary": "var(--primary)",
+          "tooltip-primary-foreground": "var(--primary-foreground)",
+          "tooltip-secondary": "var(--secondary)",
+          "tooltip-secondary-foreground": "var(--secondary-foreground)",
+          "tooltip-destructive": "var(--destructive)",
+          "tooltip-destructive-foreground": "#ffffff",
+          "tooltip-success": "#22c55e",
+          "tooltip-success-foreground": "#052e16",
+          "tooltip-warning": "#f59e0b",
+          "tooltip-warning-foreground": "#2a1900",
+          "tooltip-info": "#3b82f6",
+          "tooltip-info-foreground": "#0a1633"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/tooltip/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Timeline",
+      "description": "A sequential event display modeled on ReUI's Timeline — deployment logs, activity feeds, milestones, roadmaps and order trackers. Composes Timeline/TimelineItem/TimelineHeader/TimelineSeparator/TimelineIndicator/TimelineDate/TimelineTitle/TimelineContent with vertical or horizontal orientation, an alternating (zig-zag) layout that sits items on either side of a centered rail, a value/defaultValue + per-item step model that lights the connector and colours indicators as completed while upcoming items stay a muted dot, indicators that hold a status dot, a number, an icon or an avatar in six tokenised variants (primary, success, warning, destructive, info, muted), and date/title/content slots. Every colour is tokenised via --timeline-* CSS variables.",
+      "cssVars": {
+        "theme": {
+          "color-timeline-connector": "var(--timeline-connector)",
+          "color-timeline-connector-active": "var(--timeline-connector-active)",
+          "color-timeline-dot": "var(--timeline-dot)",
+          "color-timeline-dot-foreground": "var(--timeline-dot-foreground)",
+          "color-timeline-primary": "var(--timeline-primary)",
+          "color-timeline-primary-foreground": "var(--timeline-primary-foreground)",
+          "color-timeline-success": "var(--timeline-success)",
+          "color-timeline-success-foreground": "var(--timeline-success-foreground)",
+          "color-timeline-warning": "var(--timeline-warning)",
+          "color-timeline-warning-foreground": "var(--timeline-warning-foreground)",
+          "color-timeline-destructive": "var(--timeline-destructive)",
+          "color-timeline-destructive-foreground": "var(--timeline-destructive-foreground)",
+          "color-timeline-info": "var(--timeline-info)",
+          "color-timeline-info-foreground": "var(--timeline-info-foreground)"
+        },
+        "light": {
+          "timeline-connector": "var(--border)",
+          "timeline-connector-active": "var(--primary)",
+          "timeline-dot": "var(--muted)",
+          "timeline-dot-foreground": "var(--muted-foreground)",
+          "timeline-primary": "var(--primary)",
+          "timeline-primary-foreground": "var(--primary-foreground)",
+          "timeline-success": "#16a34a",
+          "timeline-success-foreground": "#ffffff",
+          "timeline-warning": "#d97706",
+          "timeline-warning-foreground": "#ffffff",
+          "timeline-destructive": "var(--destructive)",
+          "timeline-destructive-foreground": "#ffffff",
+          "timeline-info": "#2563eb",
+          "timeline-info-foreground": "#ffffff"
+        },
+        "dark": {
+          "timeline-connector": "var(--border)",
+          "timeline-connector-active": "var(--primary)",
+          "timeline-dot": "var(--muted)",
+          "timeline-dot-foreground": "var(--muted-foreground)",
+          "timeline-primary": "var(--primary)",
+          "timeline-primary-foreground": "var(--primary-foreground)",
+          "timeline-success": "#22c55e",
+          "timeline-success-foreground": "#052e16",
+          "timeline-warning": "#f59e0b",
+          "timeline-warning-foreground": "#2a1900",
+          "timeline-destructive": "var(--destructive)",
+          "timeline-destructive-foreground": "#ffffff",
+          "timeline-info": "#3b82f6",
+          "timeline-info-foreground": "#0a1633"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/timeline/timeline.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Navigation"
+      },
+      "title": "Sidebar",
+      "description": "A vertical navigation sidebar that docks left or right and collapses to an icon-only rail, with link groups pinned to the top or bottom and a divider segmenting the bottom group.",
+      "cssVars": {
+        "theme": {
+          "color-sidebar-separator": "var(--sidebar-separator)"
+        },
+        "light": {
+          "sidebar-separator": "#334f4e"
+        },
+        "dark": {
+          "sidebar-separator": "#334f4e"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/sidebar/sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "search-input",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Search Input",
+      "description": "A circular search icon button that expands into a single-line text input, with the search icon sliding to the left edge, a clear button and keyboard support.",
+      "dependencies": ["lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-input-background": "var(--input-background)"
+        },
+        "light": {
+          "input-background": "#f1f5f9"
+        },
+        "dark": {
+          "input-background": "#1d293d"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/search-input/search-input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "chat-window",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Chat Window",
+      "description": "A full chat window with a header (direct/group avatar, title, pinned indicator, expanding search field and a more-options menu), a scrollable body for chat bubbles, and an auto-growing multi-line composer that expands up to three lines.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [
+        "@private/button",
+        "@private/conversation-card",
+        "@private/chat-bubble",
+        "@private/search-input",
+        "@private/popover"
+      ],
+      "cssVars": {
+        "theme": {
+          "color-input-background": "var(--input-background)"
+        },
+        "light": {
+          "input-background": "#f1f5f9"
+        },
+        "dark": {
+          "input-background": "#1d293d"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/chat-window/chat-window.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Feedback"
+      },
+      "title": "Drawer",
+      "description": "A panel that slides in from the left, right, top or bottom over a dimming backdrop, with focus trap and scroll lock. A size prop (sm, md, lg, xl, full) scales the panel along the axis it opens from — width for left/right, height for top/bottom. Opens from a trigger button and can be made persistent so it only closes via an explicit close button.",
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "cssVars": {
+        "theme": {
+          "color-drawer-background": "var(--drawer-background)"
+        },
+        "light": {
+          "drawer-background": "#f8fafc"
+        },
+        "dark": {
+          "drawer-background": "#1e293b"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/drawer/drawer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sonner",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Feedback"
+      },
+      "title": "Sonner",
+      "description": "An opinionated toast component built on the Sonner library: default, description, success, info, warning, error and loading toasts, promise toasts that resolve loading→success/error, action and cancel buttons, a top-right close button, updatable toasts addressed by id (e.g. an upload progress bar), custom JSX content and integration-style notifications, adjustable position, and a dialog-feedback flow where submitting a form fires a confirmation toast. Detects the registry's class-based dark mode automatically and themes every variant through --normal-* and --sonner-* tokens.",
+      "dependencies": ["sonner"],
+      "cssVars": {
+        "theme": {
+          "color-sonner-success": "var(--sonner-success)",
+          "color-sonner-success-foreground": "var(--sonner-success-foreground)",
+          "color-sonner-success-border": "var(--sonner-success-border)",
+          "color-sonner-error": "var(--sonner-error)",
+          "color-sonner-error-foreground": "var(--sonner-error-foreground)",
+          "color-sonner-error-border": "var(--sonner-error-border)",
+          "color-sonner-warning": "var(--sonner-warning)",
+          "color-sonner-warning-foreground": "var(--sonner-warning-foreground)",
+          "color-sonner-warning-border": "var(--sonner-warning-border)",
+          "color-sonner-info": "var(--sonner-info)",
+          "color-sonner-info-foreground": "var(--sonner-info-foreground)",
+          "color-sonner-info-border": "var(--sonner-info-border)"
+        },
+        "light": {
+          "sonner-success": "hsl(143, 85%, 96%)",
+          "sonner-success-foreground": "hsl(140, 100%, 27%)",
+          "sonner-success-border": "hsl(145, 92%, 87%)",
+          "sonner-error": "hsl(359, 100%, 97%)",
+          "sonner-error-foreground": "hsl(360, 100%, 45%)",
+          "sonner-error-border": "hsl(359, 100%, 94%)",
+          "sonner-warning": "hsl(49, 100%, 97%)",
+          "sonner-warning-foreground": "hsl(31, 92%, 45%)",
+          "sonner-warning-border": "hsl(49, 91%, 84%)",
+          "sonner-info": "hsl(208, 100%, 97%)",
+          "sonner-info-foreground": "hsl(210, 92%, 45%)",
+          "sonner-info-border": "hsl(221, 91%, 91%)"
+        },
+        "dark": {
+          "sonner-success": "hsl(150, 100%, 6%)",
+          "sonner-success-foreground": "hsl(150, 86%, 65%)",
+          "sonner-success-border": "hsl(147, 100%, 12%)",
+          "sonner-error": "hsl(358, 76%, 10%)",
+          "sonner-error-foreground": "hsl(358, 100%, 81%)",
+          "sonner-error-border": "hsl(357, 89%, 16%)",
+          "sonner-warning": "hsl(64, 100%, 6%)",
+          "sonner-warning-foreground": "hsl(46, 87%, 65%)",
+          "sonner-warning-border": "hsl(60, 100%, 9%)",
+          "sonner-info": "hsl(215, 100%, 6%)",
+          "sonner-info-foreground": "hsl(216, 87%, 65%)",
+          "sonner-info-border": "hsl(223, 43%, 17%)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/sonner/sonner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "splash-screen",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Feedback"
+      },
+      "title": "Splash Screen",
+      "description": "A once-per-tab intro overlay that plays a staged reveal before handing off to the site. Two stacked layers sit above the page: a foreground layer holding two images that fade from opaque to clear, and a dot-and-line layer whose centered dot blinks a configurable number of times before stretching vertically into a line that reaches both edges and vanishes to reveal the site beneath. A `sequence` prop orders the two stages: \"images-first\" (default) fades the images then plays the dot; \"together\" plays both at once so they finish at the same instant; \"dot-first\" plays the dot then fades the images. In the together/dot-first modes the dot-and-line layer sits behind the images and the foreground paints no background, letting the dot show through the gaps while layout is left to the images slot. Gated to run once per browser tab via sessionStorage (a new tab replays it, a reload within the tab does not; toggle with `once`), respects prefers-reduced-motion by skipping straight to the site, and can cover the viewport (fixed) or the nearest positioned ancestor (contained). Every stage duration, the blink count and the dot size are props, the foreground images are a slot, and every colour is tokenised via --splash-* CSS variables.",
+      "cssVars": {
+        "theme": {
+          "color-splash-background": "var(--splash-background)",
+          "color-splash-foreground": "var(--splash-foreground)",
+          "color-splash-mark": "var(--splash-mark)"
+        },
+        "light": {
+          "splash-background": "var(--background)",
+          "splash-foreground": "var(--background)",
+          "splash-mark": "var(--foreground)"
+        },
+        "dark": {
+          "splash-background": "var(--background)",
+          "splash-foreground": "var(--background)",
+          "splash-mark": "var(--foreground)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/splash-screen/splash-screen.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Feedback"
+      },
+      "title": "Alert Dialog",
+      "description": "A focused confirmation modal modeled on ReUI's Alert Dialog, built on Base UI AlertDialog. Interrupts the user to confirm a critical, usually irreversible action: it traps focus, locks scroll and — unlike a plain dialog — cannot be dismissed by clicking the backdrop (Escape still cancels), following WAI-ARIA alertdialog semantics. Composes AlertDialog/AlertDialogTrigger/AlertDialogContent/AlertDialogHeader/AlertDialogFooter/AlertDialogTitle/AlertDialogDescription with an AlertDialogAction (primary/destructive confirm) and AlertDialogCancel (safe dismiss) that reuse the registry Button variants and auto-close, plus a raw AlertDialogClose for a custom X control and a tokenised AlertDialogIcon status badge (default/destructive/success/warning/info). Content comes in sm/default/lg/xl sizes and supports controlled open state for async flows (loading spinner, keep-open-until-done). Covers the ReUI patterns — default confirm, destructive delete with icon, checkbox-gated and type-to-confirm guards against accidental deletes, a count badge in the title for bulk actions, and async confirmation. Every status colour is tokenised via --alert-dialog-* CSS variables.",
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "registryDependencies": ["@private/button"],
+      "cssVars": {
+        "theme": {
+          "color-alert-dialog-default": "var(--alert-dialog-default)",
+          "color-alert-dialog-default-surface": "var(--alert-dialog-default-surface)",
+          "color-alert-dialog-destructive": "var(--alert-dialog-destructive)",
+          "color-alert-dialog-destructive-surface": "var(--alert-dialog-destructive-surface)",
+          "color-alert-dialog-success": "var(--alert-dialog-success)",
+          "color-alert-dialog-success-surface": "var(--alert-dialog-success-surface)",
+          "color-alert-dialog-warning": "var(--alert-dialog-warning)",
+          "color-alert-dialog-warning-surface": "var(--alert-dialog-warning-surface)",
+          "color-alert-dialog-info": "var(--alert-dialog-info)",
+          "color-alert-dialog-info-surface": "var(--alert-dialog-info-surface)"
+        },
+        "light": {
+          "alert-dialog-default": "var(--primary)",
+          "alert-dialog-default-surface": "color-mix(in srgb, var(--primary) 12%, transparent)",
+          "alert-dialog-destructive": "var(--destructive)",
+          "alert-dialog-destructive-surface": "color-mix(in srgb, var(--destructive) 12%, transparent)",
+          "alert-dialog-success": "#16a34a",
+          "alert-dialog-success-surface": "color-mix(in srgb, #16a34a 12%, transparent)",
+          "alert-dialog-warning": "#d97706",
+          "alert-dialog-warning-surface": "color-mix(in srgb, #d97706 12%, transparent)",
+          "alert-dialog-info": "#2563eb",
+          "alert-dialog-info-surface": "color-mix(in srgb, #2563eb 12%, transparent)"
+        },
+        "dark": {
+          "alert-dialog-default": "var(--primary)",
+          "alert-dialog-default-surface": "color-mix(in srgb, var(--primary) 18%, transparent)",
+          "alert-dialog-destructive": "var(--destructive)",
+          "alert-dialog-destructive-surface": "color-mix(in srgb, var(--destructive) 18%, transparent)",
+          "alert-dialog-success": "#22c55e",
+          "alert-dialog-success-surface": "color-mix(in srgb, #22c55e 18%, transparent)",
+          "alert-dialog-warning": "#f59e0b",
+          "alert-dialog-warning-surface": "color-mix(in srgb, #f59e0b 18%, transparent)",
+          "alert-dialog-info": "#3b82f6",
+          "alert-dialog-info-surface": "color-mix(in srgb, #3b82f6 18%, transparent)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/alert-dialog/alert-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Feedback"
+      },
+      "title": "Skeleton",
+      "description": "A shimmering placeholder shown while content loads, modeled on ReUI's Skeleton. Ships the pulsing Skeleton primitive (shape it with height/width/rounded utilities) plus ready-made loader layouts covering every example on the ReUI page — avatar + user info, card, text/paragraphs, form, data table, dashboard stats row, list with actions, card grid, full profile page and chat messages — and a Dialog Feedback preset: the loading state of a modal with a leading icon, title, description, body and a cancel/confirm action row. The fill colour is tokenised via the --skeleton CSS variable so the whole set restyles from one place.",
+      "cssVars": {
+        "theme": {
+          "color-skeleton": "var(--skeleton)"
+        },
+        "light": {
+          "skeleton": "var(--muted)"
+        },
+        "dark": {
+          "skeleton": "var(--muted)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/skeleton/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Feedback"
+      },
+      "title": "Spinner",
+      "description": "A minimal loading indicator modeled on ReUI's Spinner, for async operations and data fetches. Ships five animation styles — default rotating spokes, a partial-ring circle, a pinwheel (all Lucide icons with animate-spin), plus a pure-CSS bouncing three-dot and a pulsing four-bar equalizer — in five sizes (xs/sm/md/lg/xl, or any custom size via className) and eight tokenised colours (default, primary, secondary, muted, destructive, success, warning, info). Renders an optional visible label beside the spinner and otherwise emits a screen-reader-only Loading label, wrapped in an ARIA live region with role=status. The three status accents are tokenised via --spinner-* CSS variables.",
+      "dependencies": ["lucide-react", "class-variance-authority"],
+      "cssVars": {
+        "theme": {
+          "color-spinner-success": "var(--spinner-success)",
+          "color-spinner-warning": "var(--spinner-warning)",
+          "color-spinner-info": "var(--spinner-info)"
+        },
+        "light": {
+          "spinner-success": "#16a34a",
+          "spinner-warning": "#d97706",
+          "spinner-info": "#2563eb"
+        },
+        "dark": {
+          "spinner-success": "#22c55e",
+          "spinner-warning": "#f59e0b",
+          "spinner-info": "#3b82f6"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/spinner/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tag",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Tag",
+      "description": "A compact label with filled, solid and outlined variants across default, success, processing, warning and error statuses. The default filled chip is white at rest and flips to #334F4E on hover/selected; supports a leading icon, a disabled state, and single- or multi-select with deselect via TagGroup. Every colour is tokenised via --tag-* CSS variables.",
+      "dependencies": ["class-variance-authority"],
+      "cssVars": {
+        "theme": {
+          "color-tag-filled": "var(--tag-filled)",
+          "color-tag-filled-foreground": "var(--tag-filled-foreground)",
+          "color-tag-filled-border": "var(--tag-filled-border)",
+          "color-tag-filled-active": "var(--tag-filled-active)",
+          "color-tag-filled-active-foreground": "var(--tag-filled-active-foreground)",
+          "color-tag-success": "var(--tag-success)",
+          "color-tag-success-foreground": "var(--tag-success-foreground)",
+          "color-tag-processing": "var(--tag-processing)",
+          "color-tag-processing-foreground": "var(--tag-processing-foreground)",
+          "color-tag-warning": "var(--tag-warning)",
+          "color-tag-warning-foreground": "var(--tag-warning-foreground)",
+          "color-tag-error": "var(--tag-error)",
+          "color-tag-error-foreground": "var(--tag-error-foreground)"
+        },
+        "light": {
+          "tag-filled": "#ffffff",
+          "tag-filled-foreground": "#0f172b",
+          "tag-filled-border": "#e2e8f0",
+          "tag-filled-active": "#334f4e",
+          "tag-filled-active-foreground": "#ffffff",
+          "tag-success": "#16a34a",
+          "tag-success-foreground": "#ffffff",
+          "tag-processing": "#2563eb",
+          "tag-processing-foreground": "#ffffff",
+          "tag-warning": "#d97706",
+          "tag-warning-foreground": "#ffffff",
+          "tag-error": "#dc2626",
+          "tag-error-foreground": "#ffffff"
+        },
+        "dark": {
+          "tag-filled": "#0f172b",
+          "tag-filled-foreground": "#f8fafc",
+          "tag-filled-border": "#1d293d",
+          "tag-filled-active": "#334f4e",
+          "tag-filled-active-foreground": "#ffffff",
+          "tag-success": "#22c55e",
+          "tag-success-foreground": "#052e16",
+          "tag-processing": "#3b82f6",
+          "tag-processing-foreground": "#0a1633",
+          "tag-warning": "#f59e0b",
+          "tag-warning-foreground": "#2a1900",
+          "tag-error": "#ef4444",
+          "tag-error-foreground": "#2a0606"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/tag/tag.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "typography",
+      "type": "registry:ui",
+      "meta": {
+        "group": "General"
+      },
+      "title": "Typography",
+      "description": "Basic styled text, headings and links with optional inline editing, one-click copy, and line-clamp ellipsis with an expandable more/less toggle.",
+      "dependencies": ["lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-typography-success": "var(--typography-success)",
+          "color-typography-warning": "var(--typography-warning)",
+          "color-typography-mark": "var(--typography-mark)"
+        },
+        "light": {
+          "typography-success": "#059669",
+          "typography-warning": "#d97706",
+          "typography-mark": "#fef08a"
+        },
+        "dark": {
+          "typography-success": "#34d399",
+          "typography-warning": "#fbbf24",
+          "typography-mark": "rgba(234, 179, 8, 0.4)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/typography/typography.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "pigeon",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Others"
+      },
+      "title": "Pigeon",
+      "description": "A cute, friendly pigeon rendered with three.js: soft pastel PBR plumage, a big round head with large sparkly dark eyes, a little peach beak, rosy blush cheeks, an iridescent green→purple neck and tucked coral feet. It flaps its wings and flies a banking figure-8. Every colour is read from --pigeon-* CSS tokens at runtime, so the whole bird restyles with the theme; supports speed, flapSpeed and paused props.",
+      "dependencies": ["three"],
+      "cssVars": {
+        "light": {
+          "pigeon-body": "#9aa3b5",
+          "pigeon-wing": "#8790a1",
+          "pigeon-belly": "#c3cad6",
+          "pigeon-head": "#7a8494",
+          "pigeon-neck-green": "#57c08a",
+          "pigeon-neck-purple": "#b57ac4",
+          "pigeon-wingbar": "#3a404c",
+          "pigeon-tail-band": "#33383f",
+          "pigeon-beak": "#e6a07f",
+          "pigeon-cere": "#f4f7fb",
+          "pigeon-eye": "#2b2226",
+          "pigeon-pupil": "#141519",
+          "pigeon-feet": "#eda0a6",
+          "pigeon-rump": "#d3d9e2",
+          "pigeon-cheek": "#f2b6bc"
+        },
+        "dark": {
+          "pigeon-body": "#7f8899",
+          "pigeon-wing": "#727b8b",
+          "pigeon-belly": "#aab1bd",
+          "pigeon-head": "#69727f",
+          "pigeon-neck-green": "#4fb37f",
+          "pigeon-neck-purple": "#a869ba",
+          "pigeon-wingbar": "#2f343e",
+          "pigeon-tail-band": "#282c34",
+          "pigeon-beak": "#d98f70",
+          "pigeon-cere": "#e7ebf1",
+          "pigeon-eye": "#241c20",
+          "pigeon-pupil": "#0c0d10",
+          "pigeon-feet": "#dd949b",
+          "pigeon-rump": "#c2c9d3",
+          "pigeon-cheek": "#df9aa2"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/pigeon/pigeon.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Calendar",
+      "description": "A date-entry calendar modeled on ReUI's Calendar, built on React DayPicker: single, multiple and range selection (with min/max range length), month & year dropdown navigation, disabled and booked (struck-through) dates, week numbers, multiple paged months, outside days, keyboard navigation and preset-driven controlled selection. Day and navigation buttons reuse the registry Button variants; all colours come from theme tokens.",
+      "dependencies": ["react-day-picker", "lucide-react", "class-variance-authority"],
+      "registryDependencies": ["@private/button"],
+      "cssVars": {
+        "theme": {
+          "color-input-background": "var(--input-background)"
+        },
+        "light": {
+          "input-background": "#f1f5f9"
+        },
+        "dark": {
+          "input-background": "#1d293d"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/calendar/calendar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "calendar-view",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Calendar View",
+      "description": "A month/week calendar that lays out a list of events: each event bar carries a status stripe on its left edge (blue for busy, purple for out of office), and multi-day events render as one continuous bar spanning their days — continuing across week rows with squared edges — instead of repeating on every date. Days with more overlapping events than maxVisibleLanes collapse into a per-day \"+N more\" button that expands the week inline (or hands off to an onMoreClick callback). The header controls (month and year selects, Month/Week toggle, prev/Today/next) are a separate CalendarViewControls component: compose CalendarViewProvider + CalendarViewControls + any number of CalendarViewGrids to drive several calendars (e.g. one per user) from one outer control, or use the all-in-one CalendarView. Clicking a date selects it (click again to clear); toggling to Week opens the selected date's week, falling back to today's week when nothing is selected. The week view is an Outlook-style time grid: all-day and multi-day events as spanning bars in a top row, timed events (start like \"2026-07-08T10:00\") positioned and sized by their times with overlapping meetings split side by side, hour gridlines, and a current-time indicator on today's column.",
+      "dependencies": ["lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-calendar-busy": "var(--calendar-busy)",
+          "color-calendar-busy-surface": "var(--calendar-busy-surface)",
+          "color-calendar-busy-surface-foreground": "var(--calendar-busy-surface-foreground)",
+          "color-calendar-ooo": "var(--calendar-ooo)",
+          "color-calendar-ooo-surface": "var(--calendar-ooo-surface)",
+          "color-calendar-ooo-surface-foreground": "var(--calendar-ooo-surface-foreground)"
+        },
+        "light": {
+          "calendar-busy": "#2563eb",
+          "calendar-busy-surface": "color-mix(in srgb, var(--calendar-busy) 12%, transparent)",
+          "calendar-busy-surface-foreground": "#1e40af",
+          "calendar-ooo": "#9333ea",
+          "calendar-ooo-surface": "color-mix(in srgb, var(--calendar-ooo) 12%, transparent)",
+          "calendar-ooo-surface-foreground": "#6b21a8"
+        },
+        "dark": {
+          "calendar-busy": "#60a5fa",
+          "calendar-busy-surface": "color-mix(in srgb, var(--calendar-busy) 18%, transparent)",
+          "calendar-busy-surface-foreground": "#bfdbfe",
+          "calendar-ooo": "#c084fc",
+          "calendar-ooo-surface": "color-mix(in srgb, var(--calendar-ooo) 18%, transparent)",
+          "calendar-ooo-surface-foreground": "#e9d5ff"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/calendar-view/calendar-view.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "widget-board",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Widget Board",
+      "description": "A drag-and-drop dashboard: drag source buttons (e.g. from a sidebar) onto the canvas to spawn widgets, rearrange them by dragging, close them with an X, and drop one on the trash to delete it. The layout persists to localStorage via the useWidgetBoard hook.",
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "registry/widget-board/widget-board.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Radio Group",
+      "description": "A single-choice radio group modeled on ReUI's Radio Group, built on Base UI Radio Group. RadioGroup/RadioGroupItem support controlled (value/onValueChange) and uncontrolled (defaultValue) selection, three control sizes (sm/default/lg set group-wide or per item), group- and item-level disabling, aria-invalid error styling, form integration (name/required) and arrow-key keyboard navigation. The borderless control is tokenised via --radio-* CSS variables (unchecked fill, checked fill, inner dot, plus blue/green/yellow accent fills for colored radios) and composes into all the ReUI patterns: labelled lists, descriptions, fieldset legends, colored radios, card selections with separators or icons, grid tiles, avatar cards, payment methods, tooltip hints, badges, inline horizontal layouts and pricing plans.",
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "cssVars": {
+        "theme": {
+          "color-radio": "var(--radio)",
+          "color-radio-checked": "var(--radio-checked)",
+          "color-radio-dot": "var(--radio-dot)",
+          "color-radio-blue": "var(--radio-blue)",
+          "color-radio-green": "var(--radio-green)",
+          "color-radio-yellow": "var(--radio-yellow)"
+        },
+        "light": {
+          "radio": "#e2e8f0",
+          "radio-checked": "#4f39f6",
+          "radio-dot": "#ffffff",
+          "radio-blue": "#2b7fff",
+          "radio-green": "#00a63e",
+          "radio-yellow": "#d08700"
+        },
+        "dark": {
+          "radio": "#314158",
+          "radio-checked": "#7c86ff",
+          "radio-dot": "#020618",
+          "radio-blue": "#51a2ff",
+          "radio-green": "#05df72",
+          "radio-yellow": "#fdc700"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/radio-group/radio-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Checkbox",
+      "description": "A checkbox for data entry, modeled on ReUI's Checkbox and built on Base UI Checkbox. Supports controlled (checked/onCheckedChange) and uncontrolled (defaultChecked) state, an indeterminate/mixed state that swaps the check mark for a minus, three control sizes (sm/default/lg), disabled state, aria-invalid error styling, and form integration (name/required/value). The borderless control is tokenised via --checkbox-* CSS variables (unchecked fill, checked fill, indicator color). Covers every ReUI example — default with label, checked, disabled, indeterminate, sizes and form — plus extra patterns: select-all groups, descriptions, invalid, card selections and inline horizontal layouts.",
+      "dependencies": ["@base-ui/react", "class-variance-authority", "lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-checkbox": "var(--checkbox)",
+          "color-checkbox-checked": "var(--checkbox-checked)",
+          "color-checkbox-indicator": "var(--checkbox-indicator)"
+        },
+        "light": {
+          "checkbox": "#e2e8f0",
+          "checkbox-checked": "#4f39f6",
+          "checkbox-indicator": "#ffffff"
+        },
+        "dark": {
+          "checkbox": "#314158",
+          "checkbox-checked": "#7c86ff",
+          "checkbox-indicator": "#020618"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/checkbox/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "rating",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Rating",
+      "description": "A star rating for data entry and display, modeled on ReUI's Rating: renders any decimal value as proportionally filled icons (a 3.7 shows three full stars and a 70% partial star), an editable mode with live hover preview and click-to-set, half-star selection via allowHalf (each icon split into two hit targets) plus arrow-key/Home/End keyboard control, small/default/large sizes, an optional numeric value readout, read-only and disabled states, a swappable icon (e.g. Heart), and a configurable max. Composes into the ReUI patterns — review summaries with distribution bars, emoji reaction rows and review forms. Filled and empty star colours are tokenised via --rating-* CSS variables.",
+      "dependencies": ["lucide-react", "class-variance-authority"],
+      "cssVars": {
+        "theme": {
+          "color-rating-filled": "var(--rating-filled)",
+          "color-rating-empty": "var(--rating-empty)"
+        },
+        "light": {
+          "rating-filled": "#facc15",
+          "rating-empty": "color-mix(in srgb, var(--muted-foreground) 30%, transparent)"
+        },
+        "dark": {
+          "rating-filled": "#fdc700",
+          "rating-empty": "color-mix(in srgb, var(--muted-foreground) 35%, transparent)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/rating/rating.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Switch",
+      "description": "A boolean on/off switch modeled on ReUI's Switch, built on Base UI Switch. Supports three sizes (sm/default/lg), five colored on-states (primary/mono/success/warning/destructive), a disabled state, aria-invalid error styling and form integration (name/value/required, controlled value/onCheckedChange or uncontrolled defaultChecked). Adds icons inside the thumb that cross-fade between the on and off states, on/off indicators pinned to the track and revealed as the thumb slides, and a loading state that shows a spinner in the thumb and blocks interaction. Every colour is tokenised via --switch-* CSS variables so the whole control restyles from one place.",
+      "dependencies": ["@base-ui/react", "class-variance-authority", "lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-switch": "var(--switch)",
+          "color-switch-checked": "var(--switch-checked)",
+          "color-switch-thumb": "var(--switch-thumb)",
+          "color-switch-thumb-foreground": "var(--switch-thumb-foreground)",
+          "color-switch-mono": "var(--switch-mono)",
+          "color-switch-success": "var(--switch-success)",
+          "color-switch-warning": "var(--switch-warning)",
+          "color-switch-destructive": "var(--switch-destructive)",
+          "color-switch-indicator-on-foreground": "var(--switch-indicator-on-foreground)",
+          "color-switch-indicator-off-foreground": "var(--switch-indicator-off-foreground)"
+        },
+        "light": {
+          "switch": "#e2e8f0",
+          "switch-checked": "var(--primary)",
+          "switch-thumb": "#ffffff",
+          "switch-thumb-foreground": "#64748b",
+          "switch-mono": "var(--foreground)",
+          "switch-success": "#00a63e",
+          "switch-warning": "#d08700",
+          "switch-destructive": "var(--destructive)",
+          "switch-indicator-on-foreground": "#ffffff",
+          "switch-indicator-off-foreground": "var(--muted-foreground)"
+        },
+        "dark": {
+          "switch": "#314158",
+          "switch-checked": "var(--primary)",
+          "switch-thumb": "#f8fafc",
+          "switch-thumb-foreground": "#64748b",
+          "switch-mono": "var(--foreground)",
+          "switch-success": "#05df72",
+          "switch-warning": "#fdc700",
+          "switch-destructive": "var(--destructive)",
+          "switch-indicator-on-foreground": "#020618",
+          "switch-indicator-off-foreground": "var(--muted-foreground)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/switch/switch.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Feedback"
+      },
+      "title": "Progress",
+      "description": "A progress feedback suite modeled on ReUI's Progress, built on Base UI Progress. The composed <Progress> covers linear bars — determinate value (0–max) or indeterminate/loading (value=null) with a sliding animation, three sizes (sm/default/lg), six colors (primary/mono/success/warning/destructive/info), an optional label and a formatted percentage readout — and it also exports the composable primitives ProgressRoot/ProgressTrack/ProgressIndicator/ProgressLabel/ProgressValue. A separate <CircularProgress> renders an SVG ring with the same colors and sizes (or an explicit pixel diameter), a configurable strokeWidth, a determinate arc or indeterminate spinner, and a center percentage or custom children. Accessible via Base UI's progressbar role and aria-valuenow/min/max. Every color is tokenised via --progress-* CSS variables.",
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "cssVars": {
+        "theme": {
+          "color-progress-track": "var(--progress-track)",
+          "color-progress-primary": "var(--progress-primary)",
+          "color-progress-mono": "var(--progress-mono)",
+          "color-progress-success": "var(--progress-success)",
+          "color-progress-warning": "var(--progress-warning)",
+          "color-progress-destructive": "var(--progress-destructive)",
+          "color-progress-info": "var(--progress-info)"
+        },
+        "light": {
+          "progress-track": "#e2e8f0",
+          "progress-primary": "var(--primary)",
+          "progress-mono": "var(--foreground)",
+          "progress-success": "#00a63e",
+          "progress-warning": "#d08700",
+          "progress-destructive": "var(--destructive)",
+          "progress-info": "#2b7fff"
+        },
+        "dark": {
+          "progress-track": "#314158",
+          "progress-primary": "var(--primary)",
+          "progress-mono": "var(--foreground)",
+          "progress-success": "#05df72",
+          "progress-warning": "#fdc700",
+          "progress-destructive": "var(--destructive)",
+          "progress-info": "#51a2ff"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/progress/progress.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Slider",
+      "description": "A slider for data entry modeled on ReUI's Slider, built on Base UI Slider. A composed <Slider> covers the common cases (single value, two-thumb range, or any number of thumbs derived from the value array; min/max/step; sm/default/lg sizes; horizontal or vertical orientation; disabled state; an optional floating value tooltip on each thumb with a custom formatter; and tick marks derived from the step or supplied as labelled marks), and it also exports the composable primitives — SliderRoot/SliderPrimitive, SliderControl, SliderTrack, SliderIndicator, SliderThumb, SliderValue, SliderMarks and SliderMarkLabels — for building patterns like a slider synced to a number input, a gradient color-temperature track, reference labels, and a rating slider. Every colour is tokenised via --slider-* CSS variables (track rail, filled range, thumb face + accent ring, tick marks).",
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "cssVars": {
+        "theme": {
+          "color-slider-track": "var(--slider-track)",
+          "color-slider-range": "var(--slider-range)",
+          "color-slider-thumb": "var(--slider-thumb)",
+          "color-slider-thumb-ring": "var(--slider-thumb-ring)",
+          "color-slider-mark": "var(--slider-mark)"
+        },
+        "light": {
+          "slider-track": "#e2e8f0",
+          "slider-range": "var(--primary)",
+          "slider-thumb": "var(--background)",
+          "slider-thumb-ring": "var(--primary)",
+          "slider-mark": "color-mix(in srgb, var(--muted-foreground) 40%, transparent)"
+        },
+        "dark": {
+          "slider-track": "#314158",
+          "slider-range": "var(--primary)",
+          "slider-thumb": "var(--background)",
+          "slider-thumb-ring": "var(--primary)",
+          "slider-mark": "color-mix(in srgb, var(--muted-foreground) 45%, transparent)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/slider/slider.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "time-picker",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Time Picker",
+      "description": "A time-entry picker modeled on Ant Design's TimePicker, built on Base UI Popover. Scrollable hour/minute/second columns (plus an AM/PM column in use12Hours mode), a token-based format string that drives both the display and which columns show, hour/minute/second step intervals, disabledTime with hideDisabledOptions, changeOnScroll to pick while scrolling a column, needConfirm with an OK button and a showNow shortcut, renderExtraFooter and per-cell cellRender. The input supports free typing with lenient parsing, allowClear, prefix and a custom suffixIcon, controlled/uncontrolled value and open state, four placements, three sizes (small/middle/large), four variants (outlined/filled/borderless/underlined) and error/warning status. TimePicker.RangePicker adds a two-field start→end range with a custom separator and order sorting. Every colour is tokenised via theme tokens (--input-background, --input-warning).",
+      "dependencies": ["@base-ui/react", "class-variance-authority", "lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-input-background": "var(--input-background)",
+          "color-input-warning": "var(--input-warning)"
+        },
+        "light": {
+          "input-background": "#f1f5f9",
+          "input-warning": "#d97706"
+        },
+        "dark": {
+          "input-background": "#1d293d",
+          "input-warning": "#f59e0b"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/time-picker/time-picker.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Avatar",
+      "description": "An avatar suite modeled on ReUI's Avatar, built on Base UI Avatar: an image avatar with automatic initials/icon fallback, five sizes (xs/sm/default/lg/xl) and circle or square shapes, a corner AvatarIndicator slot (top/bottom × start/end) for badges, an AvatarStatus presence dot (online/offline/busy/away) that rings itself out of the background, and an AvatarGroup that overlaps stacked avatars and collapses extras into a +N count. Presence colours are tokenised via --avatar-* CSS variables.",
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "cssVars": {
+        "theme": {
+          "color-avatar-online": "var(--avatar-online)",
+          "color-avatar-offline": "var(--avatar-offline)",
+          "color-avatar-busy": "var(--avatar-busy)",
+          "color-avatar-away": "var(--avatar-away)"
+        },
+        "light": {
+          "avatar-online": "#16a34a",
+          "avatar-offline": "#94a3b8",
+          "avatar-busy": "#dc2626",
+          "avatar-away": "#d97706"
+        },
+        "dark": {
+          "avatar-online": "#22c55e",
+          "avatar-offline": "#64748b",
+          "avatar-busy": "#ef4444",
+          "avatar-away": "#f59e0b"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/avatar/avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "carousel",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Carousel",
+      "description": "A carousel modeled on ReUI's Carousel, built on Embla Carousel. Composes Carousel/CarouselContent/CarouselItem/CarouselPrevious/CarouselNext/CarouselDots with horizontal or vertical orientation, mouse/touch drag, keyboard arrow navigation and scroll snapping. Per-item basis controls how many slides show at once (one, or multiple with responsive breakpoints) and the track gap sets custom spacing; pass Embla `opts` for loop, alignment (center/start), dragFree and slidesToScroll, or `plugins` such as embla-carousel-autoplay (autoplay with delay, stop-on-interaction and play/pause on hover). The prev/next buttons reuse the registry Button and disable at the ends, CarouselDots renders one clickable indicator per snap with the active one highlighted, and `setApi`/`useCarousel` expose the Embla API for external control patterns like synchronized thumbnails and slide counters. Dot colours are tokenised via --carousel-* CSS variables.",
+      "dependencies": ["embla-carousel-react", "embla-carousel-autoplay", "lucide-react"],
+      "registryDependencies": ["@private/button"],
+      "cssVars": {
+        "theme": {
+          "color-carousel-dot": "var(--carousel-dot)",
+          "color-carousel-dot-active": "var(--carousel-dot-active)"
+        },
+        "light": {
+          "carousel-dot": "color-mix(in srgb, var(--muted-foreground) 35%, transparent)",
+          "carousel-dot-active": "var(--primary)"
+        },
+        "dark": {
+          "carousel-dot": "color-mix(in srgb, var(--muted-foreground) 40%, transparent)",
+          "carousel-dot-active": "var(--primary)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/carousel/carousel.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Badge",
+      "description": "A badge modeled on Ant Design's Badge: a small count or red dot pinned to the top-right corner of any element, with overflowCount capping (99+), showZero, a standalone dot, custom count nodes (e.g. an icon), and small/default sizes. Numbers scroll-animate on change and the badge zooms in on appear. Standalone status dots come in success/processing/default/error/warning (processing pulses) with optional text, plus 13 Ant Design preset colours (pink, red, yellow, orange, cyan, green, blue, purple, geekblue, magenta, volcano, gold, lime) or any custom CSS colour, a title tooltip and an [x, y] offset. Includes Badge.Ribbon, a folded ribbon that hangs from the start or end corner of a container in any preset/custom colour. Every colour is tokenised via --badge-* CSS variables.",
+      "cssVars": {
+        "theme": {
+          "color-badge-count-bg": "var(--badge-count-bg)",
+          "color-badge-count-foreground": "var(--badge-count-foreground)",
+          "color-badge-status-success": "var(--badge-status-success)",
+          "color-badge-status-processing": "var(--badge-status-processing)",
+          "color-badge-status-error": "var(--badge-status-error)",
+          "color-badge-status-warning": "var(--badge-status-warning)",
+          "color-badge-status-default": "var(--badge-status-default)",
+          "color-badge-pink": "var(--badge-pink)",
+          "color-badge-red": "var(--badge-red)",
+          "color-badge-yellow": "var(--badge-yellow)",
+          "color-badge-orange": "var(--badge-orange)",
+          "color-badge-cyan": "var(--badge-cyan)",
+          "color-badge-green": "var(--badge-green)",
+          "color-badge-blue": "var(--badge-blue)",
+          "color-badge-purple": "var(--badge-purple)",
+          "color-badge-geekblue": "var(--badge-geekblue)",
+          "color-badge-magenta": "var(--badge-magenta)",
+          "color-badge-volcano": "var(--badge-volcano)",
+          "color-badge-gold": "var(--badge-gold)",
+          "color-badge-lime": "var(--badge-lime)"
+        },
+        "light": {
+          "badge-count-bg": "#ff4d4f",
+          "badge-count-foreground": "#ffffff",
+          "badge-status-success": "#52c41a",
+          "badge-status-processing": "#1677ff",
+          "badge-status-error": "#ff4d4f",
+          "badge-status-warning": "#faad14",
+          "badge-status-default": "#d9d9d9",
+          "badge-pink": "#eb2f96",
+          "badge-red": "#f5222d",
+          "badge-yellow": "#fadb14",
+          "badge-orange": "#fa8c16",
+          "badge-cyan": "#13c2c2",
+          "badge-green": "#52c41a",
+          "badge-blue": "#1677ff",
+          "badge-purple": "#722ed1",
+          "badge-geekblue": "#2f54eb",
+          "badge-magenta": "#eb2f96",
+          "badge-volcano": "#fa541c",
+          "badge-gold": "#faad14",
+          "badge-lime": "#a0d911"
+        },
+        "dark": {
+          "badge-count-bg": "#ff4d4f",
+          "badge-count-foreground": "#ffffff",
+          "badge-status-success": "#52c41a",
+          "badge-status-processing": "#1677ff",
+          "badge-status-error": "#ff4d4f",
+          "badge-status-warning": "#faad14",
+          "badge-status-default": "#434343",
+          "badge-pink": "#eb2f96",
+          "badge-red": "#f5222d",
+          "badge-yellow": "#fadb14",
+          "badge-orange": "#fa8c16",
+          "badge-cyan": "#13c2c2",
+          "badge-green": "#52c41a",
+          "badge-blue": "#1677ff",
+          "badge-purple": "#722ed1",
+          "badge-geekblue": "#2f54eb",
+          "badge-magenta": "#eb2f96",
+          "badge-volcano": "#fa541c",
+          "badge-gold": "#faad14",
+          "badge-lime": "#a0d911"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/badge/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "segmented",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Segmented",
+      "description": "A segmented control modeled on Ant Design's Segmented: a single-select row of options with a sliding selected pill that animates between segments. Options are bare strings/numbers or objects with a custom label node, icon, per-option disabled, className and native title tooltip (including icon-only segments). Supports controlled/uncontrolled value with onChange, a whole-control disabled state, small/middle/large sizes, block mode that fills the parent and splits segments evenly, vertical orientation, default/round shapes, and a name for the underlying radio inputs so it submits with a form and supports arrow-key navigation. Every colour is tokenised via --segmented-* CSS variables.",
+      "cssVars": {
+        "theme": {
+          "color-segmented-track": "var(--segmented-track)",
+          "color-segmented-thumb": "var(--segmented-thumb)",
+          "color-segmented-thumb-foreground": "var(--segmented-thumb-foreground)",
+          "color-segmented-foreground": "var(--segmented-foreground)",
+          "color-segmented-foreground-hover": "var(--segmented-foreground-hover)",
+          "color-segmented-item-hover": "var(--segmented-item-hover)"
+        },
+        "light": {
+          "segmented-track": "#f1f5f9",
+          "segmented-thumb": "#ffffff",
+          "segmented-thumb-foreground": "#0f172b",
+          "segmented-foreground": "#62748e",
+          "segmented-foreground-hover": "#0f172b",
+          "segmented-item-hover": "color-mix(in srgb, var(--foreground) 6%, transparent)"
+        },
+        "dark": {
+          "segmented-track": "#0f172b",
+          "segmented-thumb": "#334155",
+          "segmented-thumb-foreground": "#f8fafc",
+          "segmented-foreground": "#90a1b9",
+          "segmented-foreground-hover": "#f8fafc",
+          "segmented-item-hover": "color-mix(in srgb, var(--foreground) 8%, transparent)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/segmented/segmented.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Empty",
+      "description": "A composable empty-state / no-data display modeled on ReUI's Empty. Stacks centered parts — Empty root with default, outline (dashed frame) and background (gradient wash) variants, an EmptyHeader grouping an EmptyMedia (default slot for an illustration/avatar/avatar-group, or an icon variant that wraps a lucide icon in a rounded muted tile), an EmptyTitle and an EmptyDescription with underlined inline links, plus an EmptyContent slot for actions such as buttons, an input group or links. Covers every ReUI pattern — default icon state, outline, background, avatar and avatar-group media, input-group and button-group actions, a 404/not-found layout and inline links. Every colour resolves from theme tokens.",
+      "dependencies": ["class-variance-authority"],
+      "files": [
+        {
+          "path": "registry/empty/empty.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tour",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Tour",
+      "description": "A guided product tour modeled on Ant Design's Tour: a controlled overlay that dims the page with an SVG mask, punches a rounded highlight hole around each step's target element, and floats a step card beside it. Steps carry a title, description and optional cover image/video, with dot indicators and Previous/Next/Finish controls. Supports controlled open and current step with onChange/onClose/onFinish callbacks, 13 placements (top/bottom/left/right with Left/Top/Right/Bottom alignment, plus center for a targetless card), default and primary card types, a togglable arrow (pointAtCenter), per-tour or per-step mask (color/style or false for a non-modal tour), a gap config for the highlight padding/radius, disabledInteraction to block clicks on the highlighted target, scrollIntoViewOptions to auto-scroll each target into view, custom closeIcon, per-step nextButtonProps/prevButtonProps, zIndex, and indicatorsRender/actionsRender render props to replace the dots or the footer actions. Every colour is tokenised via --tour-* CSS variables.",
+      "dependencies": ["lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-tour-mask": "var(--tour-mask)",
+          "color-tour-card": "var(--tour-card)",
+          "color-tour-card-foreground": "var(--tour-card-foreground)",
+          "color-tour-primary": "var(--tour-primary)",
+          "color-tour-primary-foreground": "var(--tour-primary-foreground)",
+          "color-tour-description": "var(--tour-description)",
+          "color-tour-close": "var(--tour-close)",
+          "color-tour-indicator": "var(--tour-indicator)",
+          "color-tour-indicator-active": "var(--tour-indicator-active)"
+        },
+        "light": {
+          "tour-mask": "rgba(0, 0, 0, 0.5)",
+          "tour-card": "var(--popover)",
+          "tour-card-foreground": "var(--popover-foreground)",
+          "tour-primary": "var(--primary)",
+          "tour-primary-foreground": "var(--primary-foreground)",
+          "tour-description": "var(--muted-foreground)",
+          "tour-close": "var(--muted-foreground)",
+          "tour-indicator": "color-mix(in srgb, var(--muted-foreground) 30%, transparent)",
+          "tour-indicator-active": "var(--primary)"
+        },
+        "dark": {
+          "tour-mask": "rgba(0, 0, 0, 0.65)",
+          "tour-card": "var(--popover)",
+          "tour-card-foreground": "var(--popover-foreground)",
+          "tour-primary": "var(--primary)",
+          "tour-primary-foreground": "var(--primary-foreground)",
+          "tour-description": "var(--muted-foreground)",
+          "tour-close": "var(--muted-foreground)",
+          "tour-indicator": "color-mix(in srgb, var(--muted-foreground) 35%, transparent)",
+          "tour-indicator-active": "var(--primary)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/tour/tour.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tree",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Tree",
+      "description": "A hierarchical tree data display modeled on ReUI's Tree, covering every feature from the reference: expand/collapse (controlled or uncontrolled) with lazy async child loading and a per-branch spinner; four selection modes — none, single, multiple (ctrl-toggle and shift-range) and checkbox; checkbox nodes whose parents reflect an indeterminate state that propagates through the whole subtree; full keyboard navigation with a roving tabindex (Up/Down, Left to collapse or jump to parent, Right to expand or enter children, Home/End, Enter/Space to activate, and typeahead); optional vertical indentation guide lines with a configurable per-level indent width; per-node leading icons (file-explorer glyphs, folder open/closed), custom label content (avatars, badges) and a trailing actions slot; drag-and-drop reordering with before/after/inside drop indicators and an exported moveTreeNode helper to compute the reordered data; disabled nodes; and WAI-ARIA tree/treeitem/group roles with aria-expanded, aria-selected and aria-level. Every colour is tokenised via --tree-* CSS variables (guide lines, row hover/selected fills, drop indicator and the node checkbox).",
+      "dependencies": ["lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-tree-guide": "var(--tree-guide)",
+          "color-tree-item-hover": "var(--tree-item-hover)",
+          "color-tree-item-selected": "var(--tree-item-selected)",
+          "color-tree-item-selected-foreground": "var(--tree-item-selected-foreground)",
+          "color-tree-drop-indicator": "var(--tree-drop-indicator)",
+          "color-tree-checkbox": "var(--tree-checkbox)",
+          "color-tree-checkbox-checked": "var(--tree-checkbox-checked)",
+          "color-tree-checkbox-indicator": "var(--tree-checkbox-indicator)"
+        },
+        "light": {
+          "tree-guide": "var(--border)",
+          "tree-item-hover": "color-mix(in srgb, var(--foreground) 6%, transparent)",
+          "tree-item-selected": "color-mix(in srgb, var(--primary) 12%, transparent)",
+          "tree-item-selected-foreground": "var(--foreground)",
+          "tree-drop-indicator": "var(--primary)",
+          "tree-checkbox": "#e2e8f0",
+          "tree-checkbox-checked": "var(--primary)",
+          "tree-checkbox-indicator": "var(--primary-foreground)"
+        },
+        "dark": {
+          "tree-guide": "var(--border)",
+          "tree-item-hover": "color-mix(in srgb, var(--foreground) 10%, transparent)",
+          "tree-item-selected": "color-mix(in srgb, var(--primary) 20%, transparent)",
+          "tree-item-selected-foreground": "var(--foreground)",
+          "tree-drop-indicator": "var(--primary)",
+          "tree-checkbox": "#314158",
+          "tree-checkbox-checked": "var(--primary)",
+          "tree-checkbox-indicator": "var(--primary-foreground)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/tree/tree.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Feedback"
+      },
+      "title": "Alert",
+      "description": "A feedback banner modeled on ReUI's Alert. Composes Alert/AlertIcon/AlertContent/AlertTitle/AlertDescription/AlertToolbar across seven status variants (primary, secondary, destructive, success, info, warning and a high-contrast mono) and four appearances (solid fill, light tint, colour outline, and a neutral stroke that only tints the icon), in small/medium/large sizes. Supports a leading icon, a title with optional description, a trailing toolbar for action buttons/links, and a built-in dismiss (×) button that hides the alert and fires onClose. Every status colour resolves from an --alert-* CSS variable so the whole palette restyles from one place.",
+      "dependencies": ["class-variance-authority", "lucide-react"],
+      "cssVars": {
+        "theme": {
+          "color-alert-primary": "var(--alert-primary)",
+          "color-alert-primary-foreground": "var(--alert-primary-foreground)",
+          "color-alert-destructive": "var(--alert-destructive)",
+          "color-alert-destructive-foreground": "var(--alert-destructive-foreground)",
+          "color-alert-success": "var(--alert-success)",
+          "color-alert-success-foreground": "var(--alert-success-foreground)",
+          "color-alert-info": "var(--alert-info)",
+          "color-alert-info-foreground": "var(--alert-info-foreground)",
+          "color-alert-warning": "var(--alert-warning)",
+          "color-alert-warning-foreground": "var(--alert-warning-foreground)"
+        },
+        "light": {
+          "alert-primary": "var(--primary)",
+          "alert-primary-foreground": "var(--primary-foreground)",
+          "alert-destructive": "var(--destructive)",
+          "alert-destructive-foreground": "#ffffff",
+          "alert-success": "#16a34a",
+          "alert-success-foreground": "#ffffff",
+          "alert-info": "#2563eb",
+          "alert-info-foreground": "#ffffff",
+          "alert-warning": "#d97706",
+          "alert-warning-foreground": "#ffffff"
+        },
+        "dark": {
+          "alert-primary": "var(--primary)",
+          "alert-primary-foreground": "var(--primary-foreground)",
+          "alert-destructive": "var(--destructive)",
+          "alert-destructive-foreground": "#ffffff",
+          "alert-success": "#22c55e",
+          "alert-success-foreground": "#052e16",
+          "alert-info": "#3b82f6",
+          "alert-info-foreground": "#0a1633",
+          "alert-warning": "#f59e0b",
+          "alert-warning-foreground": "#2a1900"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/alert/alert.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    }
+  ]
+}

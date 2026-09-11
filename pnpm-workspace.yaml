@@ -1,0 +1,7 @@
+# Allow these dependencies to run their install/build scripts. pnpm blocks
+# dependency build scripts by default; these need theirs to work:
+#   sharp         - native binaries for Next.js image optimization
+#   unrs-resolver - native module resolver used by eslint-config-next
+allowBuilds:
+  sharp: true
+  unrs-resolver: true

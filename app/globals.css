@@ -1,0 +1,1094 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-separator: var(--sidebar-separator);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* Card — accent surface variant + header/footer separator line. */
+  --color-card-accent: var(--card-accent);
+  --color-card-border: var(--card-border);
+  /* Tooltip — one bg/foreground pair per colour variant. */
+  --color-tooltip: var(--tooltip);
+  --color-tooltip-foreground: var(--tooltip-foreground);
+  --color-tooltip-primary: var(--tooltip-primary);
+  --color-tooltip-primary-foreground: var(--tooltip-primary-foreground);
+  --color-tooltip-secondary: var(--tooltip-secondary);
+  --color-tooltip-secondary-foreground: var(--tooltip-secondary-foreground);
+  --color-tooltip-destructive: var(--tooltip-destructive);
+  --color-tooltip-destructive-foreground: var(--tooltip-destructive-foreground);
+  --color-tooltip-success: var(--tooltip-success);
+  --color-tooltip-success-foreground: var(--tooltip-success-foreground);
+  --color-tooltip-warning: var(--tooltip-warning);
+  --color-tooltip-warning-foreground: var(--tooltip-warning-foreground);
+  --color-tooltip-info: var(--tooltip-info);
+  --color-tooltip-info-foreground: var(--tooltip-info-foreground);
+  --color-conversation-card: var(--conversation-card);
+  --color-conversation-card-active: var(--conversation-card-active);
+  --color-conversation-card-active-foreground: var(
+    --conversation-card-active-foreground
+  );
+  --color-conversation-card-badge: var(--conversation-card-badge);
+  --color-conversation-card-badge-foreground: var(
+    --conversation-card-badge-foreground
+  );
+  --color-drawer-background: var(--drawer-background);
+  /* Alert Dialog — status icon badge foreground + surface per variant. */
+  --color-alert-dialog-default: var(--alert-dialog-default);
+  --color-alert-dialog-default-surface: var(--alert-dialog-default-surface);
+  --color-alert-dialog-destructive: var(--alert-dialog-destructive);
+  --color-alert-dialog-destructive-surface: var(
+    --alert-dialog-destructive-surface
+  );
+  --color-alert-dialog-success: var(--alert-dialog-success);
+  --color-alert-dialog-success-surface: var(--alert-dialog-success-surface);
+  --color-alert-dialog-warning: var(--alert-dialog-warning);
+  --color-alert-dialog-warning-surface: var(--alert-dialog-warning-surface);
+  --color-alert-dialog-info: var(--alert-dialog-info);
+  --color-alert-dialog-info-surface: var(--alert-dialog-info-surface);
+  /* Accordion — separator/border, solid-variant surface, indicator + hover. */
+  --color-accordion-border: var(--accordion-border);
+  --color-accordion-solid: var(--accordion-solid);
+  --color-accordion-indicator: var(--accordion-indicator);
+  --color-accordion-trigger-hover: var(--accordion-trigger-hover);
+  /* Tag — default filled chip (white → #334F4E on hover/selected) */
+  --color-tag-filled: var(--tag-filled);
+  --color-tag-filled-foreground: var(--tag-filled-foreground);
+  --color-tag-filled-border: var(--tag-filled-border);
+  --color-tag-filled-active: var(--tag-filled-active);
+  --color-tag-filled-active-foreground: var(--tag-filled-active-foreground);
+  /* Tag — status accents (solid bg / filled tint / outlined text) */
+  --color-tag-success: var(--tag-success);
+  --color-tag-success-foreground: var(--tag-success-foreground);
+  --color-tag-processing: var(--tag-processing);
+  --color-tag-processing-foreground: var(--tag-processing-foreground);
+  --color-tag-warning: var(--tag-warning);
+  --color-tag-warning-foreground: var(--tag-warning-foreground);
+  --color-tag-error: var(--tag-error);
+  --color-tag-error-foreground: var(--tag-error-foreground);
+  /* Calendar view — per-status event colors (stripe + tinted chip) */
+  --color-calendar-busy: var(--calendar-busy);
+  --color-calendar-busy-surface: var(--calendar-busy-surface);
+  --color-calendar-busy-surface-foreground: var(--calendar-busy-surface-foreground);
+  --color-calendar-ooo: var(--calendar-ooo);
+  --color-calendar-ooo-surface: var(--calendar-ooo-surface);
+  --color-calendar-ooo-surface-foreground: var(--calendar-ooo-surface-foreground);
+  --color-button-teal: var(--button-teal);
+  --color-button-teal-foreground: var(--button-teal-foreground);
+  --color-input-background: var(--input-background);
+  /* Input — attached addonBefore/addonAfter cells + warning status accent */
+  --color-input-addon: var(--input-addon);
+  --color-input-warning: var(--input-warning);
+  /* Radio Group — unchecked/checked control fills, inner dot, colored accents */
+  --color-radio: var(--radio);
+  --color-radio-checked: var(--radio-checked);
+  --color-radio-dot: var(--radio-dot);
+  --color-radio-blue: var(--radio-blue);
+  --color-radio-green: var(--radio-green);
+  --color-radio-yellow: var(--radio-yellow);
+  /* Slider — track rail, filled range, thumb face + ring, and tick marks */
+  --color-slider-track: var(--slider-track);
+  --color-slider-range: var(--slider-range);
+  --color-slider-thumb: var(--slider-thumb);
+  --color-slider-thumb-ring: var(--slider-thumb-ring);
+  --color-slider-mark: var(--slider-mark);
+  /* Switch — off/on track fills, thumb + thumb-icon, colored on states and
+     the on/off track indicator text. */
+  --color-switch: var(--switch);
+  --color-switch-checked: var(--switch-checked);
+  --color-switch-thumb: var(--switch-thumb);
+  --color-switch-thumb-foreground: var(--switch-thumb-foreground);
+  --color-switch-mono: var(--switch-mono);
+  --color-switch-success: var(--switch-success);
+  --color-switch-warning: var(--switch-warning);
+  --color-switch-destructive: var(--switch-destructive);
+  --color-switch-indicator-on-foreground: var(--switch-indicator-on-foreground);
+  --color-switch-indicator-off-foreground: var(--switch-indicator-off-foreground);
+  /* Rating — filled star + empty star track */
+  --color-rating-filled: var(--rating-filled);
+  --color-rating-empty: var(--rating-empty);
+  /* Checkbox — unchecked/checked control fills and the check/minus indicator */
+  --color-checkbox: var(--checkbox);
+  --color-checkbox-checked: var(--checkbox-checked);
+  --color-checkbox-indicator: var(--checkbox-indicator);
+  /* File Upload — dropzone fills, item rows, progress bar */
+  --color-file-upload-dropzone: var(--file-upload-dropzone);
+  --color-file-upload-dropzone-hover: var(--file-upload-dropzone-hover);
+  --color-file-upload-dropzone-active: var(--file-upload-dropzone-active);
+  --color-file-upload-item: var(--file-upload-item);
+  --color-file-upload-preview: var(--file-upload-preview);
+  --color-file-upload-track: var(--file-upload-track);
+  --color-file-upload-progress: var(--file-upload-progress);
+  --color-file-upload-success: var(--file-upload-success);
+  /* Progress — track rail and per-status indicator/ring fills */
+  --color-progress-track: var(--progress-track);
+  --color-progress-primary: var(--progress-primary);
+  --color-progress-mono: var(--progress-mono);
+  --color-progress-success: var(--progress-success);
+  --color-progress-warning: var(--progress-warning);
+  --color-progress-destructive: var(--progress-destructive);
+  --color-progress-info: var(--progress-info);
+  /* Steps — connector lines */
+  --color-steps-connector: var(--steps-connector);
+  --color-steps-connector-complete: var(--steps-connector-complete);
+  /* Steps — indicator icon (default variant) */
+  --color-steps-indicator-complete: var(--steps-indicator-complete);
+  --color-steps-indicator-complete-foreground: var(--steps-indicator-complete-foreground);
+  --color-steps-indicator-active: var(--steps-indicator-active);
+  --color-steps-indicator-active-foreground: var(--steps-indicator-active-foreground);
+  --color-steps-indicator-upcoming: var(--steps-indicator-upcoming);
+  --color-steps-indicator-upcoming-foreground: var(--steps-indicator-upcoming-foreground);
+  --color-steps-indicator-error: var(--steps-indicator-error);
+  --color-steps-indicator-error-foreground: var(--steps-indicator-error-foreground);
+  /* Steps — dot variant */
+  --color-steps-dot-complete: var(--steps-dot-complete);
+  --color-steps-dot-active: var(--steps-dot-active);
+  --color-steps-dot-active-ring: var(--steps-dot-active-ring);
+  --color-steps-dot-upcoming: var(--steps-dot-upcoming);
+  --color-steps-dot-error: var(--steps-dot-error);
+  --color-steps-dot-icon: var(--steps-dot-icon);
+  --color-steps-dot-icon-upcoming: var(--steps-dot-icon-upcoming);
+  /* Timeline — connector line, upcoming dot and per-status indicator fills */
+  --color-timeline-connector: var(--timeline-connector);
+  --color-timeline-connector-active: var(--timeline-connector-active);
+  --color-timeline-dot: var(--timeline-dot);
+  --color-timeline-dot-foreground: var(--timeline-dot-foreground);
+  --color-timeline-primary: var(--timeline-primary);
+  --color-timeline-primary-foreground: var(--timeline-primary-foreground);
+  --color-timeline-success: var(--timeline-success);
+  --color-timeline-success-foreground: var(--timeline-success-foreground);
+  --color-timeline-warning: var(--timeline-warning);
+  --color-timeline-warning-foreground: var(--timeline-warning-foreground);
+  --color-timeline-destructive: var(--timeline-destructive);
+  --color-timeline-destructive-foreground: var(--timeline-destructive-foreground);
+  --color-timeline-info: var(--timeline-info);
+  --color-timeline-info-foreground: var(--timeline-info-foreground);
+  /* Anchor — rail line, sliding ink indicator and link text states */
+  --color-anchor-rail: var(--anchor-rail);
+  --color-anchor-ink: var(--anchor-ink);
+  --color-anchor-link: var(--anchor-link);
+  --color-anchor-link-hover: var(--anchor-link-hover);
+  --color-anchor-link-active: var(--anchor-link-active);
+  /* Splitter — drag bar line + collapse arrow buttons */
+  --color-splitter-bar: var(--splitter-bar);
+  --color-splitter-bar-hover: var(--splitter-bar-hover);
+  --color-splitter-bar-active: var(--splitter-bar-active);
+  --color-splitter-bar-preview: var(--splitter-bar-preview);
+  --color-splitter-collapse-trigger: var(--splitter-collapse-trigger);
+  --color-splitter-collapse-trigger-foreground: var(
+    --splitter-collapse-trigger-foreground
+  );
+  --color-splitter-collapse-trigger-hover: var(--splitter-collapse-trigger-hover);
+  --color-splitter-collapse-trigger-hover-foreground: var(
+    --splitter-collapse-trigger-hover-foreground
+  );
+  /* Pagination — page item hover/active fills, ellipsis dots and the
+     double-chevron jump icons revealed on hover */
+  --color-pagination-item-hover: var(--pagination-item-hover);
+  --color-pagination-item-active: var(--pagination-item-active);
+  --color-pagination-item-active-foreground: var(
+    --pagination-item-active-foreground
+  );
+  --color-pagination-ellipsis: var(--pagination-ellipsis);
+  --color-pagination-jump: var(--pagination-jump);
+  /* Badge — count/dot fill, the five status dots and the 13 preset colours */
+  --color-badge-count-bg: var(--badge-count-bg);
+  --color-badge-count-foreground: var(--badge-count-foreground);
+  --color-badge-status-success: var(--badge-status-success);
+  --color-badge-status-processing: var(--badge-status-processing);
+  --color-badge-status-error: var(--badge-status-error);
+  --color-badge-status-warning: var(--badge-status-warning);
+  --color-badge-status-default: var(--badge-status-default);
+  --color-badge-pink: var(--badge-pink);
+  --color-badge-red: var(--badge-red);
+  --color-badge-yellow: var(--badge-yellow);
+  --color-badge-orange: var(--badge-orange);
+  --color-badge-cyan: var(--badge-cyan);
+  --color-badge-green: var(--badge-green);
+  --color-badge-blue: var(--badge-blue);
+  --color-badge-purple: var(--badge-purple);
+  --color-badge-geekblue: var(--badge-geekblue);
+  --color-badge-magenta: var(--badge-magenta);
+  --color-badge-volcano: var(--badge-volcano);
+  --color-badge-gold: var(--badge-gold);
+  --color-badge-lime: var(--badge-lime);
+  /* Avatar — presence status dots (online / offline / busy / away) */
+  --color-avatar-online: var(--avatar-online);
+  --color-avatar-offline: var(--avatar-offline);
+  --color-avatar-busy: var(--avatar-busy);
+  --color-avatar-away: var(--avatar-away);
+  /* Carousel — dot indicators (inactive / active) */
+  --color-carousel-dot: var(--carousel-dot);
+  --color-carousel-dot-active: var(--carousel-dot-active);
+  /* Tour — page mask, card surfaces (default + primary type), description
+     text, close icon and the footer dot indicators. */
+  --color-tour-mask: var(--tour-mask);
+  --color-tour-card: var(--tour-card);
+  --color-tour-card-foreground: var(--tour-card-foreground);
+  --color-tour-primary: var(--tour-primary);
+  --color-tour-primary-foreground: var(--tour-primary-foreground);
+  --color-tour-description: var(--tour-description);
+  --color-tour-close: var(--tour-close);
+  --color-tour-indicator: var(--tour-indicator);
+  --color-tour-indicator-active: var(--tour-indicator-active);
+  /* Segmented — track background, sliding selected pill + its text, the
+     default/hover item text and the hover wash on unselected segments */
+  --color-segmented-track: var(--segmented-track);
+  --color-segmented-thumb: var(--segmented-thumb);
+  --color-segmented-thumb-foreground: var(--segmented-thumb-foreground);
+  --color-segmented-foreground: var(--segmented-foreground);
+  --color-segmented-foreground-hover: var(--segmented-foreground-hover);
+  --color-segmented-item-hover: var(--segmented-item-hover);
+  /* Sonner — rich-color toast variants (surface / text / border per status).
+     `--normal-*` reuse the popover tokens; these cover success/error/warning/info. */
+  --color-sonner-success: var(--sonner-success);
+  --color-sonner-success-foreground: var(--sonner-success-foreground);
+  --color-sonner-success-border: var(--sonner-success-border);
+  --color-sonner-error: var(--sonner-error);
+  --color-sonner-error-foreground: var(--sonner-error-foreground);
+  --color-sonner-error-border: var(--sonner-error-border);
+  --color-sonner-warning: var(--sonner-warning);
+  --color-sonner-warning-foreground: var(--sonner-warning-foreground);
+  --color-sonner-warning-border: var(--sonner-warning-border);
+  --color-sonner-info: var(--sonner-info);
+  --color-sonner-info-foreground: var(--sonner-info-foreground);
+  --color-sonner-info-border: var(--sonner-info-border);
+  /* Skeleton — the pulsing placeholder fill. */
+  --color-skeleton: var(--skeleton);
+  /* Spinner — the three status accents (success/warning/info); the other
+     colours reuse existing theme tokens (foreground/primary/etc.). */
+  --color-spinner-success: var(--spinner-success);
+  --color-spinner-warning: var(--spinner-warning);
+  --color-spinner-info: var(--spinner-info);
+  /* Alert — per-status colour + readable foreground for the solid fill; the
+     light/outline/stroke appearances tint or outline the same base colour. */
+  --color-alert-primary: var(--alert-primary);
+  --color-alert-primary-foreground: var(--alert-primary-foreground);
+  --color-alert-destructive: var(--alert-destructive);
+  --color-alert-destructive-foreground: var(--alert-destructive-foreground);
+  --color-alert-success: var(--alert-success);
+  --color-alert-success-foreground: var(--alert-success-foreground);
+  --color-alert-info: var(--alert-info);
+  --color-alert-info-foreground: var(--alert-info-foreground);
+  --color-alert-warning: var(--alert-warning);
+  --color-alert-warning-foreground: var(--alert-warning-foreground);
+  /* Tree — indentation guide lines, row hover/selected fills, the drag drop
+     indicator and the (checkbox-mode) node checkbox. */
+  --color-tree-guide: var(--tree-guide);
+  --color-tree-item-hover: var(--tree-item-hover);
+  --color-tree-item-selected: var(--tree-item-selected);
+  --color-tree-item-selected-foreground: var(--tree-item-selected-foreground);
+  --color-tree-drop-indicator: var(--tree-drop-indicator);
+  --color-tree-checkbox: var(--tree-checkbox);
+  --color-tree-checkbox-checked: var(--tree-checkbox-checked);
+  --color-tree-checkbox-indicator: var(--tree-checkbox-indicator);
+  /* Popover Feedback — the five-point sentiment scale (red→green), the star
+     fill for the star variant, and the success check + its tinted badge. */
+  --color-pf-1: var(--pf-1);
+  --color-pf-2: var(--pf-2);
+  --color-pf-3: var(--pf-3);
+  --color-pf-4: var(--pf-4);
+  --color-pf-5: var(--pf-5);
+  --color-pf-star: var(--pf-star);
+  --color-pf-success: var(--pf-success);
+  --color-pf-success-surface: var(--pf-success-surface);
+  /* Masthead. */
+  --color-masthead-1: var(--masthead-1);
+  --color-masthead-2: var(--masthead-2);
+  --color-masthead-3: var(--masthead-3);
+  --color-masthead-4: var(--masthead-4);
+  /* Splash Screen — the two intro-layer backdrops and the blinking dot/line. */
+  --color-splash-background: var(--splash-background);
+  --color-splash-foreground: var(--splash-foreground);
+  --color-splash-mark: var(--splash-mark);
+  /* typography */
+  --color-typography-success: var(--typography-success);
+  --color-typography-warning: var(--typography-warning);
+  --color-typography-mark: var(--typography-mark);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * Three-color theme: every token derives from exactly three hues.
+ *   1. Indigo  (hue ~277, chromatic) — primary / interactive
+ *   2. Amber   (hue ~84,  chromatic) — accent / highlights
+ *   3. Slate   (hue ~250-265, low chroma) — neutrals: text, borders, surfaces
+ */
+:root {
+  /* Tell the browser which scheme native widgets (select dropdown lists,
+   * scrollbars, date pickers) should use. Some browsers paint the select
+   * popup from the DOCUMENT's color-scheme, not the element's, so this must
+   * flip with the theme — element-level scheme-* utilities alone are not
+   * enough there. */
+  color-scheme: light;
+
+  /* Default UI font. Change this one line to swap the app-wide font. */
+  --font-sans: Verdana, Arial, sans-serif;
+
+  --card: #ffffff;
+  --card-foreground: #0f172b;
+  --card-accent: #f1f5f9;
+  --card-border: #e2e8f0;
+  --conversation-card: rgba(186, 230, 253, 0.45);
+  /* Background + text for an active (hovered or selected) conversation card.
+     Change these to restyle the highlight state in one place. */
+  --conversation-card-active: #334f4e;
+  --conversation-card-active-foreground: #ffffff;
+  /* Unread-count badge pill on a conversation card. */
+  --conversation-card-badge: #00a63e;
+  --conversation-card-badge-foreground: #ffffff;
+  --popover: #ffffff;
+  --popover-foreground: #0f172b;
+  --primary: #4f39f6;
+  --primary-foreground: #f8fafc;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172b;
+  --muted: #f1f5f9;
+  --muted-foreground: #62748e;
+  --accent: #ffb900;
+  --accent-foreground: #0f172b;
+  --destructive: #e7000b;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #615fff;
+  --chart-1: #4f39f6;
+  --chart-2: #fe9a00;
+  --chart-3: #62748e;
+  --chart-4: #7c86ff;
+  --chart-5: #ffd230;
+  --radius: 0.625rem;
+  --sidebar: #f8fafc;
+  --sidebar-foreground: #0f172b;
+  --sidebar-primary: #4f39f6;
+  --sidebar-primary-foreground: #f8fafc;
+  --sidebar-accent: #ffb900;
+  --sidebar-accent-foreground: #0f172b;
+  --sidebar-border: #e2e8f0;
+  /* Divider between sidebar groups. Custom brand colour, restyleable here. */
+  --sidebar-separator: #334f4e;
+  --sidebar-ring: #615fff;
+  --background: #ffffff;
+  --foreground: #0f172b;
+  /* Drawer surface. Change this to give the drawer its own background,
+     independent of the page background. Defaults to the theme surface. */
+  --drawer-background: #f8fafc;
+  /* Alert Dialog — the circular status-icon badge. Each variant is a
+     foreground (icon) colour and a tinted surface behind it. Edit here to
+     restyle every alert dialog at once. */
+  --alert-dialog-default: var(--primary);
+  --alert-dialog-default-surface: color-mix(in srgb, var(--primary) 12%, transparent);
+  --alert-dialog-destructive: var(--destructive);
+  --alert-dialog-destructive-surface: color-mix(in srgb, var(--destructive) 12%, transparent);
+  --alert-dialog-success: #16a34a;
+  --alert-dialog-success-surface: color-mix(in srgb, #16a34a 12%, transparent);
+  --alert-dialog-warning: #d97706;
+  --alert-dialog-warning-surface: color-mix(in srgb, #d97706 12%, transparent);
+  --alert-dialog-info: #2563eb;
+  --alert-dialog-info-surface: color-mix(in srgb, #2563eb 12%, transparent);
+  /* Accordion — row separator / card outline, the solid-variant surface, the
+     expand/collapse indicator colour, and the trigger's hover text. Restyle
+     the whole component from these four lines. */
+  --accordion-border: var(--border);
+  --accordion-solid: var(--muted);
+  --accordion-indicator: var(--muted-foreground);
+  --accordion-trigger-hover: var(--foreground);
+  /* Tag — default filled chip. Resting state is white; on hover or when
+     selected it flips to `--tag-filled-active` (#334F4E). Restyle the chip
+     and its active highlight from these five lines. */
+  --tag-filled: #ffffff;
+  --tag-filled-foreground: #0f172b;
+  --tag-filled-border: #e2e8f0;
+  --tag-filled-active: #334f4e;
+  --tag-filled-active-foreground: #ffffff;
+  /* Tag — status accents. Each drives the solid background, the filled tint
+     (used at /10 + /20), and the outlined text/border for that status. */
+  --tag-success: #16a34a;
+  --tag-success-foreground: #ffffff;
+  --tag-processing: #2563eb;
+  --tag-processing-foreground: #ffffff;
+  --tag-warning: #d97706;
+  --tag-warning-foreground: #ffffff;
+  --tag-error: #dc2626;
+  --tag-error-foreground: #ffffff;
+  /* Calendar view — event status colors. Each status has a solid stripe
+     colour plus a derived surface tint and readable text colour for the
+     event bar. Change the base colour and the tint follows. */
+  --calendar-busy: #2563eb;
+  --calendar-busy-surface: color-mix(in srgb, var(--calendar-busy) 12%, transparent);
+  --calendar-busy-surface-foreground: #1e40af;
+  --calendar-ooo: #9333ea;
+  --calendar-ooo-surface: color-mix(in srgb, var(--calendar-ooo) 12%, transparent);
+  --calendar-ooo-surface-foreground: #6b21a8;
+  /* "teal" Button variant — same custom brand colour, scoped to the button. */
+  --button-teal: #334f4e;
+  --button-teal-foreground: #ffffff;
+  /* Shared fill for all form controls (textbox, textarea, dropdown box, etc.).
+     Restyle every input surface from this one line. */
+  --input-background: #f1f5f9;
+  /* Input — background of attached addon cells (addonBefore/addonAfter,
+     default Search button) and the warning-status accent. */
+  --input-addon: #e2e8f0;
+  --input-warning: #d97706;
+  /* Radio Group — unchecked fill, checked fill and the inner dot. */
+  --radio: #e2e8f0;
+  --radio-checked: #4f39f6;
+  --radio-dot: #ffffff;
+  /* Radio Group — accent fills for colored radios. */
+  --radio-blue: #2b7fff;
+  --radio-green: #00a63e;
+  --radio-yellow: #d08700;
+  /* Slider — unfilled rail, filled range, thumb face + accent ring, ticks.
+     Restyle the whole control from these lines. */
+  --slider-track: #e2e8f0;
+  --slider-range: var(--primary);
+  --slider-thumb: var(--background);
+  --slider-thumb-ring: var(--primary);
+  --slider-mark: color-mix(in srgb, var(--muted-foreground) 40%, transparent);
+  /* Switch — off track, primary on track, thumb + thumb icon, colored on
+     states and on/off track indicator text. */
+  --switch: #e2e8f0;
+  --switch-checked: var(--primary);
+  --switch-thumb: #ffffff;
+  --switch-thumb-foreground: #64748b;
+  --switch-mono: var(--foreground);
+  --switch-success: #00a63e;
+  --switch-warning: #d08700;
+  --switch-destructive: var(--destructive);
+  --switch-indicator-on-foreground: #ffffff;
+  --switch-indicator-off-foreground: var(--muted-foreground);
+  /* Progress — track rail plus determinate/circular indicator colors. */
+  --progress-track: #e2e8f0;
+  --progress-primary: var(--primary);
+  --progress-mono: var(--foreground);
+  --progress-success: #00a63e;
+  --progress-warning: #d08700;
+  --progress-destructive: var(--destructive);
+  --progress-info: #2b7fff;
+  /* Checkbox — unchecked fill, checked fill and the check/minus indicator. */
+  --checkbox: #e2e8f0;
+  --checkbox-checked: #4f39f6;
+  --checkbox-indicator: #ffffff;
+  /* Rating — filled star colour and the muted empty-star track. */
+  --rating-filled: #facc15;
+  --rating-empty: color-mix(in srgb, var(--muted-foreground) 30%, transparent);
+  /* File Upload — dropzone/item fills, progress + success accents. Restyle
+     the whole uploader from these lines. */
+  --file-upload-dropzone: #f1f5f9;
+  --file-upload-dropzone-hover: #e2e8f0;
+  --file-upload-dropzone-active: color-mix(in srgb, var(--primary) 10%, transparent);
+  --file-upload-item: #f8fafc;
+  --file-upload-preview: #e2e8f0;
+  --file-upload-track: color-mix(in srgb, var(--muted-foreground) 20%, transparent);
+  --file-upload-progress: var(--primary);
+  --file-upload-success: #16a34a;
+  /* Steps — connector lines. Change these two to restyle the connecting
+     lines between steps in both orientations from one place. */
+  --steps-connector: var(--border);
+  --steps-connector-complete: var(--primary);
+  /* Steps — indicator icon (default numbered/check variant). Each state has a
+     bg + foreground pair so all three states are independently restyleable. */
+  --steps-indicator-complete: var(--primary);
+  --steps-indicator-complete-foreground: var(--primary-foreground);
+  --steps-indicator-active: var(--accent);
+  --steps-indicator-active-foreground: var(--accent-foreground);
+  --steps-indicator-upcoming: var(--muted);
+  --steps-indicator-upcoming-foreground: var(--muted-foreground);
+  /* Steps — error (failed) state. Derived from --destructive so it flips with
+     the theme; the foreground reuses --primary-foreground for legible contrast
+     on the red fill in both light and dark. */
+  --steps-indicator-error: var(--destructive);
+  --steps-indicator-error-foreground: var(--primary-foreground);
+  /* Steps — dot variant. The upcoming dot and active ring are semi-transparent
+     tints; change the base token here and the opacity is preserved. */
+  --steps-dot-complete: var(--primary);
+  --steps-dot-active: var(--primary);
+  --steps-dot-active-ring: color-mix(in srgb, var(--primary) 20%, transparent);
+  --steps-dot-upcoming: color-mix(in srgb, var(--muted-foreground) 30%, transparent);
+  --steps-dot-error: var(--destructive);
+  --steps-dot-icon: var(--primary);
+  --steps-dot-icon-upcoming: color-mix(in srgb, var(--muted-foreground) 40%, transparent);
+  /* Timeline — the connector line at rest / once passed, the muted upcoming
+     dot, and one bg + foreground pair per status accent for the indicators.
+     The theme-derived tokens flip automatically in dark mode; only the literal
+     status hexes are re-tuned under .dark below. */
+  --timeline-connector: var(--border);
+  --timeline-connector-active: var(--primary);
+  --timeline-dot: var(--muted);
+  --timeline-dot-foreground: var(--muted-foreground);
+  --timeline-primary: var(--primary);
+  --timeline-primary-foreground: var(--primary-foreground);
+  --timeline-success: #16a34a;
+  --timeline-success-foreground: #ffffff;
+  --timeline-warning: #d97706;
+  --timeline-warning-foreground: #ffffff;
+  --timeline-destructive: var(--destructive);
+  --timeline-destructive-foreground: #ffffff;
+  --timeline-info: #2563eb;
+  --timeline-info-foreground: #ffffff;
+  /* Anchor — the vertical rail / horizontal baseline, the ink segment that
+     slides to the active link, and the link text at rest / hover / active.
+     All derive from theme tokens so the anchor restyles with the palette. */
+  --anchor-rail: var(--border);
+  --anchor-ink: var(--primary);
+  --anchor-link: var(--muted-foreground);
+  --anchor-link-hover: var(--foreground);
+  --anchor-link-active: var(--primary);
+  /* Splitter — the divider line at rest / hover / while dragging, the lazy
+     ghost bar, and the little collapse arrow buttons. All derive from theme
+     tokens so the splitter restyles with the palette. */
+  --splitter-bar: var(--border);
+  --splitter-bar-hover: color-mix(in srgb, var(--primary) 45%, transparent);
+  --splitter-bar-active: var(--primary);
+  --splitter-bar-preview: color-mix(in srgb, var(--primary) 45%, transparent);
+  --splitter-collapse-trigger: var(--muted);
+  --splitter-collapse-trigger-foreground: var(--muted-foreground);
+  --splitter-collapse-trigger-hover: var(--primary);
+  --splitter-collapse-trigger-hover-foreground: var(--primary-foreground);
+  /* Pagination — hover wash on page items, the filled active page, the
+     ellipsis dots and the jump chevrons they morph into on hover. All derive
+     from theme tokens so the pager restyles with the palette. */
+  --pagination-item-hover: color-mix(in srgb, var(--foreground) 6%, transparent);
+  --pagination-item-active: var(--primary);
+  --pagination-item-active-foreground: var(--primary-foreground);
+  --pagination-ellipsis: var(--muted-foreground);
+  --pagination-jump: var(--primary);
+  /* Badge — the red count/dot fill (with white foreground), the five status
+     dots and the 13 Ant Design preset colours. Change the count fill or any
+     preset here and every badge using it restyles. */
+  --badge-count-bg: #ff4d4f;
+  --badge-count-foreground: #ffffff;
+  --badge-status-success: #52c41a;
+  --badge-status-processing: #1677ff;
+  --badge-status-error: #ff4d4f;
+  --badge-status-warning: #faad14;
+  --badge-status-default: #d9d9d9;
+  --badge-pink: #eb2f96;
+  --badge-red: #f5222d;
+  --badge-yellow: #fadb14;
+  --badge-orange: #fa8c16;
+  --badge-cyan: #13c2c2;
+  --badge-green: #52c41a;
+  --badge-blue: #1677ff;
+  --badge-purple: #722ed1;
+  --badge-geekblue: #2f54eb;
+  --badge-magenta: #eb2f96;
+  --badge-volcano: #fa541c;
+  --badge-gold: #faad14;
+  --badge-lime: #a0d911;
+  /* Pigeon — a cute, friendly three.js pigeon. These are read at runtime via
+     getComputedStyle and fed to three.js PBR materials (not Tailwind utilities),
+     so the whole bird restyles from these lines. Soft pastel plumage, big dark
+     friendly eyes, a little peach beak and rosy blush cheeks. */
+  --pigeon-body: #9aa3b5;
+  --pigeon-wing: #8790a1;
+  --pigeon-belly: #c3cad6;
+  --pigeon-head: #7a8494;
+  --pigeon-neck-green: #57c08a;
+  --pigeon-neck-purple: #b57ac4;
+  --pigeon-wingbar: #3a404c;
+  --pigeon-tail-band: #33383f;
+  --pigeon-beak: #e6a07f;
+  --pigeon-cere: #f4f7fb;
+  --pigeon-eye: #2b2226;
+  --pigeon-pupil: #141519;
+  --pigeon-feet: #eda0a6;
+  --pigeon-rump: #d3d9e2;
+  --pigeon-cheek: #f2b6bc;
+  /* Avatar — presence status dots. Restyle the whole set from these lines. */
+  --avatar-online: #16a34a;
+  --avatar-offline: #94a3b8;
+  --avatar-busy: #dc2626;
+  --avatar-away: #d97706;
+  /* Carousel — inactive dot track and the highlighted active dot. */
+  --carousel-dot: color-mix(in srgb, var(--muted-foreground) 35%, transparent);
+  --carousel-dot-active: var(--primary);
+  /* Tour — the dimming mask, the default card surface, the primary-type card
+     surface, muted description text, close icon and the footer dots. Restyle
+     the whole tour from these lines. */
+  --tour-mask: rgba(0, 0, 0, 0.5);
+  --tour-card: var(--popover);
+  --tour-card-foreground: var(--popover-foreground);
+  --tour-primary: var(--primary);
+  --tour-primary-foreground: var(--primary-foreground);
+  --tour-description: var(--muted-foreground);
+  --tour-close: var(--muted-foreground);
+  --tour-indicator: color-mix(in srgb, var(--muted-foreground) 30%, transparent);
+  --tour-indicator-active: var(--primary);
+  /* Segmented — the recessed track, the raised selected pill and its text, the
+     unselected item text at rest/hover, and the hover wash. Restyle the whole
+     control from these lines. */
+  --segmented-track: #f1f5f9;
+  --segmented-thumb: #ffffff;
+  --segmented-thumb-foreground: #0f172b;
+  --segmented-foreground: #62748e;
+  --segmented-foreground-hover: #0f172b;
+  --segmented-item-hover: color-mix(in srgb, var(--foreground) 6%, transparent);
+  /* Sonner — rich-color toast statuses (light). Tinted surface, saturated text,
+     soft border per status. Edit here to restyle the toast palette. */
+  --sonner-success: hsl(143, 85%, 96%);
+  --sonner-success-foreground: hsl(140, 100%, 27%);
+  --sonner-success-border: hsl(145, 92%, 87%);
+  --sonner-error: hsl(359, 100%, 97%);
+  --sonner-error-foreground: hsl(360, 100%, 45%);
+  --sonner-error-border: hsl(359, 100%, 94%);
+  --sonner-warning: hsl(49, 100%, 97%);
+  --sonner-warning-foreground: hsl(31, 92%, 45%);
+  --sonner-warning-border: hsl(49, 91%, 84%);
+  --sonner-info: hsl(208, 100%, 97%);
+  --sonner-info-foreground: hsl(210, 92%, 45%);
+  --sonner-info-border: hsl(221, 91%, 91%);
+  /* Skeleton — pulsing placeholder fill. Neutral by default; restyle here. */
+  --skeleton: var(--muted);
+  /* Spinner — status accents for the success/warning/info colours. The
+     default/primary/secondary/muted/destructive colours reuse theme tokens. */
+  --spinner-success: #16a34a;
+  --spinner-warning: #d97706;
+  --spinner-info: #2563eb;
+  /* Alert — each status drives its solid fill + a readable foreground; the
+     light tint (bg at /10) and outline (border at /30) derive from the same
+     base colour, so restyle a whole status from one line here. Primary and
+     destructive reuse the theme tokens; success/info/warning are their own. */
+  --alert-primary: var(--primary);
+  --alert-primary-foreground: var(--primary-foreground);
+  --alert-destructive: var(--destructive);
+  --alert-destructive-foreground: #ffffff;
+  --alert-success: #16a34a;
+  --alert-success-foreground: #ffffff;
+  --alert-info: #2563eb;
+  --alert-info-foreground: #ffffff;
+  --alert-warning: #d97706;
+  --alert-warning-foreground: #ffffff;
+  /* Tree — guide lines derive from the border; the hover/selected washes and
+     the drop indicator derive from foreground/primary; the checkbox reuses the
+     shared checkbox palette. Restyle the whole tree from these lines. */
+  --tree-guide: var(--border);
+  --tree-item-hover: color-mix(in srgb, var(--foreground) 6%, transparent);
+  --tree-item-selected: color-mix(in srgb, var(--primary) 12%, transparent);
+  --tree-item-selected-foreground: var(--foreground);
+  --tree-drop-indicator: var(--primary);
+  --tree-checkbox: #e2e8f0;
+  --tree-checkbox-checked: var(--primary);
+  --tree-checkbox-indicator: var(--primary-foreground);
+  /* Popover Feedback — the sentiment scale runs red→orange→yellow→lime→green,
+     the star variant uses a gold fill, and the thank-you state uses a green
+     check on a soft green badge. Restyle the whole widget from these lines. */
+  --pf-1: #ef4444;
+  --pf-2: #f97316;
+  --pf-3: #eab308;
+  --pf-4: #84cc16;
+  --pf-5: #22c55e;
+  --pf-star: #facc15;
+  --pf-success: #16a34a;
+  --pf-success-surface: color-mix(in srgb, #16a34a 12%, transparent);
+  /* Tooltip — the default is a solid dark chip that stays dark in both themes;
+     the colour variants (primary/secondary/destructive/success/warning/info)
+     each carry a bg + a readable foreground. Restyle any variant from one line
+     here; success/warning/info mirror the shared status palette. */
+  --tooltip: #0f172b;
+  --tooltip-foreground: #f8fafc;
+  --tooltip-primary: var(--primary);
+  --tooltip-primary-foreground: var(--primary-foreground);
+  --tooltip-secondary: var(--secondary);
+  --tooltip-secondary-foreground: var(--secondary-foreground);
+  --tooltip-destructive: var(--destructive);
+  --tooltip-destructive-foreground: #ffffff;
+  --tooltip-success: #16a34a;
+  --tooltip-success-foreground: #ffffff;
+  --tooltip-warning: #d97706;
+  --tooltip-warning-foreground: #ffffff;
+  --tooltip-info: #2563eb;
+  --tooltip-info-foreground: #ffffff;
+  /* Default masthead colours */
+  --masthead-1: #ffffff;
+  --masthead-2: #7efffb;
+  --masthead-3: #8a3b3b;
+  --masthead-4: #006fa7;
+  /* Splash Screen — the dot-and-line layer surface, the foreground image-layer
+     surface, and the "black" dot/line mark. All derive from theme tokens so the
+     intro restyles with the palette. Restyle the whole splash from these lines. */
+  --splash-background: var(--background);
+  --splash-foreground: var(--background);
+  --splash-mark: var(--foreground);
+  /* typography */
+  --typography-success: #059669;
+  --typography-warning: #d97706;
+  --typography-mark: #fef08a;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #020618;
+  --foreground: #f8fafc;
+  --card: #0f172b;
+  --card-foreground: #f8fafc;
+  --card-accent: #1d293d;
+  --card-border: #1d293d;
+  /* light sky-blue glass tint over the dark surface */
+  --conversation-card: rgba(56, 189, 248, 0.12);
+  /* Active (hovered/selected) conversation card for dark mode — edit
+     independently of light mode. */
+  --conversation-card-active: #334f4e;
+  --conversation-card-active-foreground: #ffffff;
+  /* Unread-count badge pill for dark mode — edit independently of light mode. */
+  --conversation-card-badge: #00a63e;
+  --conversation-card-badge-foreground: #ffffff;
+  --popover: #0f172b;
+  --popover-foreground: #f8fafc;
+  --primary: #7c86ff;
+  --primary-foreground: #020618;
+  --secondary: #1d293d;
+  --secondary-foreground: #f8fafc;
+  --muted: #1d293d;
+  --muted-foreground: #90a1b9;
+  --accent: #ffb900;
+  --accent-foreground: #020618;
+  --destructive: #ff6467;
+  --border: #1d293d;
+  --input: #1d293d;
+  --ring: #7c86ff;
+  --chart-1: #7c86ff;
+  --chart-2: #ffb900;
+  --chart-3: #90a1b9;
+  --chart-4: #4f39f6;
+  --chart-5: #ffd230;
+  --sidebar: #0f172b;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #7c86ff;
+  --sidebar-primary-foreground: #020618;
+  --sidebar-accent: #ffb900;
+  --sidebar-accent-foreground: #020618;
+  --sidebar-border: #1d293d;
+  /* Sidebar group divider for dark mode — edit independently of light mode. */
+  --sidebar-separator: #334f4e;
+  --sidebar-ring: #7c86ff;
+  /* Drawer surface for dark mode — edit independently of light mode. */
+  --drawer-background: #1e293b;
+  /* Alert Dialog — dark-mode status-icon tokens; edit independently. */
+  --alert-dialog-default: var(--primary);
+  --alert-dialog-default-surface: color-mix(in srgb, var(--primary) 18%, transparent);
+  --alert-dialog-destructive: var(--destructive);
+  --alert-dialog-destructive-surface: color-mix(in srgb, var(--destructive) 18%, transparent);
+  --alert-dialog-success: #22c55e;
+  --alert-dialog-success-surface: color-mix(in srgb, #22c55e 18%, transparent);
+  --alert-dialog-warning: #f59e0b;
+  --alert-dialog-warning-surface: color-mix(in srgb, #f59e0b 18%, transparent);
+  --alert-dialog-info: #3b82f6;
+  --alert-dialog-info-surface: color-mix(in srgb, #3b82f6 18%, transparent);
+  /* Accordion — dark-mode tokens; edit independently of light mode. */
+  --accordion-border: var(--border);
+  --accordion-solid: var(--muted);
+  --accordion-indicator: var(--muted-foreground);
+  --accordion-trigger-hover: var(--foreground);
+  /* Tag — default filled chip for dark mode. Resting state is the dark card
+     surface; the active highlight stays #334F4E. Edit independently. */
+  --tag-filled: #0f172b;
+  --tag-filled-foreground: #f8fafc;
+  --tag-filled-border: #1d293d;
+  --tag-filled-active: #334f4e;
+  --tag-filled-active-foreground: #ffffff;
+  /* Tag — status accents for dark mode (slightly lighter for contrast). */
+  --tag-success: #22c55e;
+  --tag-success-foreground: #052e16;
+  --tag-processing: #3b82f6;
+  --tag-processing-foreground: #0a1633;
+  --tag-warning: #f59e0b;
+  --tag-warning-foreground: #2a1900;
+  --tag-error: #ef4444;
+  --tag-error-foreground: #2a0606;
+  /* Timeline — status accents for dark mode (lighter hues for contrast). The
+     connector, upcoming dot and primary tokens derive from theme tokens, so
+     only these literal status hexes need a dark override. */
+  --timeline-success: #22c55e;
+  --timeline-success-foreground: #052e16;
+  --timeline-warning: #f59e0b;
+  --timeline-warning-foreground: #2a1900;
+  --timeline-destructive: var(--destructive);
+  --timeline-destructive-foreground: #ffffff;
+  --timeline-info: #3b82f6;
+  --timeline-info-foreground: #0a1633;
+  /* Calendar view — event status colors for dark mode (lighter hues and a
+     stronger tint so the bars read against the dark cells). */
+  --calendar-busy: #60a5fa;
+  --calendar-busy-surface: color-mix(in srgb, var(--calendar-busy) 18%, transparent);
+  --calendar-busy-surface-foreground: #bfdbfe;
+  --calendar-ooo: #c084fc;
+  --calendar-ooo-surface: color-mix(in srgb, var(--calendar-ooo) 18%, transparent);
+  --calendar-ooo-surface-foreground: #e9d5ff;
+  /* "teal" Button variant for dark mode — edit independently of light mode. */
+  --button-teal: #334f4e;
+  --button-teal-foreground: #ffffff;
+  /* Shared form-control fill for dark mode — edit independently of light mode. */
+  --input-background: #1d293d;
+  /* Input addon cells + warning accent for dark mode — edit independently. */
+  --input-addon: #314158;
+  --input-warning: #f59e0b;
+  /* Radio Group for dark mode — edit independently of light mode. */
+  --radio: #314158;
+  --radio-checked: #7c86ff;
+  --radio-dot: #020618;
+  --radio-blue: #51a2ff;
+  --radio-green: #05df72;
+  --radio-yellow: #fdc700;
+  /* Slider for dark mode — edit independently of light mode. */
+  --slider-track: #314158;
+  --slider-range: var(--primary);
+  --slider-thumb: var(--background);
+  --slider-thumb-ring: var(--primary);
+  --slider-mark: color-mix(in srgb, var(--muted-foreground) 45%, transparent);
+  /* Switch for dark mode — edit independently of light mode. */
+  --switch: #314158;
+  --switch-checked: var(--primary);
+  --switch-thumb: #f8fafc;
+  --switch-thumb-foreground: #64748b;
+  --switch-mono: var(--foreground);
+  --switch-success: #05df72;
+  --switch-warning: #fdc700;
+  --switch-destructive: var(--destructive);
+  --switch-indicator-on-foreground: #020618;
+  --switch-indicator-off-foreground: var(--muted-foreground);
+  /* Progress for dark mode — edit independently of light mode. */
+  --progress-track: #314158;
+  --progress-primary: var(--primary);
+  --progress-mono: var(--foreground);
+  --progress-success: #05df72;
+  --progress-warning: #fdc700;
+  --progress-destructive: var(--destructive);
+  --progress-info: #51a2ff;
+  /* Checkbox for dark mode — edit independently of light mode. */
+  --checkbox: #314158;
+  --checkbox-checked: #7c86ff;
+  --checkbox-indicator: #020618;
+  /* Rating for dark mode — edit independently of light mode. */
+  --rating-filled: #fdc700;
+  --rating-empty: color-mix(in srgb, var(--muted-foreground) 35%, transparent);
+  /* File Upload for dark mode — theme-derived fills; edit independently. */
+  --file-upload-dropzone: color-mix(in srgb, var(--foreground) 8%, transparent);
+  --file-upload-dropzone-hover: color-mix(in srgb, var(--foreground) 12%, transparent);
+  --file-upload-dropzone-active: color-mix(in srgb, var(--primary) 16%, transparent);
+  --file-upload-item: color-mix(in srgb, var(--foreground) 6%, transparent);
+  --file-upload-preview: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --file-upload-track: color-mix(in srgb, var(--muted-foreground) 25%, transparent);
+  --file-upload-progress: var(--primary);
+  --file-upload-success: #22c55e;
+  /* Anchor for dark mode — same theme-derived recipe; edit independently. */
+  --anchor-rail: var(--border);
+  --anchor-ink: var(--primary);
+  --anchor-link: var(--muted-foreground);
+  --anchor-link-hover: var(--foreground);
+  --anchor-link-active: var(--primary);
+  /* Splitter for dark mode — same theme-derived recipe; edit independently. */
+  --splitter-bar: var(--border);
+  --splitter-bar-hover: color-mix(in srgb, var(--primary) 45%, transparent);
+  --splitter-bar-active: var(--primary);
+  --splitter-bar-preview: color-mix(in srgb, var(--primary) 45%, transparent);
+  --splitter-collapse-trigger: var(--muted);
+  --splitter-collapse-trigger-foreground: var(--muted-foreground);
+  --splitter-collapse-trigger-hover: var(--primary);
+  --splitter-collapse-trigger-hover-foreground: var(--primary-foreground);
+  /* Pagination for dark mode — a slightly stronger hover wash so it reads
+     against the dark surface; edit independently of light mode. */
+  --pagination-item-hover: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --pagination-item-active: var(--primary);
+  --pagination-item-active-foreground: var(--primary-foreground);
+  --pagination-ellipsis: var(--muted-foreground);
+  --pagination-jump: var(--primary);
+  /* Badge for dark mode — the saturated preset colours read well on the dark
+     surface, so they match light mode; edit independently if desired. */
+  --badge-count-bg: #ff4d4f;
+  --badge-count-foreground: #ffffff;
+  --badge-status-success: #52c41a;
+  --badge-status-processing: #1677ff;
+  --badge-status-error: #ff4d4f;
+  --badge-status-warning: #faad14;
+  --badge-status-default: #434343;
+  --badge-pink: #eb2f96;
+  --badge-red: #f5222d;
+  --badge-yellow: #fadb14;
+  --badge-orange: #fa8c16;
+  --badge-cyan: #13c2c2;
+  --badge-green: #52c41a;
+  --badge-blue: #1677ff;
+  --badge-purple: #722ed1;
+  --badge-geekblue: #2f54eb;
+  --badge-magenta: #eb2f96;
+  --badge-volcano: #fa541c;
+  --badge-gold: #faad14;
+  --badge-lime: #a0d911;
+  /* Pigeon — dark-mode plumage. Soft mid greys so the friendly bird reads
+     against the dark canvas; blush cheeks and peach beak stay warm. */
+  --pigeon-body: #7f8899;
+  --pigeon-wing: #727b8b;
+  --pigeon-belly: #aab1bd;
+  --pigeon-head: #69727f;
+  --pigeon-neck-green: #4fb37f;
+  --pigeon-neck-purple: #a869ba;
+  --pigeon-wingbar: #2f343e;
+  --pigeon-tail-band: #282c34;
+  --pigeon-beak: #d98f70;
+  --pigeon-cere: #e7ebf1;
+  --pigeon-eye: #241c20;
+  --pigeon-pupil: #0c0d10;
+  --pigeon-feet: #dd949b;
+  --pigeon-rump: #c2c9d3;
+  --pigeon-cheek: #df9aa2;
+  /* Avatar — presence status dots. */
+  --avatar-online: #22c55e;
+  --avatar-offline: #64748b;
+  --avatar-busy: #ef4444;
+  --avatar-away: #f59e0b;
+  /* Carousel — dot indicators for dark mode; edit independently of light. */
+  --carousel-dot: color-mix(in srgb, var(--muted-foreground) 40%, transparent);
+  --carousel-dot-active: var(--primary);
+  /* Tour for dark mode — a stronger mask over the dark canvas; the rest maps to
+     theme tokens. Edit independently of light mode. */
+  --tour-mask: rgba(0, 0, 0, 0.65);
+  --tour-card: var(--popover);
+  --tour-card-foreground: var(--popover-foreground);
+  --tour-primary: var(--primary);
+  --tour-primary-foreground: var(--primary-foreground);
+  --tour-description: var(--muted-foreground);
+  --tour-close: var(--muted-foreground);
+  --tour-indicator: color-mix(in srgb, var(--muted-foreground) 35%, transparent);
+  --tour-indicator-active: var(--primary);
+  /* Segmented for dark mode — the pill sits lighter than the recessed track so
+     the selection reads on the dark surface; edit independently of light. */
+  --segmented-track: #0f172b;
+  --segmented-thumb: #334155;
+  --segmented-thumb-foreground: #f8fafc;
+  --segmented-foreground: #90a1b9;
+  --segmented-foreground-hover: #f8fafc;
+  --segmented-item-hover: color-mix(in srgb, var(--foreground) 8%, transparent);
+  /* Sonner — rich-color toast statuses (dark). Deep tinted surface, bright text,
+     low-luminance border per status. */
+  --sonner-success: hsl(150, 100%, 6%);
+  --sonner-success-foreground: hsl(150, 86%, 65%);
+  --sonner-success-border: hsl(147, 100%, 12%);
+  --sonner-error: hsl(358, 76%, 10%);
+  --sonner-error-foreground: hsl(358, 100%, 81%);
+  --sonner-error-border: hsl(357, 89%, 16%);
+  --sonner-warning: hsl(64, 100%, 6%);
+  --sonner-warning-foreground: hsl(46, 87%, 65%);
+  --sonner-warning-border: hsl(60, 100%, 9%);
+  --sonner-info: hsl(215, 100%, 6%);
+  --sonner-info-foreground: hsl(216, 87%, 65%);
+  --sonner-info-border: hsl(223, 43%, 17%);
+  /* Skeleton for dark mode — edit independently of light mode. */
+  --skeleton: var(--muted);
+  /* Spinner status accents for dark mode — slightly lighter hues so they read
+     against the dark surface; edit independently of light mode. */
+  --spinner-success: #22c55e;
+  --spinner-warning: #f59e0b;
+  --spinner-info: #3b82f6;
+  /* Alert for dark mode — slightly lighter status hues so the tints and
+     outlines read against the dark surface; edit independently of light. */
+  --alert-primary: var(--primary);
+  --alert-primary-foreground: var(--primary-foreground);
+  --alert-destructive: var(--destructive);
+  --alert-destructive-foreground: #ffffff;
+  --alert-success: #22c55e;
+  --alert-success-foreground: #052e16;
+  --alert-info: #3b82f6;
+  --alert-info-foreground: #0a1633;
+  --alert-warning: #f59e0b;
+  --alert-warning-foreground: #2a1900;
+  /* Tree for dark mode — a slightly stronger hover/selected wash so rows read
+     against the dark surface; edit independently of light mode. */
+  --tree-guide: var(--border);
+  --tree-item-hover: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --tree-item-selected: color-mix(in srgb, var(--primary) 20%, transparent);
+  --tree-item-selected-foreground: var(--foreground);
+  --tree-drop-indicator: var(--primary);
+  --tree-checkbox: #314158;
+  --tree-checkbox-checked: var(--primary);
+  --tree-checkbox-indicator: var(--primary-foreground);
+  /* Popover Feedback for dark mode — slightly lighter sentiment hues and a
+     stronger success badge tint so they read against the dark panel. */
+  --pf-1: #f87171;
+  --pf-2: #fb923c;
+  --pf-3: #facc15;
+  --pf-4: #a3e635;
+  --pf-5: #4ade80;
+  --pf-star: #fdc700;
+  --pf-success: #22c55e;
+  --pf-success-surface: color-mix(in srgb, #22c55e 18%, transparent);
+  /* Tooltip for dark mode — the default lifts to a lighter slate so the chip
+     reads against the dark surface; the status hues brighten and take dark
+     foregrounds. Edit independently of light mode. */
+  --tooltip: #1d293d;
+  --tooltip-foreground: #f8fafc;
+  --tooltip-primary: var(--primary);
+  --tooltip-primary-foreground: var(--primary-foreground);
+  --tooltip-secondary: var(--secondary);
+  --tooltip-secondary-foreground: var(--secondary-foreground);
+  --tooltip-destructive: var(--destructive);
+  --tooltip-destructive-foreground: #ffffff;
+  --tooltip-success: #22c55e;
+  --tooltip-success-foreground: #052e16;
+  --tooltip-warning: #f59e0b;
+  --tooltip-warning-foreground: #2a1900;
+  --tooltip-info: #3b82f6;
+  --tooltip-info-foreground: #0a1633;
+  /* Splash Screen for dark mode — same theme-derived recipe; edit independently. */
+  --splash-background: var(--background);
+  --splash-foreground: var(--background);
+  --splash-mark: var(--foreground);
+
+  /* typography */
+  --typography-success: #34d399;
+  --typography-warning: #fbbf24;
+  --typography-mark: rgba(234, 179, 8, 0.4);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
