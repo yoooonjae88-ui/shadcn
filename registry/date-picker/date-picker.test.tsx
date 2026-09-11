@@ -37,12 +37,34 @@ async function pickDay(user: ReturnType<typeof userEvent.setup>, label: string) 
 }
 
 describe("formatDate / parseDateString", () => {
-  it("formats with dayjs-style tokens", () => {
+  it("defaults to the en-SG day-month-year order", () => {
+    expect(formatDate(day(2026, 3, 7))).toBe("07-03-2026")
+  })
+
+  it("accepts the dd-MM-yyyy spelling as well as DD-MM-YYYY", () => {
     const date = day(2026, 3, 7)
-    expect(formatDate(date)).toBe("2026-03-07")
-    expect(formatDate(date, "DD/MM/YYYY")).toBe("07/03/2026")
+    expect(formatDate(date, "dd-MM-yyyy")).toBe("07-03-2026")
+    expect(formatDate(date, "dd/MM/yy")).toBe("07/03/26")
+    expect(parseDateString("07-03-2026", { format: "dd-MM-yyyy", base: null })).toEqual(
+      date
+    )
+  })
+
+  it("formats the other supported tokens", () => {
+    const date = day(2026, 3, 7)
+    expect(formatDate(date, "YYYY-MM-DD")).toBe("2026-03-07")
     expect(formatDate(date, "D MMMM YYYY")).toBe("7 March 2026")
-    expect(formatDate(date, "ddd, MMM D")).toBe("Sat, Mar 7")
+    expect(formatDate(date, "ddd, D MMM")).toBe("Sat, 7 Mar")
+    // The weekday tokens win over the day-of-month token they start with.
+    expect(formatDate(date, "dddd")).toBe("Saturday")
+  })
+
+  it("names months and days in the given locale", () => {
+    const date = day(2026, 3, 7)
+    expect(formatDate(date, "dddd D MMMM", "fr-FR")).toBe("samedi 7 mars")
+    expect(
+      parseDateString("7 mars 2026", { format: "D MMMM YYYY", base: null, locale: "fr-FR" })
+    ).toEqual(date)
   })
 
   it("reads numbers in the order the format declares", () => {
@@ -61,9 +83,9 @@ describe("formatDate / parseDateString", () => {
   })
 
   it("rejects text that isn't a real date", () => {
-    expect(parseDateString("2026-02-31", { format: "YYYY-MM-DD", base: null })).toBeNull()
-    expect(parseDateString("not a date", { format: "YYYY-MM-DD", base: null })).toBeNull()
-    expect(parseDateString("   ", { format: "YYYY-MM-DD", base: null })).toBeNull()
+    expect(parseDateString("31-02-2026", { format: "DD-MM-YYYY", base: null })).toBeNull()
+    expect(parseDateString("not a date", { format: "DD-MM-YYYY", base: null })).toBeNull()
+    expect(parseDateString("   ", { format: "DD-MM-YYYY", base: null })).toBeNull()
   })
 })
 
@@ -73,9 +95,49 @@ describe("DatePicker", () => {
     expect(screen.getByRole("textbox", { name: "Select date" })).toHaveValue("")
   })
 
-  it("shows the formatted default value", () => {
-    render(<DatePicker defaultValue={day(2026, 3, 7)} format="DD/MM/YYYY" />)
-    expect(screen.getByRole("textbox")).toHaveValue("07/03/2026")
+  it("shows the default value in dd-MM-yyyy", () => {
+    render(<DatePicker defaultValue={day(2026, 3, 7)} />)
+    expect(screen.getByRole("textbox")).toHaveValue("07-03-2026")
+  })
+
+  it("honours a custom format", () => {
+    render(<DatePicker defaultValue={day(2026, 3, 7)} format="YYYY-MM-DD" />)
+    expect(screen.getByRole("textbox")).toHaveValue("2026-03-07")
+  })
+
+  it("labels the panel days in en-SG", async () => {
+    render(<DatePicker defaultValue={day(2026, 3, 7)} />)
+    fireEvent.pointerDown(screen.getByRole("textbox"))
+
+    const grid = await screen.findByRole("grid")
+    expect(
+      within(grid).getByRole("button", { name: "Wednesday, 11 March 2026" })
+    ).toBeInTheDocument()
+    // The selected and current days carry the usual suffix / prefix.
+    expect(
+      within(grid).getByRole("button", { name: "Saturday, 7 March 2026, selected" })
+    ).toBeInTheDocument()
+    expect(
+      within(grid).getByRole("button", { name: "Today, Sunday, 15 March 2026" })
+    ).toBeInTheDocument()
+  })
+
+  it("keeps two-letter weekday headers in every locale", async () => {
+    // The weekday row is aria-hidden (the day labels carry the full name), so
+    // it is read from the DOM rather than by role.
+    const headers = async () => {
+      await screen.findAllByRole("grid")
+      return [...document.querySelectorAll("thead th")].map((th) => th.textContent)
+    }
+
+    const { unmount } = render(<DatePicker />)
+    fireEvent.pointerDown(screen.getByRole("textbox"))
+    expect(await headers()).toEqual(["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"])
+    unmount()
+
+    render(<DatePicker locale="fr-FR" weekStartsOn={1} />)
+    fireEvent.pointerDown(screen.getByRole("textbox"))
+    expect(await headers()).toEqual(["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"])
   })
 
   it("opens a calendar panel and commits the clicked day", async () => {
@@ -84,13 +146,13 @@ describe("DatePicker", () => {
     render(<DatePicker defaultValue={day(2026, 3, 7)} onChange={onChange} />)
 
     fireEvent.pointerDown(screen.getByRole("textbox"))
-    await pickDay(user, "Wednesday, March 11th, 2026")
+    await pickDay(user, "Wednesday, 11 March 2026")
 
     expect(onChange).toHaveBeenCalledTimes(1)
     const [date, dateString] = onChange.mock.calls[0]
-    expect(dateString).toBe("2026-03-11")
+    expect(dateString).toBe("11-03-2026")
     expect(date).toEqual(day(2026, 3, 11))
-    expect(screen.getByRole("textbox")).toHaveValue("2026-03-11")
+    expect(screen.getByRole("textbox")).toHaveValue("11-03-2026")
     // Picking a day closes the panel.
     await waitFor(() => expect(screen.queryByRole("grid")).not.toBeInTheDocument())
   })
@@ -102,11 +164,11 @@ describe("DatePicker", () => {
 
     // Focus without clicking — a click opens the panel.
     screen.getByRole("textbox").focus()
-    await user.keyboard("2026-03-07{Enter}")
+    await user.keyboard("07-03-2026{Enter}")
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0][0]).toEqual(day(2026, 3, 7))
-    expect(onChange.mock.calls[0][1]).toBe("2026-03-07")
+    expect(onChange.mock.calls[0][1]).toBe("07-03-2026")
   })
 
   it("reverts unparseable text to the current value", async () => {
@@ -118,7 +180,7 @@ describe("DatePicker", () => {
     await user.clear(input)
     await user.keyboard("nonsense{Enter}")
 
-    expect(input).toHaveValue("2026-03-07")
+    expect(input).toHaveValue("07-03-2026")
   })
 
   it("does not select a disabled date", async () => {
@@ -135,16 +197,16 @@ describe("DatePicker", () => {
     fireEvent.pointerDown(screen.getByRole("textbox"))
     const grid = await screen.findByRole("grid")
     expect(
-      within(grid).getByRole("button", { name: "Wednesday, March 11th, 2026" })
+      within(grid).getByRole("button", { name: "Wednesday, 11 March 2026" })
     ).toBeDisabled()
 
     // Typing a disabled date is rejected too.
     const input = screen.getByRole("textbox")
     input.focus()
     await user.clear(input)
-    await user.keyboard("2026-03-11{Enter}")
+    await user.keyboard("11-03-2026{Enter}")
     expect(onChange).not.toHaveBeenCalled()
-    expect(input).toHaveValue("2026-03-07")
+    expect(input).toHaveValue("07-03-2026")
   })
 
   it("clears the value and fires onClear", async () => {
@@ -183,13 +245,13 @@ describe("DatePicker", () => {
 
     fireEvent.pointerDown(screen.getByRole("textbox"))
     await user.click(await screen.findByRole("button", { name: "New year" }))
-    expect(onChange.mock.calls[0][1]).toBe("2026-01-01")
+    expect(onChange.mock.calls[0][1]).toBe("01-01-2026")
   })
 
   it("submits the formatted value via a hidden input when named", () => {
     render(<DatePicker name="due" defaultValue={day(2026, 3, 7)} />)
     expect(document.querySelector("input[type='hidden'][name='due']")).toHaveValue(
-      "2026-03-07"
+      "07-03-2026"
     )
   })
 
@@ -202,17 +264,17 @@ describe("DatePicker", () => {
 })
 
 describe("DatePicker.RangePicker", () => {
-  it("renders start and end inputs", () => {
+  it("renders start and end inputs in dd-MM-yyyy", () => {
     render(
       <DatePicker.RangePicker
         defaultValue={[day(2026, 3, 7), day(2026, 3, 14)]}
       />
     )
     expect(screen.getByRole("textbox", { name: "Start date" })).toHaveValue(
-      "2026-03-07"
+      "07-03-2026"
     )
     expect(screen.getByRole("textbox", { name: "End date" })).toHaveValue(
-      "2026-03-14"
+      "14-03-2026"
     )
   })
 
@@ -228,11 +290,11 @@ describe("DatePicker.RangePicker", () => {
 
     fireEvent.pointerDown(screen.getByRole("textbox", { name: "Start date" }))
     // A start before the existing end keeps that end and completes the range.
-    await pickDay(user, "Tuesday, March 3rd, 2026")
+    await pickDay(user, "Tuesday, 3 March 2026")
 
     expect(onChange).toHaveBeenCalledTimes(1)
     const [range, strings] = onChange.mock.calls[0]
-    expect(strings).toEqual(["2026-03-03", "2026-03-14"])
+    expect(strings).toEqual(["03-03-2026", "14-03-2026"])
     expect(range[0]).toEqual(day(2026, 3, 3))
     await waitFor(() => expect(screen.queryByRole("grid")).not.toBeInTheDocument())
   })
@@ -243,18 +305,18 @@ describe("DatePicker.RangePicker", () => {
     render(<DatePicker.RangePicker onChange={onChange} />)
 
     fireEvent.pointerDown(screen.getByRole("textbox", { name: "Start date" }))
-    await pickDay(user, "Tuesday, March 3rd, 2026")
+    await pickDay(user, "Tuesday, 3 March 2026")
 
     // Start staged, panel still open, nothing committed yet.
     expect(onChange).not.toHaveBeenCalled()
     expect(screen.getByRole("textbox", { name: "Start date" })).toHaveValue(
-      "2026-03-03"
+      "03-03-2026"
     )
     expect(screen.getAllByRole("grid").length).toBeGreaterThan(0)
 
-    await pickDay(user, "Saturday, March 7th, 2026")
+    await pickDay(user, "Saturday, 7 March 2026")
     expect(onChange).toHaveBeenCalledTimes(1)
-    expect(onChange.mock.calls[0][1]).toEqual(["2026-03-03", "2026-03-07"])
+    expect(onChange.mock.calls[0][1]).toEqual(["03-03-2026", "07-03-2026"])
   })
 
   it("orders the ends when the end is typed before the start", async () => {
@@ -269,9 +331,9 @@ describe("DatePicker.RangePicker", () => {
 
     const end = screen.getByRole("textbox", { name: "End date" })
     end.focus()
-    await user.keyboard("2026-03-07{Enter}")
+    await user.keyboard("07-03-2026{Enter}")
 
-    expect(onChange.mock.calls[0][1]).toEqual(["2026-03-07", "2026-03-14"])
+    expect(onChange.mock.calls[0][1]).toEqual(["07-03-2026", "14-03-2026"])
   })
 
   it("clears both ends", async () => {
@@ -303,6 +365,6 @@ describe("DatePicker.RangePicker", () => {
 
     fireEvent.pointerDown(screen.getByRole("textbox", { name: "Start date" }))
     await user.click(await screen.findByRole("button", { name: "That week" }))
-    expect(onChange.mock.calls[0][1]).toEqual(["2026-03-02", "2026-03-08"])
+    expect(onChange.mock.calls[0][1]).toEqual(["02-03-2026", "08-03-2026"])
   })
 })

@@ -28,7 +28,7 @@ export function DatePickerPresetsExample() {
         ]}
       />
       <p className="text-xs text-muted-foreground">
-        {value ? value.toLocaleDateString() : "No date selected."}
+        {value ? value.toLocaleDateString("en-SG") : "No date selected."}
       </p>
     </div>
   )

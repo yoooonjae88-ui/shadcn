@@ -4,7 +4,12 @@ import * as React from "react"
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover"
 import { cva, type VariantProps } from "class-variance-authority"
 import { CalendarDays, X } from "lucide-react"
-import type { DateRange } from "react-day-picker"
+import type {
+  DateRange,
+  Formatters,
+  Labels,
+  Modifiers,
+} from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { Calendar, type CalendarProps } from "@/components/ui/calendar"
@@ -43,34 +48,76 @@ export type RangeValue = [Date | null, Date | null]
  * Date helpers
  * ------------------------------------------------------------------------------------------------*/
 
-const MONTH_NAMES = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-]
-
-const DAY_NAMES = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-]
-
-const DEFAULT_FORMAT = "YYYY-MM-DD"
+/** Singapore English: day-month-year, the order the default format follows. */
+const DEFAULT_LOCALE = "en-SG"
+const DEFAULT_FORMAT = "DD-MM-YYYY"
 
 const pad = (n: number) => String(n).padStart(2, "0")
+
+/**
+ * The month and weekday names of a locale, built once per locale. 2021-01-03
+ * is a Sunday, so walking seven days from it covers the week in display order.
+ */
+const localeNamesCache = new Map<string, LocaleNames>()
+
+interface LocaleNames {
+  months: string[]
+  monthsShort: string[]
+  weekdays: string[]
+  weekdaysShort: string[]
+}
+
+function localeNames(locale: string): LocaleNames {
+  const cached = localeNamesCache.get(locale)
+  if (cached) return cached
+
+  const names = (
+    [
+      ["months", { month: "long" }, 12],
+      ["monthsShort", { month: "short" }, 12],
+      ["weekdays", { weekday: "long" }, 7],
+      ["weekdaysShort", { weekday: "short" }, 7],
+    ] as const
+  ).reduce((acc, [key, options, count]) => {
+    const formatter = new Intl.DateTimeFormat(locale, {
+      ...options,
+      timeZone: "UTC",
+    })
+    acc[key] = Array.from({ length: count }, (_, i) =>
+      formatter.format(count === 12 ? Date.UTC(2021, i, 1) : Date.UTC(2021, 0, 3 + i))
+    )
+    return acc
+  }, {} as LocaleNames)
+
+  localeNamesCache.set(locale, names)
+  return names
+}
+
+/**
+ * Which part of the date each token stands for. Both the dayjs-style spelling
+ * (`YYYY`, `DD`) and the `dd-MM-yyyy` spelling are accepted, so a format can be
+ * written either way. The weekday-name tokens are deliberately absent: they
+ * render a name but never carry a value typed back in.
+ */
+const TOKEN_FIELDS: Record<string, "y" | "m" | "d"> = {
+  YYYY: "y",
+  yyyy: "y",
+  YY: "y",
+  yy: "y",
+  MMMM: "m",
+  MMM: "m",
+  MM: "m",
+  M: "m",
+  DD: "d",
+  D: "d",
+  dd: "d",
+  d: "d",
+}
+
+// Longest tokens first so `MMMM` isn't consumed as `MMM` + `M`, and the weekday
+// names (`dddd`, `ddd`) win over the day-of-month `dd` / `d` they start with.
+const TOKEN_PATTERN =
+  /YYYY|yyyy|YY|yy|MMMM|MMM|MM|M|dddd|ddd|DD|D|dd|d/g
 
 /** Strip the time part so two dates for the same day always compare equal. */
 function startOfDay(date: Date): Date {
@@ -84,24 +131,36 @@ function isSameDay(a: Date | null, b: Date | null): boolean {
   return startOfDay(a).getTime() === startOfDay(b).getTime()
 }
 
-/** Format a Date with a dayjs-style token string (the subset the picker uses). */
-function formatDate(date: Date, format: string = DEFAULT_FORMAT): string {
+/** Format a Date with a token string, naming months and days in `locale`. */
+function formatDate(
+  date: Date,
+  format: string = DEFAULT_FORMAT,
+  locale: string = DEFAULT_LOCALE
+): string {
   const year = date.getFullYear()
   const month = date.getMonth()
+  const names = localeNames(locale)
+  const yyyy = String(year).padStart(4, "0")
+  const yy = pad(year % 100)
+  const dd = pad(date.getDate())
+  const d = String(date.getDate())
   const map: Record<string, string> = {
-    YYYY: String(year).padStart(4, "0"),
-    YY: pad(year % 100),
-    MMMM: MONTH_NAMES[month],
-    MMM: MONTH_NAMES[month].slice(0, 3),
+    YYYY: yyyy,
+    yyyy,
+    YY: yy,
+    yy,
+    MMMM: names.months[month],
+    MMM: names.monthsShort[month],
     MM: pad(month + 1),
     M: String(month + 1),
-    DD: pad(date.getDate()),
-    D: String(date.getDate()),
-    dddd: DAY_NAMES[date.getDay()],
-    ddd: DAY_NAMES[date.getDay()].slice(0, 3),
+    DD: dd,
+    dd,
+    D: d,
+    d,
+    dddd: names.weekdays[date.getDay()],
+    ddd: names.weekdaysShort[date.getDay()],
   }
-  // Longest tokens first so `MMMM` isn't consumed as `MMM` + `M`.
-  return format.replace(/YYYY|YY|MMMM|MMM|MM|M|DD|D|dddd|ddd/g, (t) => map[t] ?? t)
+  return format.replace(TOKEN_PATTERN, (token) => map[token] ?? token)
 }
 
 /**
@@ -110,8 +169,8 @@ function formatDate(date: Date, format: string = DEFAULT_FORMAT): string {
  */
 function fieldOrder(format: string): ("y" | "m" | "d")[] {
   const order: ("y" | "m" | "d")[] = []
-  for (const char of format) {
-    const field = char === "Y" ? "y" : char === "M" ? "m" : char === "D" ? "d" : null
+  for (const token of format.match(TOKEN_PATTERN) ?? []) {
+    const field = TOKEN_FIELDS[token]
     if (field && !order.includes(field)) order.push(field)
   }
   return order.length > 0 ? order : ["y", "m", "d"]
@@ -124,7 +183,7 @@ function fieldOrder(format: string): ("y" | "m" | "d")[] {
  */
 function parseDateString(
   raw: string,
-  opts: { format: string; base: Date | null }
+  opts: { format: string; base: Date | null; locale?: string }
 ): Date | null {
   const str = raw.trim()
   if (!str) return null
@@ -135,8 +194,10 @@ function parseDateString(
   // A month spelled out (`Mar`, `March`) is taken out of the running before the
   // remaining numbers are assigned, so `12 March 2026` reads correctly.
   const lower = str.toLowerCase()
-  const namedMonth = MONTH_NAMES.findIndex((name) =>
-    lower.includes(name.slice(0, 3).toLowerCase())
+  const namedMonth = localeNames(
+    opts.locale ?? DEFAULT_LOCALE
+  ).monthsShort.findIndex((name) =>
+    lower.includes(name.toLowerCase().replace(/[^\p{L}]/gu, ""))
   )
 
   const numbers = str.match(/\d+/g)?.map(Number) ?? []
@@ -173,6 +234,59 @@ function parseDateString(
     return null
   }
   return parsed
+}
+
+/**
+ * Month captions and day labels for the panel, so the calendar reads in the
+ * same locale as the field. Built once per locale: DayPicker rebuilds itself
+ * whenever the identity of these objects changes.
+ */
+const panelIntlCache = new Map<
+  string,
+  { formatters: Partial<Formatters>; labels: Partial<Labels> }
+>()
+
+function panelIntl(locale: string) {
+  const cached = panelIntlCache.get(locale)
+  if (cached) return cached
+
+  const monthYear = new Intl.DateTimeFormat(locale, {
+    month: "long",
+    year: "numeric",
+  })
+  const fullDate = new Intl.DateTimeFormat(locale, {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  })
+
+  const intl = {
+    formatters: {
+      formatCaption: (month: Date) => monthYear.format(month),
+      formatMonthDropdown: (month: Date) =>
+        localeNames(locale).monthsShort[month.getMonth()],
+      // Two letters keeps the header row as narrow as the day cells. Intl only
+      // offers a one-letter or a full abbreviation, so the abbreviation is cut
+      // down by code point ("Sunday" -> "Su", "samedi" -> "Sa").
+      formatWeekdayName: (weekday: Date) => {
+        const short = localeNames(locale).weekdaysShort[weekday.getDay()]
+        const initials = Array.from(short).slice(0, 2).join("")
+        return initials.charAt(0).toLocaleUpperCase(locale) + initials.slice(1)
+      },
+    },
+    labels: {
+      labelGrid: (month: Date) => monthYear.format(month),
+      labelDayButton: (date: Date, modifiers: Modifiers) => {
+        let label = fullDate.format(date)
+        if (modifiers.today) label = `Today, ${label}`
+        if (modifiers.selected) label = `${label}, selected`
+        return label
+      },
+    },
+  }
+  panelIntlCache.set(locale, intl)
+  return intl
 }
 
 function placementToSide(placement: DatePickerPlacement): {
@@ -382,6 +496,10 @@ function PanelFooter({
 
 /** Panel props both pickers hand straight through to the calendar. */
 interface SharedPanelProps {
+  /** BCP 47 tag naming the month, weekday and day labels. Defaults to `en-SG`. */
+  locale?: string
+  /** First column of the week, 0 = Sunday. Defaults to the calendar's Sunday. */
+  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
   /** `label` (default) or `dropdown` month & year selects in the panel header. */
   captionLayout?: CalendarProps["captionLayout"]
   /** Show the ISO week number column. */
@@ -407,7 +525,10 @@ export interface DatePickerProps
   onChange?: (value: Date | null, dateString: string) => void
   /** Fires when the clear button is pressed. */
   onClear?: () => void
-  /** dayjs-style token string. Defaults to `YYYY-MM-DD`. */
+  /**
+   * Token string driving both display and parsing, in either the dayjs
+   * (`DD-MM-YYYY`) or the `dd-MM-yyyy` spelling. Defaults to `DD-MM-YYYY`.
+   */
   format?: string
   disabled?: boolean
   /** `true`, or `{ clearIcon }` to customise. `false` hides the clear button. */
@@ -448,6 +569,8 @@ function DatePicker({
   onChange,
   onClear,
   format = DEFAULT_FORMAT,
+  locale = DEFAULT_LOCALE,
+  weekStartsOn,
   disabledDate,
   minDate,
   maxDate,
@@ -508,22 +631,23 @@ function DatePicker({
   // Keep the input text in sync with the value unless the user is typing.
   React.useEffect(() => {
     if (typingRef.current) return
-    setText(value ? formatDate(value, format) : "")
-  }, [value, format])
+    setText(value ? formatDate(value, format, locale) : "")
+  }, [value, format, locale])
 
   React.useEffect(() => {
     if (autoFocus) inputRef.current?.focus()
   }, [autoFocus])
 
   const isDisabledDate = useDisabledMatcher(disabledDate, minDate, maxDate)
+  const intl = panelIntl(locale)
 
   const commit = React.useCallback(
     (next: Date | null) => {
       typingRef.current = false
       if (valueProp === undefined) setValueState(next)
-      onChange?.(next, next ? formatDate(next, format) : "")
+      onChange?.(next, next ? formatDate(next, format, locale) : "")
     },
-    [valueProp, onChange, format]
+    [valueProp, onChange, format, locale]
   )
 
   function handleOpenChange(next: boolean) {
@@ -552,7 +676,7 @@ function DatePicker({
   }
 
   function commitText() {
-    const parsed = parseDateString(text, { format, base: value })
+    const parsed = parseDateString(text, { format, base: value, locale })
     if (parsed && !isDisabledDate(parsed)) {
       setMonth(parsed)
       commit(parsed)
@@ -561,7 +685,7 @@ function DatePicker({
     } else {
       // Unparseable or disabled — revert to the current value.
       typingRef.current = false
-      setText(value ? formatDate(value, format) : "")
+      setText(value ? formatDate(value, format, locale) : "")
     }
   }
 
@@ -641,7 +765,7 @@ function DatePicker({
               <input
                 type="hidden"
                 name={name}
-                value={value ? formatDate(value, format) : ""}
+                value={value ? formatDate(value, format, locale) : ""}
               />
             )}
           </div>
@@ -685,6 +809,9 @@ function DatePicker({
                   captionLayout={captionLayout}
                   showWeekNumber={showWeekNumber}
                   numberOfMonths={numberOfMonths}
+                  weekStartsOn={weekStartsOn}
+                  formatters={intl.formatters}
+                  labels={intl.labels}
                   startMonth={minDate}
                   endMonth={maxDate}
                 />
@@ -743,6 +870,8 @@ function DateRangePicker({
   onChange,
   onClear,
   format = DEFAULT_FORMAT,
+  locale = DEFAULT_LOCALE,
+  weekStartsOn,
   disabledDate,
   minDate,
   maxDate,
@@ -811,12 +940,13 @@ function DateRangePicker({
     if (typingRef.current) return
     const src = open ? pending : value
     setTexts([
-      src[0] ? formatDate(src[0], format) : "",
-      src[1] ? formatDate(src[1], format) : "",
+      src[0] ? formatDate(src[0], format, locale) : "",
+      src[1] ? formatDate(src[1], format, locale) : "",
     ])
-  }, [value, pending, open, format])
+  }, [value, pending, open, format, locale])
 
   const isDisabledDate = useDisabledMatcher(disabledDate, minDate, maxDate)
+  const intl = panelIntl(locale)
 
   const commit = React.useCallback(
     (next: RangeValue) => {
@@ -827,11 +957,11 @@ function DateRangePicker({
           : next
       if (valueProp === undefined) setValueState(ordered)
       onChange?.(ordered, [
-        ordered[0] ? formatDate(ordered[0], format) : "",
-        ordered[1] ? formatDate(ordered[1], format) : "",
+        ordered[0] ? formatDate(ordered[0], format, locale) : "",
+        ordered[1] ? formatDate(ordered[1], format, locale) : "",
       ])
     },
-    [valueProp, onChange, format, order]
+    [valueProp, onChange, format, locale, order]
   )
 
   function handleOpenChange(next: boolean) {
@@ -885,6 +1015,7 @@ function DateRangePicker({
     const parsed = parseDateString(texts[index], {
       format,
       base: value[index],
+      locale,
     })
     const next: RangeValue = [...pending] as RangeValue
 
@@ -898,7 +1029,7 @@ function DateRangePicker({
       setTexts((prev) => {
         const copy = [...prev] as [string, string]
         const current = value[index]
-        copy[index] = current ? formatDate(current, format) : ""
+        copy[index] = current ? formatDate(current, format, locale) : ""
         return copy
       })
       return
@@ -1007,12 +1138,12 @@ function DateRangePicker({
                 <input
                   type="hidden"
                   name={`${name}-start`}
-                  value={value[0] ? formatDate(value[0], format) : ""}
+                  value={value[0] ? formatDate(value[0], format, locale) : ""}
                 />
                 <input
                   type="hidden"
                   name={`${name}-end`}
-                  value={value[1] ? formatDate(value[1], format) : ""}
+                  value={value[1] ? formatDate(value[1], format, locale) : ""}
                 />
               </>
             )}
@@ -1065,6 +1196,9 @@ function DateRangePicker({
                   captionLayout={captionLayout}
                   showWeekNumber={showWeekNumber}
                   numberOfMonths={numberOfMonths}
+                  weekStartsOn={weekStartsOn}
+                  formatters={intl.formatters}
+                  labels={intl.labels}
                   startMonth={minDate}
                   endMonth={maxDate}
                 />

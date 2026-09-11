@@ -4,6 +4,7 @@ import { DatePickerDisabledExample } from "./date-picker-disabled"
 import { DatePickerDisabledDatesExample } from "./date-picker-disabled-dates"
 import { DatePickerDropdownExample } from "./date-picker-dropdown"
 import { DatePickerFormatExample } from "./date-picker-format"
+import { DatePickerLocaleExample } from "./date-picker-locale"
 import { DatePickerPrefixSuffixExample } from "./date-picker-prefix-suffix"
 import { DatePickerPresetsExample } from "./date-picker-presets"
 import { DatePickerRangeExample } from "./date-picker-range"
@@ -31,6 +32,12 @@ export const datePickerExamples: PreviewExample[] = [
     title: "Format",
     component: DatePickerFormatExample,
     file: "components/previews/date-picker/date-picker-format.tsx",
+  },
+  {
+    name: "locale",
+    title: "Locale",
+    component: DatePickerLocaleExample,
+    file: "components/previews/date-picker/date-picker-locale.tsx",
   },
   {
     name: "presets",

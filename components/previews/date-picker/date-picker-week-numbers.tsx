@@ -23,7 +23,7 @@ export function DatePickerWeekNumbersExample() {
       />
       <p className="text-xs text-muted-foreground">
         {value[0] && value[1]
-          ? `${value[0].toLocaleDateString()} → ${value[1].toLocaleDateString()}`
+          ? `${value[0].toLocaleDateString("en-SG")} → ${value[1].toLocaleDateString("en-SG")}`
           : "Three months, with week numbers."}
       </p>
     </div>

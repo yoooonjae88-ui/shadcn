@@ -12,7 +12,7 @@ export function DatePickerBasicExample() {
     <div className="flex flex-col items-start gap-1">
       <DatePicker value={value} onChange={setValue} />
       <p className="text-xs text-muted-foreground">
-        {value ? value.toLocaleDateString() : "No date selected."}
+        {value ? value.toLocaleDateString("en-SG") : "No date selected."}
       </p>
     </div>
   )
