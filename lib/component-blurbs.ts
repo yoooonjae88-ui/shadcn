@@ -28,8 +28,6 @@ const useCases: Record<string, string> = {
   empty: "empty states with a clear next step",
   field: "form layouts with labels, hints, and errors",
   "file-upload": "attachments, image uploads, and drag-and-drop",
-  flex: "aligning and spacing content",
-  grid: "responsive page layouts and dashboards",
   input: "forms, search fields, and text entry",
   "input-group": "search bars, URL fields, and composer toolbars",
   masonry: "photo walls, card feeds, and dashboards",

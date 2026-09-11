@@ -34,21 +34,6 @@
       ]
     },
     {
-      "name": "grid",
-      "type": "registry:ui",
-      "meta": {
-        "group": "Layout"
-      },
-      "title": "Grid",
-      "description": "A 24-column responsive grid system modeled on Ant Design's Grid: Row/Col with span, offset, push/pull, order, horizontal and vertical gutters, justify/align/wrap flex alignment, flex sizing, mobile-first responsive props per breakpoint, and a useBreakpoint hook. Columns whose spans sum past 24 wrap onto a new line.",
-      "files": [
-        {
-          "path": "registry/grid/grid.tsx",
-          "type": "registry:ui"
-        }
-      ]
-    },
-    {
       "name": "divider",
       "type": "registry:ui",
       "meta": {
@@ -59,21 +44,6 @@
       "files": [
         {
           "path": "registry/divider/divider.tsx",
-          "type": "registry:ui"
-        }
-      ]
-    },
-    {
-      "name": "flex",
-      "type": "registry:ui",
-      "meta": {
-        "group": "Layout"
-      },
-      "title": "Flex",
-      "description": "A flexbox container modeled on Ant Design's Flex: horizontal or vertical direction, justify/align placement with any CSS value, wrap, gap presets (small 8px, middle 16px, large 24px) or any number/CSS gap value, a flex shorthand for the container itself, and a component prop to render as any element.",
-      "files": [
-        {
-          "path": "registry/flex/flex.tsx",
           "type": "registry:ui"
         }
       ]
@@ -102,7 +72,6 @@
       "title": "Masonry",
       "description": "A masonry grid modeled on Ant Design's Masonry: items of varying heights pack tightly into columns without vertical gaps, flowing into the shortest column (or strictly in source order with sequential), with responsive column counts and horizontal/vertical gutters per breakpoint, a data-driven items/itemRender API alongside plain children, per-item column pinning, and an onLayoutChange callback. Items can be closable (a hover × removes them with the rest animating into the gap, firing onClose) and draggable in the iOS home-screen style: grabbing an item lifts it (mouse drags start immediately; touch uses press-and-hold so swipes still scroll), it follows the pointer while the other items glide out of the way live, an optional wobble makes resting items jiggle during the drag, and on release it settles into its slot, firing onReorder. Item heights are tracked with a ResizeObserver so the layout follows window resizes and content changes.",
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["@private/grid"],
       "files": [
         {
           "path": "registry/masonry/masonry.tsx",

@@ -25,8 +25,6 @@ import { dropdownExamples } from "@/components/previews/dropdown"
 import { emptyExamples } from "@/components/previews/empty"
 import { fieldExamples } from "@/components/previews/field"
 import { fileUploadExamples } from "@/components/previews/file-upload"
-import { flexExamples } from "@/components/previews/flex"
-import { gridExamples } from "@/components/previews/grid"
 import { inputExamples } from "@/components/previews/input"
 import { inputGroupExamples } from "@/components/previews/input-group"
 import { masonryExamples } from "@/components/previews/masonry"
@@ -81,8 +79,6 @@ const exampleOverrides: Record<string, PreviewExample[]> = {
   empty: emptyExamples,
   field: fieldExamples,
   "file-upload": fileUploadExamples,
-  flex: flexExamples,
-  grid: gridExamples,
   input: inputExamples,
   "input-group": inputGroupExamples,
   masonry: masonryExamples,
