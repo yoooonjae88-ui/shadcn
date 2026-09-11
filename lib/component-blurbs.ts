@@ -21,6 +21,7 @@ const useCases: Record<string, string> = {
   combobox: "searchable selects and option pickers",
   "conversation-card": "chat lists and inboxes",
   "data-grid": "tables, admin panels, and data-heavy screens",
+  "date-picker": "picking dates and date ranges in forms, filters, and booking flows",
   divider: "separating content sections and inline items",
   drawer: "slide-in panels for details and settings",
   dropdown: "select inputs and action menus",
