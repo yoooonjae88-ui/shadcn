@@ -29,6 +29,10 @@ function ProgressStyles() {
   return <style suppressHydrationWarning>{progressKeyframes}</style>
 }
 
+const progressTrackDefaults = {
+  size: "default",
+} as const
+
 const progressTrackVariants = cva(
   "relative w-full overflow-hidden rounded-full bg-progress-track",
   {
@@ -39,11 +43,13 @@ const progressTrackVariants = cva(
         lg: "h-4",
       },
     },
-    defaultVariants: {
-      size: "default",
-    },
+    defaultVariants: progressTrackDefaults,
   }
 )
+
+const progressIndicatorDefaults = {
+  variant: "primary",
+} as const
 
 const progressIndicatorVariants = cva(
   "h-full rounded-full transition-[width,transform] duration-500 ease-out data-indeterminate:w-2/5 data-indeterminate:[animation:progress-indeterminate_1.2s_ease-in-out_infinite]",
@@ -58,9 +64,7 @@ const progressIndicatorVariants = cva(
         info: "bg-progress-info",
       },
     },
-    defaultVariants: {
-      variant: "primary",
-    },
+    defaultVariants: progressIndicatorDefaults,
   }
 )
 
@@ -155,8 +159,8 @@ interface ProgressProps
 
 function Progress({
   className,
-  size = "default",
-  variant = "primary",
+  size = progressTrackDefaults.size,
+  variant = progressIndicatorDefaults.variant,
   value = 0,
   label,
   showValue = false,

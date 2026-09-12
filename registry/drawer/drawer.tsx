@@ -62,6 +62,11 @@ function DrawerClose(
   return <DialogPrimitive.Close data-slot="drawer-close" {...props} />
 }
 
+const drawerDefaults = {
+      side: "right",
+      size: "md",
+    } as const
+
 const drawerVariants = cva(
   // Surface color comes from the `--drawer-background` CSS variable (shipped via
   // this item's `cssVars` in registry.json) so it can be themed independently of
@@ -113,17 +118,14 @@ const drawerVariants = cva(
         className: "h-screen max-h-none",
       },
     ],
-    defaultVariants: {
-      side: "right",
-      size: "md",
-    },
+    defaultVariants: drawerDefaults,
   }
 )
 
 function DrawerContent({
   className,
-  side = "right",
-  size = "md",
+  side = drawerDefaults.side,
+  size = drawerDefaults.size,
   children,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Popup> &

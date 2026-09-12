@@ -35,7 +35,7 @@ interface AccordionProps extends AccordionPrimitive.Root.Props {
 
 function Accordion({
   className,
-  variant = "default",
+  variant = accordionDefaults.variant,
   ...props
 }: AccordionProps) {
   return (
@@ -59,6 +59,10 @@ function Accordion({
  * Item
  * ------------------------------------------------------------------------------------------------ */
 
+const accordionDefaults = {
+    variant: "default",
+} as const
+
 const accordionItemVariants = cva("group/item", {
   variants: {
     variant: {
@@ -67,9 +71,7 @@ const accordionItemVariants = cva("group/item", {
       outline: "rounded-lg border border-accordion-border px-4",
     },
   },
-  defaultVariants: {
-    variant: "default",
-  },
+  defaultVariants: accordionDefaults,
 })
 
 type AccordionItemProps = AccordionPrimitive.Item.Props

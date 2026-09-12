@@ -19,6 +19,12 @@ import { cn } from "@/lib/utils"
 // from one place — no hard-coded hex / named Tailwind colours live here. The
 // class strings are written out in full (never interpolated) so Tailwind's
 // scanner generates every utility.
+const alertDefaults = {
+  variant: "secondary",
+  appearance: "solid",
+  size: "md",
+} as const
+
 const alertVariants = cva(
   "relative flex w-full items-start rounded-lg text-start [&_[data-slot=alert-icon]]:shrink-0",
   {
@@ -221,11 +227,7 @@ const alertVariants = cva(
           "border border-border bg-transparent text-foreground [&_[data-slot=alert-icon]]:text-foreground",
       },
     ],
-    defaultVariants: {
-      variant: "secondary",
-      appearance: "solid",
-      size: "md",
-    },
+    defaultVariants: alertDefaults,
   }
 )
 

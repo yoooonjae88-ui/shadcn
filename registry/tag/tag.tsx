@@ -11,6 +11,12 @@ type TagStatus = "default" | "success" | "processing" | "warning" | "error"
 // Every colour below comes from a `--tag-*` token (see app/globals.css and the
 // item's `cssVars` in registry.json) so the whole palette is restyleable from
 // one place — no hard-coded hex / named Tailwind colours live in the component.
+const tagDefaults = {
+      variant: "filled",
+      status: "default",
+      interactive: false,
+    } as const
+
 const tagVariants = cva(
   "inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-colors [&_svg]:pointer-events-none [&_svg]:size-3 [&_svg]:shrink-0",
   {
@@ -125,11 +131,7 @@ const tagVariants = cva(
         class: "border-tag-error/50 text-tag-error",
       },
     ],
-    defaultVariants: {
-      variant: "filled",
-      status: "default",
-      interactive: false,
-    },
+    defaultVariants: tagDefaults,
   }
 )
 
@@ -249,8 +251,8 @@ function TagProcessingDot() {
 }
 
 function Tag({
-  variant = "filled",
-  status = "default",
+  variant = tagDefaults.variant,
+  status = tagDefaults.status,
   icon,
   disabled,
   value,

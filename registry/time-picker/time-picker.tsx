@@ -191,6 +191,8 @@ function placementToSide(placement: TimePickerPlacement): {
  * Input frame (shared with the range picker)
  * ------------------------------------------------------------------------------------------------*/
 
+const fieldFrameDefaults = { variant: "outlined", size: "middle" } as const
+
 const fieldFrameVariants = cva(
   "relative inline-flex min-w-0 cursor-text items-center gap-1.5 border border-transparent bg-clip-padding text-foreground transition-[color,background-color,border-color,box-shadow] outline-none [&_svg]:shrink-0",
   {
@@ -213,7 +215,7 @@ const fieldFrameVariants = cva(
           "h-10 rounded-lg px-3 text-base [&_svg:not([class*='size-'])]:size-4",
       },
     },
-    defaultVariants: { variant: "outlined", size: "middle" },
+    defaultVariants: fieldFrameDefaults,
   }
 )
 
@@ -687,8 +689,8 @@ function TimePicker({
   autoFocus,
   name,
   id,
-  variant = "outlined",
-  size = "middle",
+  variant = fieldFrameDefaults.variant,
+  size = fieldFrameDefaults.size,
   className,
   popupClassName,
   okText = "OK",
@@ -1003,8 +1005,8 @@ function TimeRangePicker({
   cellRender,
   order = true,
   separator,
-  variant = "outlined",
-  size = "middle",
+  variant = fieldFrameDefaults.variant,
+  size = fieldFrameDefaults.size,
   className,
   popupClassName,
   okText = "OK",
