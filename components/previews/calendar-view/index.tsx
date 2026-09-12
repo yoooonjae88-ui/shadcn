@@ -1,6 +1,6 @@
 import type { PreviewExample } from "@/components/previews/types"
 import { CalendarViewDefaultExample } from "./calendar-view-default"
-import { CalendarViewFillExample } from "./calendar-view-fill"
+import { CalendarViewFillingExample } from "./calendar-view-filling"
 import { CalendarViewSelectionExample } from "./calendar-view-selection"
 import { CalendarViewSharedControlsExample } from "./calendar-view-shared-controls"
 
@@ -24,9 +24,9 @@ export const calendarViewExamples: PreviewExample[] = [
     file: "components/previews/calendar-view/calendar-view-selection.tsx",
   },
   {
-    name: "fill",
+    name: "filling",
     title: "Filling its container",
-    component: CalendarViewFillExample,
-    file: "components/previews/calendar-view/calendar-view-fill.tsx",
+    component: CalendarViewFillingExample,
+    file: "components/previews/calendar-view/calendar-view-filling.tsx",
   },
 ]

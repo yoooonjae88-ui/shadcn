@@ -669,11 +669,9 @@ function EventBarSegment({
 function CalendarViewWeek({
   events,
   onEventClick,
-  fill,
 }: {
   events: NormalizedEvent[]
   onEventClick?: (event: CalendarEvent) => void
-  fill?: boolean
 }) {
   const {
     cursor,
@@ -727,7 +725,7 @@ function CalendarViewWeek({
   const hours = Array.from({ length: 23 }, (_, i) => i + 1)
 
   return (
-    <div className={cn("flex flex-col", fill && "min-h-0 flex-1")}>
+    <div className={cn("flex min-h-0 flex-1 flex-col")}>
       {/* Day headings */}
       <div className="grid grid-cols-[3rem_repeat(7,minmax(0,1fr))]">
         <div />
@@ -792,9 +790,11 @@ function CalendarViewWeek({
         onScroll={(e) => syncScroll(e.currentTarget)}
         className={cn(
           "overflow-y-auto rounded-lg bg-muted/40",
-          // Self-sizing calendars cap the scroller so the page stays usable;
-          // a filling one hands it the leftover height instead.
-          fill ? "min-h-0 flex-1" : "max-h-[26rem]",
+          // 26rem is a flex basis, not a cap: with nothing constraining the
+          // calendar the grid settles there (24h of rows would otherwise be
+          // 1536px tall), and inside a sized parent it grows or shrinks to
+          // take exactly the height left over.
+          "h-[26rem] min-h-0 flex-auto",
           hideScrollbar &&
             "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         )}
@@ -920,13 +920,11 @@ function CalendarViewMonth({
   onEventClick,
   maxVisibleLanes,
   onMoreClick,
-  fill,
 }: {
   events: NormalizedEvent[]
   onEventClick?: (event: CalendarEvent) => void
   maxVisibleLanes: number
   onMoreClick?: (date: Date, events: CalendarEvent[]) => void
-  fill?: boolean
 }) {
   const { cursor, weekStartsOn, selected, select } = useCalendarView()
 
@@ -967,8 +965,7 @@ function CalendarViewMonth({
           // Rows share the leftover height, but never shrink past their
           // min-h-24 floor — so a container too short for six legible weeks
           // scrolls instead of letting the rows spill out of it.
-          fill && "min-h-0 flex-1 overflow-y-auto",
-          fill && "[scrollbar-width:thin]"
+          "min-h-0 flex-1 overflow-y-auto [scrollbar-width:thin]"
         )}
         role="grid"
         aria-label={label}
@@ -1019,7 +1016,12 @@ function CalendarViewMonth({
           return (
             <div
               key={weekKey}
-              className={cn("relative min-h-24", fill && "flex-1")}
+              // 6rem is a flex basis, not a fixed height: with nothing
+              // constraining the calendar every week row settles there, and
+              // inside a sized parent the rows divide the height between them
+              // — growing past 6rem when there is room, and shrinking toward
+              // the floor (then scrolling) when there is not.
+              className="relative h-24 min-h-12 flex-auto"
             >
               {/* Background layer: one clickable box per day — clicking
                   anywhere in the box (except an event or "+N more") selects
@@ -1166,15 +1168,6 @@ interface CalendarViewGridProps extends React.ComponentProps<"div"> {
    * or day detail.
    */
   onMoreClick?: (date: Date, events: CalendarEvent[]) => void
-  /**
-   * Stretch to fill the height it is given instead of sizing to its content.
-   * The month's week rows share the leftover height (never dropping below
-   * their `min-h-24` floor — a container too short for that scrolls instead
-   * of overflowing) and the week view's time grid takes the rest and scrolls
-   * inside it. The parent must have a height of its own — put this in a
-   * `h-*`, `flex-1`, or grid-sized box.
-   */
-  fill?: boolean
 }
 
 /**
@@ -1187,7 +1180,6 @@ function CalendarViewGrid({
   onEventClick,
   maxVisibleLanes = 3,
   onMoreClick,
-  fill = false,
   className,
   ...props
 }: CalendarViewGridProps) {
@@ -1226,27 +1218,20 @@ function CalendarViewGrid({
   return (
     <div
       data-slot="calendar-view-grid"
-      data-fill={fill ? "" : undefined}
       className={cn(
-        "@container flex w-full flex-col gap-2",
-        fill && "min-h-0 flex-1",
+        "@container flex min-h-0 w-full flex-1 flex-col gap-2",
         className
       )}
       {...props}
     >
       {view === "week" ? (
-        <CalendarViewWeek
-          events={normalized}
-          onEventClick={onEventClick}
-          fill={fill}
-        />
+        <CalendarViewWeek events={normalized} onEventClick={onEventClick} />
       ) : (
         <CalendarViewMonth
           events={normalized}
           onEventClick={onEventClick}
           maxVisibleLanes={maxVisibleLanes}
           onMoreClick={onMoreClick}
-          fill={fill}
         />
       )}
     </div>
@@ -1260,7 +1245,7 @@ interface CalendarViewProps
     Omit<CalendarViewProviderProps, "children">,
     Pick<
       CalendarViewGridProps,
-      "events" | "onEventClick" | "maxVisibleLanes" | "onMoreClick" | "fill"
+      "events" | "onEventClick" | "maxVisibleLanes" | "onMoreClick"
     > {}
 
 /**
@@ -1268,15 +1253,16 @@ interface CalendarViewProps
  * calendars sharing one set of controls, compose `CalendarViewProvider`,
  * `CalendarViewControls`, and multiple `CalendarViewGrid`s instead.
  *
- * Sizes itself to its content by default; pass `fill` to stretch to the width
- * and height of a parent that has its own height.
+ * Takes the full width and height of its parent. When the parent has no height
+ * of its own the calendar falls back to its natural size — week rows at 6rem,
+ * the week view's time grid at 26rem — so it drops into a page flow unchanged;
+ * give the parent a height and the rows divide it instead.
  */
 function CalendarView({
   events,
   onEventClick,
   maxVisibleLanes,
   onMoreClick,
-  fill = false,
   month,
   defaultMonth,
   onMonthChange,
@@ -1305,14 +1291,7 @@ function CalendarView({
     >
       <div
         data-slot="calendar-view"
-        data-fill={fill ? "" : undefined}
-        className={cn(
-          "flex w-full flex-col gap-2",
-          // h-full resolves to the content height when the parent has none,
-          // so this stays a no-op until the calendar is actually given room.
-          fill && "h-full min-h-0",
-          className
-        )}
+        className={cn("flex h-full min-h-0 w-full flex-col gap-2", className)}
         {...props}
       >
         <CalendarViewControls />
@@ -1321,7 +1300,6 @@ function CalendarView({
           onEventClick={onEventClick}
           maxVisibleLanes={maxVisibleLanes}
           onMoreClick={onMoreClick}
-          fill={fill}
         />
       </div>
     </CalendarViewProvider>

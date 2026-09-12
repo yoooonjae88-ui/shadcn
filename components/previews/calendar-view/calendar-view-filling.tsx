@@ -34,18 +34,14 @@ const events: CalendarEvent[] = [
   },
 ]
 
-// By default the calendar sizes to its content. `fill` makes it take the width
-// AND height of its parent: the month's week rows share the leftover height
-// (never dropping below their floor), and in Week view the time grid takes
-// what's left and scrolls inside instead of stopping at its usual cap.
-//
-// The parent supplies the height — a fixed-height box here, but `flex-1` in a
-// column or a grid track works the same way. Rows never shrink past a legible
-// floor, so a container too short for the whole month scrolls instead.
-export function CalendarViewFillExample() {
+// Give the parent a height and the calendar takes all of it: the week rows
+// divide the space between them rather than staying a fixed 6rem each. Nothing
+// to switch on — a parent with no height of its own still gets the natural
+// size, so the same markup works in a page flow.
+export function CalendarViewFillingExample() {
   return (
     <div className="h-[40rem] w-full rounded-xl border p-3">
-      <CalendarView fill defaultMonth={new Date(2026, 6, 1)} events={events} />
+      <CalendarView defaultMonth={new Date(2026, 6, 1)} events={events} />
     </div>
   )
 }
