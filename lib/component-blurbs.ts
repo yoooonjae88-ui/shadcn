@@ -42,6 +42,7 @@ const useCases: Record<string, string> = {
   pigeon: "playful 3D flourishes and easter eggs",
   popover: "quick actions, feedback prompts, and inline forms",
   progress: "showing task and upload progress",
+  questionnaire: "onboarding surveys, setup wizards, and multi-step forms",
   "radio-group": "choosing one option from a few",
   rating: "star ratings and feedback scores",
   "search-input": "compact, expandable search",

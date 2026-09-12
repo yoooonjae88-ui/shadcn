@@ -1556,6 +1556,23 @@
       ]
     },
     {
+      "name": "questionnaire",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Questionnaire",
+      "description": "A multi-step question flow, following shadcn/ui's Base UI questionnaire. Unlike the other items here it wraps shadcn's own headless primitive (the @shadcn/react npm package, NOT Base UI), which owns the ordered items, the active item, answer state, validation, progress and keyboard navigation — the page, card or dialog around it owns closing, persistence and transport. Composes Questionnaire with QuestionnaireProgress, QuestionnaireItem (name / required / multiple / disabled), QuestionnaireTitle and QuestionnaireDescription, QuestionnaireChoices holding QuestionnaireChoice (radio by default, checkbox under `multiple`, each with an optional QuestionnaireChoiceDescription) and an optional QuestionnaireInput for a freeform answer, QuestionnaireError for validation, and a QuestionnaireActions row of QuestionnairePrevious / QuestionnaireSkip / QuestionnaireNext / QuestionnaireSubmit that reuse the registry Button's variants and sizes. Inactive items stay mounted as hidden, inert fieldsets so answers and server-rendered markup survive navigation, and the whole thing submits as ordinary form data. Set `shortcuts` to \"letters\" or \"numbers\" to bind and badge per-choice answer keys. Every colour resolves from theme tokens.",
+      "dependencies": ["@shadcn/react", "lucide-react"],
+      "registryDependencies": ["@private/button"],
+      "files": [
+        {
+          "path": "registry/questionnaire/questionnaire.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "radio-group",
       "type": "registry:ui",
       "meta": {

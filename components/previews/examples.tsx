@@ -35,6 +35,7 @@ import { mentionExamples } from "@/components/previews/mention"
 import { paginationExamples } from "@/components/previews/pagination"
 import { popoverExamples } from "@/components/previews/popover"
 import { progressExamples } from "@/components/previews/progress"
+import { questionnaireExamples } from "@/components/previews/questionnaire"
 import { radioGroupExamples } from "@/components/previews/radio-group"
 import { ratingExamples } from "@/components/previews/rating"
 import { segmentedExamples } from "@/components/previews/segmented"
@@ -92,6 +93,7 @@ const exampleOverrides: Record<string, PreviewExample[]> = {
   pagination: paginationExamples,
   popover: popoverExamples,
   progress: progressExamples,
+  questionnaire: questionnaireExamples,
   "radio-group": radioGroupExamples,
   rating: ratingExamples,
   segmented: segmentedExamples,
