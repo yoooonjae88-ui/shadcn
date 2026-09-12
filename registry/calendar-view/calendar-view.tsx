@@ -669,9 +669,11 @@ function EventBarSegment({
 function CalendarViewWeek({
   events,
   onEventClick,
+  fill,
 }: {
   events: NormalizedEvent[]
   onEventClick?: (event: CalendarEvent) => void
+  fill?: boolean
 }) {
   const {
     cursor,
@@ -725,7 +727,7 @@ function CalendarViewWeek({
   const hours = Array.from({ length: 23 }, (_, i) => i + 1)
 
   return (
-    <div className="flex flex-col">
+    <div className={cn("flex flex-col", fill && "min-h-0 flex-1")}>
       {/* Day headings */}
       <div className="grid grid-cols-[3rem_repeat(7,minmax(0,1fr))]">
         <div />
@@ -789,7 +791,10 @@ function CalendarViewWeek({
         data-slot="calendar-view-scroll"
         onScroll={(e) => syncScroll(e.currentTarget)}
         className={cn(
-          "max-h-[26rem] overflow-y-auto rounded-lg bg-muted/40",
+          "overflow-y-auto rounded-lg bg-muted/40",
+          // Self-sizing calendars cap the scroller so the page stays usable;
+          // a filling one hands it the leftover height instead.
+          fill ? "min-h-0 flex-1" : "max-h-[26rem]",
           hideScrollbar &&
             "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         )}
@@ -915,11 +920,13 @@ function CalendarViewMonth({
   onEventClick,
   maxVisibleLanes,
   onMoreClick,
+  fill,
 }: {
   events: NormalizedEvent[]
   onEventClick?: (event: CalendarEvent) => void
   maxVisibleLanes: number
   onMoreClick?: (date: Date, events: CalendarEvent[]) => void
+  fill?: boolean
 }) {
   const { cursor, weekStartsOn, selected, select } = useCalendarView()
 
@@ -954,7 +961,18 @@ function CalendarViewMonth({
       </div>
 
       {/* Week rows */}
-      <div className="flex flex-col gap-1" role="grid" aria-label={label}>
+      <div
+        className={cn(
+          "flex flex-col gap-1",
+          // Rows share the leftover height, but never shrink past their
+          // min-h-24 floor — so a container too short for six legible weeks
+          // scrolls instead of letting the rows spill out of it.
+          fill && "min-h-0 flex-1 overflow-y-auto",
+          fill && "[scrollbar-width:thin]"
+        )}
+        role="grid"
+        aria-label={label}
+      >
         {monthWeeks.map((week) => {
           const { segments, laneCount } = layoutWeek(week[0], events)
 
@@ -999,7 +1017,10 @@ function CalendarViewMonth({
             : laneCount + (overflows ? 1 : 0)
 
           return (
-            <div key={weekKey} className="relative min-h-24">
+            <div
+              key={weekKey}
+              className={cn("relative min-h-24", fill && "flex-1")}
+            >
               {/* Background layer: one clickable box per day — clicking
                   anywhere in the box (except an event or "+N more") selects
                   or deselects that date. */}
@@ -1145,6 +1166,15 @@ interface CalendarViewGridProps extends React.ComponentProps<"div"> {
    * or day detail.
    */
   onMoreClick?: (date: Date, events: CalendarEvent[]) => void
+  /**
+   * Stretch to fill the height it is given instead of sizing to its content.
+   * The month's week rows share the leftover height (never dropping below
+   * their `min-h-24` floor — a container too short for that scrolls instead
+   * of overflowing) and the week view's time grid takes the rest and scrolls
+   * inside it. The parent must have a height of its own — put this in a
+   * `h-*`, `flex-1`, or grid-sized box.
+   */
+  fill?: boolean
 }
 
 /**
@@ -1157,6 +1187,7 @@ function CalendarViewGrid({
   onEventClick,
   maxVisibleLanes = 3,
   onMoreClick,
+  fill = false,
   className,
   ...props
 }: CalendarViewGridProps) {
@@ -1195,17 +1226,27 @@ function CalendarViewGrid({
   return (
     <div
       data-slot="calendar-view-grid"
-      className={cn("@container flex w-full flex-col gap-2", className)}
+      data-fill={fill ? "" : undefined}
+      className={cn(
+        "@container flex w-full flex-col gap-2",
+        fill && "min-h-0 flex-1",
+        className
+      )}
       {...props}
     >
       {view === "week" ? (
-        <CalendarViewWeek events={normalized} onEventClick={onEventClick} />
+        <CalendarViewWeek
+          events={normalized}
+          onEventClick={onEventClick}
+          fill={fill}
+        />
       ) : (
         <CalendarViewMonth
           events={normalized}
           onEventClick={onEventClick}
           maxVisibleLanes={maxVisibleLanes}
           onMoreClick={onMoreClick}
+          fill={fill}
         />
       )}
     </div>
@@ -1219,19 +1260,23 @@ interface CalendarViewProps
     Omit<CalendarViewProviderProps, "children">,
     Pick<
       CalendarViewGridProps,
-      "events" | "onEventClick" | "maxVisibleLanes" | "onMoreClick"
+      "events" | "onEventClick" | "maxVisibleLanes" | "onMoreClick" | "fill"
     > {}
 
 /**
  * The all-in-one calendar: provider + controls + a single grid. For several
  * calendars sharing one set of controls, compose `CalendarViewProvider`,
  * `CalendarViewControls`, and multiple `CalendarViewGrid`s instead.
+ *
+ * Sizes itself to its content by default; pass `fill` to stretch to the width
+ * and height of a parent that has its own height.
  */
 function CalendarView({
   events,
   onEventClick,
   maxVisibleLanes,
   onMoreClick,
+  fill = false,
   month,
   defaultMonth,
   onMonthChange,
@@ -1260,7 +1305,14 @@ function CalendarView({
     >
       <div
         data-slot="calendar-view"
-        className={cn("flex w-full flex-col gap-2", className)}
+        data-fill={fill ? "" : undefined}
+        className={cn(
+          "flex w-full flex-col gap-2",
+          // h-full resolves to the content height when the parent has none,
+          // so this stays a no-op until the calendar is actually given room.
+          fill && "h-full min-h-0",
+          className
+        )}
         {...props}
       >
         <CalendarViewControls />
@@ -1269,6 +1321,7 @@ function CalendarView({
           onEventClick={onEventClick}
           maxVisibleLanes={maxVisibleLanes}
           onMoreClick={onMoreClick}
+          fill={fill}
         />
       </div>
     </CalendarViewProvider>

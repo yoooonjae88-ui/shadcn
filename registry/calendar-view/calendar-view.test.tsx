@@ -7,6 +7,7 @@ import {
   CalendarViewControls,
   CalendarViewGrid,
   CalendarViewProvider,
+  type CalendarEvent,
 } from "@/registry/calendar-view/calendar-view"
 
 const events = [
@@ -384,5 +385,77 @@ describe("CalendarView composition", () => {
       /within a <CalendarViewProvider>/
     )
     error.mockRestore()
+  })
+})
+
+describe("CalendarView fill", () => {
+  const events: CalendarEvent[] = [
+    { id: "a", title: "Design review", start: "2026-07-02" },
+  ]
+
+  function root() {
+    return document.querySelector("[data-slot='calendar-view']") as HTMLElement
+  }
+  function grid() {
+    return document.querySelector(
+      "[data-slot='calendar-view-grid']"
+    ) as HTMLElement
+  }
+
+  it("sizes to its content by default", () => {
+    render(<CalendarView defaultMonth={new Date(2026, 6, 1)} events={events} />)
+    expect(root()).not.toHaveAttribute("data-fill")
+    expect(root()).not.toHaveClass("h-full")
+    expect(grid()).not.toHaveClass("flex-1")
+    // The month's week rows keep their floor and do not stretch.
+    const rows = document.querySelectorAll("[role='grid'] > div")
+    expect(rows.length).toBeGreaterThan(0)
+    for (const row of rows) expect(row).not.toHaveClass("flex-1")
+  })
+
+  it("stretches every layer when fill is set", () => {
+    render(
+      <CalendarView fill defaultMonth={new Date(2026, 6, 1)} events={events} />
+    )
+    expect(root()).toHaveAttribute("data-fill")
+    expect(root()).toHaveClass("h-full", "min-h-0")
+    expect(grid()).toHaveClass("flex-1", "min-h-0")
+
+    // Week rows share the leftover height without losing their floor.
+    const rows = document.querySelectorAll("[role='grid'] > div")
+    for (const row of rows) expect(row).toHaveClass("flex-1", "min-h-24")
+  })
+
+  it("hands the week view's time grid the leftover height instead of capping it", async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(
+      <CalendarView defaultMonth={new Date(2026, 6, 1)} events={events} />
+    )
+    await user.click(screen.getByRole("button", { name: "week" }))
+    const capped = document.querySelector(
+      "[data-slot='calendar-view-scroll']"
+    ) as HTMLElement
+    expect(capped).toHaveClass("max-h-[26rem]")
+    expect(capped).not.toHaveClass("flex-1")
+
+    rerender(
+      <CalendarView fill defaultMonth={new Date(2026, 6, 1)} events={events} />
+    )
+    await user.click(screen.getByRole("button", { name: "week" }))
+    const filled = document.querySelector(
+      "[data-slot='calendar-view-scroll']"
+    ) as HTMLElement
+    expect(filled).toHaveClass("flex-1", "min-h-0")
+    expect(filled).not.toHaveClass("max-h-[26rem]")
+  })
+
+  it("passes fill through the composed provider + grid API", () => {
+    render(
+      <CalendarViewProvider defaultMonth={new Date(2026, 6, 1)}>
+        <CalendarViewGrid fill events={events} />
+      </CalendarViewProvider>
+    )
+    expect(grid()).toHaveAttribute("data-fill")
+    expect(grid()).toHaveClass("flex-1", "min-h-0")
   })
 })
