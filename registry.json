@@ -729,6 +729,57 @@
       ]
     },
     {
+      "name": "message-scroller",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Message Scroller",
+      "description": "A chat transcript that follows the live edge while a reply streams, following shadcn/ui's Base UI message-scroller. Like the questionnaire it wraps shadcn's own headless primitive (the @shadcn/react npm package, NOT Base UI), which owns scroll state, opening position, auto-scroll, turn anchoring, scroll commands and visibility tracking. Composes MessageScrollerProvider (autoScroll, defaultScrollPosition of start / end / last-anchor, scrollEdgeThreshold, scrollMargin) around MessageScroller, MessageScrollerViewport (the scrolling element, which preserves the visible row when older messages are prepended), MessageScrollerContent (a role=\"log\" live region so new messages are announced) and one MessageScrollerItem per row — mark the user's turn with `scrollAnchor` and the view settles there rather than yanking to the bottom. MessageScrollerButton scrolls to either end, renders as the registry Button, and slides away while there is nothing in its direction. Also exports the useMessageScroller, useMessageScrollerScrollable and useMessageScrollerVisibility hooks. Carries the `scroll-fade-b` utility in its `css`, which softens the bottom edge while there is more below — it ships with newer versions of shadcn/tailwind.css than this registry pins. Every colour resolves from theme tokens.",
+      "dependencies": ["@shadcn/react", "lucide-react"],
+      "registryDependencies": ["@private/button"],
+      "css": {
+        "@property --scroll-fade-b": {
+          "syntax": "\"<length-percentage>\"",
+          "inherits": "false",
+          "initial-value": "0px"
+        },
+        "@keyframes scroll-fade-reveal-b": {
+          "from": {
+            "--scroll-fade-b": "var(--_scroll-fade-size-b, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))))"
+          },
+          "to": {
+            "--scroll-fade-b": "0px"
+          }
+        },
+        "@utility scroll-fade-b": {
+          "--_scroll-fade-size-b": "var(--scroll-fade-b-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))))",
+          "--scroll-fade-mask": "linear-gradient(to bottom, #000 0, #000 calc(100% - var(--scroll-fade-b, 0px)), transparent 100%)",
+          "-webkit-mask-image": "var(--scroll-fade-mask)",
+          "mask-image": "var(--scroll-fade-mask)",
+          "-webkit-mask-composite": "source-in",
+          "mask-composite": "intersect",
+          "-webkit-mask-repeat": "no-repeat",
+          "mask-repeat": "no-repeat",
+          "@supports (animation-timeline: scroll())": {
+            "animation": "scroll-fade-reveal-b 1ms ease-in-out",
+            "animation-timeline": "scroll(self y)",
+            "animation-range": "calc(100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))) 100%",
+            "animation-fill-mode": "both"
+          },
+          "@supports not (animation-timeline: scroll())": {
+            "--scroll-fade-b": "var(--_scroll-fade-size-b)"
+          }
+        }
+      },
+      "files": [
+        {
+          "path": "registry/message-scroller/message-scroller.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "multi-select",
       "type": "registry:ui",
       "meta": {

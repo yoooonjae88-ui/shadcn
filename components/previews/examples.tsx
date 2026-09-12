@@ -32,6 +32,7 @@ import { inputGroupExamples } from "@/components/previews/input-group"
 import { markerExamples } from "@/components/previews/marker"
 import { masonryExamples } from "@/components/previews/masonry"
 import { mentionExamples } from "@/components/previews/mention"
+import { messageScrollerExamples } from "@/components/previews/message-scroller"
 import { paginationExamples } from "@/components/previews/pagination"
 import { popoverExamples } from "@/components/previews/popover"
 import { progressExamples } from "@/components/previews/progress"
@@ -90,6 +91,7 @@ const exampleOverrides: Record<string, PreviewExample[]> = {
   marker: markerExamples,
   masonry: masonryExamples,
   mention: mentionExamples,
+  "message-scroller": messageScrollerExamples,
   pagination: paginationExamples,
   popover: popoverExamples,
   progress: progressExamples,

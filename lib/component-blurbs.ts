@@ -37,6 +37,7 @@ const useCases: Record<string, string> = {
   masthead: "page banners and hero sections",
   mention: "tagging people in comments and messages",
   menu: "sidebar and app navigation",
+  "message-scroller": "chat transcripts that follow the live edge while streaming",
   "multi-select": "picking several people or options at once",
   pagination: "navigating long lists and tables",
   pigeon: "playful 3D flourishes and easter eggs",
