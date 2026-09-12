@@ -848,8 +848,13 @@ describe("variant values that intentionally coincide", () => {
 // fires — editing it changes nothing, silently. These two checks keep the cva
 // config the single source of truth.
 describe("cva defaultVariants stay authoritative", () => {
+  // Read the sources the way every platform spells them: `readdirSync` hands
+  // back `card\card.tsx` on Windows, and a checkout without a .gitattributes
+  // gets CRLF there, which would quietly stop the patterns below from matching
+  // anything at all. Both are normalised so the guards look the same everywhere.
   const sources = fs
     .readdirSync("registry", { recursive: true, encoding: "utf8" })
+    .map((p) => p.replace(/\\/g, "/"))
     .filter((p) => p.endsWith(".tsx") && !p.includes(".test."))
     .map((p) => `registry/${p}`)
     .concat(
@@ -858,20 +863,44 @@ describe("cva defaultVariants stay authoritative", () => {
         .filter((p) => p.endsWith(".tsx"))
         .map((p) => `components/ui/${p}`)
     )
-    .map((path) => ({ path, src: fs.readFileSync(path, "utf8") }))
+    .map((file) => ({
+      path: file,
+      src: fs.readFileSync(file, "utf8").replace(/\r\n/g, "\n"),
+    }))
     .filter(({ src }) => src.includes("cva("))
 
-  it("scans the registry sources", () => {
-    // Guards that silently scan nothing pass for the wrong reason.
+  /** Every `const xDefaults = {...} as const` paired with the cva below it. */
+  function defaultsPairs(src: string) {
+    return [
+      ...src.matchAll(/const (\w+) = \{([^}]*)\} as const\n\nconst (\w+) = cva\(/g),
+    ].map((m) => ({
+      constName: m[1],
+      entries: [...m[2].matchAll(/(\w+):\s*"([\w-]+)"/g)].map((e) => ({
+        key: e[1],
+        value: e[2],
+      })),
+      cvaName: m[3],
+    }))
+  }
+
+  it("parses every source it scans", () => {
+    // A guard that matches nothing passes for the wrong reason, so assert the
+    // parse actually found things rather than naming one file that could be
+    // renamed out from under it.
     expect(sources.length).toBeGreaterThan(20)
-    expect(sources.map((s) => s.path)).toContain("registry/card/card.tsx")
+    const parsed = sources.filter(({ src }) => defaultsPairs(src).length > 0)
+    expect(parsed.length).toBe(sources.length)
+    expect(
+      sources.filter(({ src }) => /^function \w+\(\{[\s\S]*?\n\}\n/m.test(src))
+        .length
+    ).toBeGreaterThan(20)
   })
 
   it("declares defaultVariants as a named constant, never inline", () => {
     const inline: string[] = []
-    for (const { path, src } of sources) {
+    for (const { path: file, src } of sources) {
       for (const m of src.matchAll(/defaultVariants:\s*(.)/g)) {
-        if (m[1] === "{") inline.push(path)
+        if (m[1] === "{") inline.push(file)
       }
     }
     expect(inline).toEqual([])
@@ -879,20 +908,8 @@ describe("cva defaultVariants stay authoritative", () => {
 
   it("never re-hardcodes a default that a cva constant already defines", () => {
     const shadowed: string[] = []
-    for (const { path, src } of sources) {
-      // Pair each defaults constant with the cva declared right below it.
-      const pairs = [
-        ...src.matchAll(
-          /const (\w+) = \{([^}]*)\} as const\n\nconst (\w+) = cva\(/g
-        ),
-      ].map((m) => ({
-        constName: m[1],
-        entries: [...m[2].matchAll(/(\w+):\s*"([\w-]+)"/g)].map((e) => ({
-          key: e[1],
-          value: e[2],
-        })),
-        cvaName: m[3],
-      }))
+    for (const { path: file, src } of sources) {
+      const pairs = defaultsPairs(src)
 
       // Only a component that actually calls that cva can shadow its
       // defaults — a same-named prop elsewhere in the file (a forwarded
@@ -906,7 +923,7 @@ describe("cva defaultVariants stay authoritative", () => {
           for (const { key, value } of entries) {
             if (new RegExp(`^\\s{2}${key} = "${value}",$`, "m").test(body)) {
               shadowed.push(
-                `${path} ${fn[1]}: ${key} = "${value}" (use ${constName}.${key})`
+                `${file} ${fn[1]}: ${key} = "${value}" (use ${constName}.${key})`
               )
             }
           }
