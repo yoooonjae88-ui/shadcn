@@ -32,6 +32,7 @@ const useCases: Record<string, string> = {
   "file-upload": "attachments, image uploads, and drag-and-drop",
   input: "forms, search fields, and text entry",
   "input-group": "search bars, URL fields, and composer toolbars",
+  marker: "status lines, system notes, and labelled dividers in a thread",
   masonry: "photo walls, card feeds, and dashboards",
   masthead: "page banners and hero sections",
   mention: "tagging people in comments and messages",

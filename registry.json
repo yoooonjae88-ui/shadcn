@@ -79,6 +79,22 @@
       ]
     },
     {
+      "name": "marker",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Marker",
+      "description": "Displays an inline status, system note, bordered row or labelled separator in a conversation, following shadcn/ui's Base UI marker. Composes Marker with a decorative MarkerIcon (aria-hidden, so the adjacent text carries the meaning) and MarkerContent. Three variants: `default` for an inline note, `border` for a row closed by a hairline, and `separator` for a centred label with a decorative rule on each side — the rules are ::before/::after, so the label stays the only announced content, and role=\"separator\" should NOT be added or the label would be hidden. The root is polymorphic through Base UI's useRender: `render={<a href=\"...\" />}` or `render={<button />}` makes it a real, focusable link or button, and `role` is forwarded so a streaming step can be role=\"status\". Exports markerVariants for composing the styles into custom components. Every colour resolves from theme tokens.",
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "files": [
+        {
+          "path": "registry/marker/marker.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "masonry",
       "type": "registry:ui",
       "meta": {

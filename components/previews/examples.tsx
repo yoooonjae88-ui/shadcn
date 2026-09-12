@@ -29,6 +29,7 @@ import { fieldExamples } from "@/components/previews/field"
 import { fileUploadExamples } from "@/components/previews/file-upload"
 import { inputExamples } from "@/components/previews/input"
 import { inputGroupExamples } from "@/components/previews/input-group"
+import { markerExamples } from "@/components/previews/marker"
 import { masonryExamples } from "@/components/previews/masonry"
 import { mentionExamples } from "@/components/previews/mention"
 import { paginationExamples } from "@/components/previews/pagination"
@@ -85,6 +86,7 @@ const exampleOverrides: Record<string, PreviewExample[]> = {
   "file-upload": fileUploadExamples,
   input: inputExamples,
   "input-group": inputGroupExamples,
+  marker: markerExamples,
   masonry: masonryExamples,
   mention: mentionExamples,
   pagination: paginationExamples,
