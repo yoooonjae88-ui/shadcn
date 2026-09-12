@@ -20,6 +20,7 @@ import { chatBubbleExamples } from "@/components/previews/chat-bubble"
 import { checkboxExamples } from "@/components/previews/checkbox"
 import { comboboxExamples } from "@/components/previews/combobox"
 import { datePickerExamples } from "@/components/previews/date-picker"
+import { contextMenuExamples } from "@/components/previews/context-menu"
 import { dividerExamples } from "@/components/previews/divider"
 import { drawerExamples } from "@/components/previews/drawer"
 import { dropdownExamples } from "@/components/previews/dropdown"
@@ -74,6 +75,7 @@ const exampleOverrides: Record<string, PreviewExample[]> = {
   "chat-bubble": chatBubbleExamples,
   checkbox: checkboxExamples,
   combobox: comboboxExamples,
+  "context-menu": contextMenuExamples,
   "date-picker": datePickerExamples,
   divider: dividerExamples,
   drawer: drawerExamples,

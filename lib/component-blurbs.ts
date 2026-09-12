@@ -20,6 +20,7 @@ const useCases: Record<string, string> = {
   "chat-window": "full messaging experiences",
   checkbox: "multi-choice forms and settings",
   combobox: "searchable selects and option pickers",
+  "context-menu": "right-click actions on files, rows, and canvas items",
   "conversation-card": "chat lists and inboxes",
   "data-grid": "tables, admin panels, and data-heavy screens",
   "date-picker": "picking dates and date ranges in forms, filters, and booking flows",

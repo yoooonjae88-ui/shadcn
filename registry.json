@@ -238,6 +238,22 @@
       ]
     },
     {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Navigation"
+      },
+      "title": "Context Menu",
+      "description": "Displays a menu of actions triggered by a right click (long press on touch), following shadcn/ui's Base UI context-menu and built on Base UI's ContextMenu primitives. Composes ContextMenu / ContextMenuTrigger / ContextMenuContent with ContextMenuGroup and ContextMenuLabel for titled sections, ContextMenuSeparator between them, ContextMenuItem (with an `inset` prop for the indicator column and a `destructive` variant), ContextMenuShortcut for a trailing keyboard hint, ContextMenuCheckboxItem and ContextMenuRadioGroup / ContextMenuRadioItem for toggles and exclusive choices, and ContextMenuSub / ContextMenuSubTrigger / ContextMenuSubContent for nested menus. The content takes side / sideOffset / align / alignOffset to place the popup (including the logical `inline-start` / `inline-end` sides, which mirror under dir=\"rtl\" along with the submenu chevron), flips and scrolls to stay in the viewport, and animates on open and close. Every colour resolves from theme tokens, and the popup and item surfaces are shared with the registry dropdown so both menus look identical.",
+      "dependencies": ["@base-ui/react", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/context-menu/context-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "masthead",
       "type": "registry:ui",
       "meta": {
