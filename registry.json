@@ -34,6 +34,21 @@
       ]
     },
     {
+      "name": "aspect-ratio",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Layout"
+      },
+      "title": "Aspect Ratio",
+      "description": "Displays content within a desired ratio, following shadcn/ui's Base UI aspect-ratio. Base UI ships no aspect-ratio primitive, so this is plain CSS and pulls in no npm dependency: the required numeric `ratio` prop rides in on a `--ratio` custom property and Tailwind's `aspect-(--ratio)` turns it into `aspect-ratio: var(--ratio)`. Pass the ratio as a division — `ratio={16 / 9}`, `{1 / 1}`, `{9 / 16}` — and the box holds that shape at any width, so an image, video or embed inside reserves its height before it loads instead of shifting the page. The element is positioned, so children fill it with `absolute inset-0 size-full object-cover` (or next/image's `fill`). Accepts every div prop, merges `className` and `style`, and carries `data-slot=\"aspect-ratio\"`.",
+      "files": [
+        {
+          "path": "registry/aspect-ratio/aspect-ratio.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "divider",
       "type": "registry:ui",
       "meta": {

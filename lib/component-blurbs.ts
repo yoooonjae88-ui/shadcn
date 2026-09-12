@@ -7,6 +7,7 @@ const useCases: Record<string, string> = {
   alert: "inline messages and status callouts",
   "alert-dialog": "confirmations and destructive-action prompts",
   anchor: "table-of-contents navigation on long pages",
+  "aspect-ratio": "locking images, video, and embeds to a fixed shape",
   avatar: "profile pictures, presence indicators, and team lists",
   badge: "counts, statuses, and notification dots",
   breadcrumb: "showing users where they are in your app",

@@ -7,6 +7,7 @@ import { accordionExamples } from "@/components/previews/accordion"
 import { alertExamples } from "@/components/previews/alert"
 import { alertDialogExamples } from "@/components/previews/alert-dialog"
 import { anchorExamples } from "@/components/previews/anchor"
+import { aspectRatioExamples } from "@/components/previews/aspect-ratio"
 import { avatarExamples } from "@/components/previews/avatar"
 import { badgeExamples } from "@/components/previews/badge"
 import { breadcrumbExamples } from "@/components/previews/breadcrumb"
@@ -61,6 +62,7 @@ const exampleOverrides: Record<string, PreviewExample[]> = {
   alert: alertExamples,
   "alert-dialog": alertDialogExamples,
   anchor: anchorExamples,
+  "aspect-ratio": aspectRatioExamples,
   avatar: avatarExamples,
   badge: badgeExamples,
   breadcrumb: breadcrumbExamples,
