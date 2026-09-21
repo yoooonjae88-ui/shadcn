@@ -13,12 +13,12 @@ export function BorderBeamControlsExample() {
         className="relative rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
       >
         Upgrade
-        <BorderBeam size={40} duration={4} />
+        <BorderBeam size={24} duration={4} />
       </button>
 
       <span className="relative inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-medium">
         Beta
-        <BorderBeam size={28} duration={4} borderWidth={1} />
+        <BorderBeam size={16} duration={4} borderWidth={1} />
       </span>
     </div>
   )

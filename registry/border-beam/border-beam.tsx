@@ -16,6 +16,12 @@ import { cn } from "@/lib/utils"
  * animated by one CSS keyframe — no JS ticks, and it stops under
  * prefers-reduced-motion. Both gradient ends resolve from a --border-beam-*
  * theme token unless the caller passes colours of their own.
+ *
+ * How gently the beam rounds a corner comes down to two things, because it
+ * swings through the whole right angle over the length of that corner's arc:
+ * a browser caps the lap's rounding at half the box's shorter side, so a wide
+ * strip of a box turns more sharply than a card does, and a shorter
+ * `duration` runs the whole lap — corners included — that much faster.
  * -------------------------------------------------------------------------- */
 
 interface BorderBeamProps extends React.ComponentProps<"div"> {
