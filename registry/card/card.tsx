@@ -3,6 +3,10 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+const cardDefaults = {
+  variant: "default",
+} as const
+
 const cardVariants = cva(
   "flex flex-col gap-6 overflow-hidden rounded-xl border border-card-border bg-card py-6 text-card-foreground",
   {
@@ -13,9 +17,7 @@ const cardVariants = cva(
         ghost: "border-transparent",
       },
     },
-    defaultVariants: {
-      variant: "default",
-    },
+    defaultVariants: cardDefaults,
   }
 )
 

@@ -17,6 +17,8 @@ type InputStatus = "error" | "warning"
  * (:focus-within also matches the element itself, so the same classes work on
  * the bare OTP cells).
  */
+const inputDefaults = { variant: "filled", size: "middle" } as const
+
 const inputVariants = cva(
   "relative inline-flex w-full min-w-0 cursor-text items-center gap-1.5 border border-transparent bg-clip-padding text-foreground transition-[color,background-color,border-color,box-shadow] outline-none [&_svg]:shrink-0",
   {
@@ -42,7 +44,7 @@ const inputVariants = cva(
       // the other sides for layout stability, square the corners, flush text.
       { variant: "underlined", className: "rounded-none px-0" },
     ],
-    defaultVariants: { variant: "filled", size: "middle" },
+    defaultVariants: inputDefaults,
   }
 )
 
@@ -69,6 +71,8 @@ function inputStatusClasses(variant: InputVariant, status?: InputStatus) {
   }
 }
 
+const inputAddonDefaults = { size: "middle" } as const
+
 const inputAddonVariants = cva(
   "flex shrink-0 items-center justify-center bg-input-addon text-muted-foreground [&_svg]:shrink-0",
   {
@@ -80,7 +84,7 @@ const inputAddonVariants = cva(
         large: "rounded-lg px-3 text-base [&_svg:not([class*='size-'])]:size-4",
       },
     },
-    defaultVariants: { size: "middle" },
+    defaultVariants: inputAddonDefaults,
   }
 )
 
@@ -245,8 +249,8 @@ function InputBase({
   classNames,
   styles,
   style,
-  size = "middle",
-  variant = "filled",
+  size = inputDefaults.size,
+  variant = inputDefaults.variant,
   status,
   disabled,
   readOnly,
@@ -467,8 +471,8 @@ function InputTextArea({
   classNames,
   styles,
   style,
-  size = "middle",
-  variant = "filled",
+  size = inputDefaults.size,
+  variant = inputDefaults.variant,
   status,
   disabled,
   readOnly,
@@ -646,8 +650,8 @@ function InputSearch({
   onSearch,
   onPressEnter,
   onClear,
-  size = "middle",
-  variant = "filled",
+  size = inputDefaults.size,
+  variant = inputDefaults.variant,
   status,
   disabled,
   ref,
@@ -826,8 +830,8 @@ function InputOTP({
   formatter,
   mask = false,
   separator,
-  size = "middle",
-  variant = "filled",
+  size = inputDefaults.size,
+  variant = inputDefaults.variant,
   status,
   disabled,
   autoFocus,

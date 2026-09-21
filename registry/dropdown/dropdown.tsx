@@ -236,6 +236,10 @@ function DropdownMenuContent({
   )
 }
 
+const dropdownMenuItemDefaults = {
+  variant: "default",
+} as const
+
 const dropdownMenuItemVariants = cva(
   "relative flex w-full cursor-default items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none transition-colors select-none data-disabled:pointer-events-none data-disabled:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
@@ -247,9 +251,7 @@ const dropdownMenuItemVariants = cva(
           "text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive [&_svg]:text-destructive",
       },
     },
-    defaultVariants: {
-      variant: "default",
-    },
+    defaultVariants: dropdownMenuItemDefaults,
   }
 )
 
@@ -262,7 +264,7 @@ interface DropdownMenuItemProps
 
 function DropdownMenuItem({
   className,
-  variant = "default",
+  variant = dropdownMenuItemDefaults.variant,
   inset,
   ...props
 }: DropdownMenuItemProps) {
@@ -280,7 +282,7 @@ function DropdownMenuItem({
 /** Item that renders as an anchor and closes the menu on activation. */
 function DropdownMenuLinkItem({
   className,
-  variant = "default",
+  variant = dropdownMenuItemDefaults.variant,
   inset,
   ...props
 }: React.ComponentProps<typeof MenuPrimitive.LinkItem> &

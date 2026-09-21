@@ -7,6 +7,10 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+const radioGroupItemDefaults = {
+  size: "default",
+} as const
+
 const radioGroupItemVariants = cva(
   "peer group/radio-group-item relative aspect-square shrink-0 rounded-full bg-radio outline-none transition-[background-color,box-shadow] select-none after:absolute after:-inset-x-2 after:-inset-y-2 focus-visible:ring-3 focus-visible:ring-ring/50 data-checked:bg-radio-checked aria-invalid:ring-2 aria-invalid:ring-destructive/40 data-checked:aria-invalid:bg-destructive disabled:cursor-not-allowed disabled:opacity-50 data-disabled:cursor-not-allowed data-disabled:opacity-50",
   {
@@ -17,9 +21,7 @@ const radioGroupItemVariants = cva(
         lg: "size-5",
       },
     },
-    defaultVariants: {
-      size: "default",
-    },
+    defaultVariants: radioGroupItemDefaults,
   }
 )
 

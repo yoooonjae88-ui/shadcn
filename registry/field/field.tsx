@@ -60,6 +60,10 @@ function FieldLegend({
   )
 }
 
+const fieldGroupDefaults = {
+  variant: "default",
+} as const
+
 const fieldGroupVariants = cva(
   "group/field-group @container/field-group flex w-full flex-col gap-7 [&>[data-slot=field-group]]:gap-4",
   {
@@ -72,9 +76,7 @@ const fieldGroupVariants = cva(
           "gap-0 rounded-lg border bg-background [&>[data-slot=field]]:p-4",
       },
     },
-    defaultVariants: {
-      variant: "default",
-    },
+    defaultVariants: fieldGroupDefaults,
   }
 )
 
@@ -85,7 +87,7 @@ const fieldGroupVariants = cva(
  */
 function FieldGroup({
   className,
-  variant = "default",
+  variant = fieldGroupDefaults.variant,
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof fieldGroupVariants>) {
   return (
@@ -97,6 +99,10 @@ function FieldGroup({
     />
   )
 }
+
+const fieldDefaults = {
+  orientation: "vertical",
+} as const
 
 const fieldVariants = cva(
   "group/field flex w-full gap-2 data-[invalid=true]:text-destructive",
@@ -117,16 +123,14 @@ const fieldVariants = cva(
         ],
       },
     },
-    defaultVariants: {
-      orientation: "vertical",
-    },
+    defaultVariants: fieldDefaults,
   }
 )
 
 /** A single field: label + control (+ description + error), laid out by orientation. */
 function Field({
   className,
-  orientation = "vertical",
+  orientation = fieldDefaults.orientation,
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof fieldVariants>) {
   return (

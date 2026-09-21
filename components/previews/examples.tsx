@@ -7,6 +7,7 @@ import { accordionExamples } from "@/components/previews/accordion"
 import { alertExamples } from "@/components/previews/alert"
 import { alertDialogExamples } from "@/components/previews/alert-dialog"
 import { anchorExamples } from "@/components/previews/anchor"
+import { aspectRatioExamples } from "@/components/previews/aspect-ratio"
 import { avatarExamples } from "@/components/previews/avatar"
 import { badgeExamples } from "@/components/previews/badge"
 import { breadcrumbExamples } from "@/components/previews/breadcrumb"
@@ -18,21 +19,24 @@ import { carouselExamples } from "@/components/previews/carousel"
 import { chatBubbleExamples } from "@/components/previews/chat-bubble"
 import { checkboxExamples } from "@/components/previews/checkbox"
 import { comboboxExamples } from "@/components/previews/combobox"
+import { datePickerExamples } from "@/components/previews/date-picker"
+import { contextMenuExamples } from "@/components/previews/context-menu"
 import { dividerExamples } from "@/components/previews/divider"
 import { drawerExamples } from "@/components/previews/drawer"
 import { dropdownExamples } from "@/components/previews/dropdown"
 import { emptyExamples } from "@/components/previews/empty"
 import { fieldExamples } from "@/components/previews/field"
 import { fileUploadExamples } from "@/components/previews/file-upload"
-import { flexExamples } from "@/components/previews/flex"
-import { gridExamples } from "@/components/previews/grid"
 import { inputExamples } from "@/components/previews/input"
 import { inputGroupExamples } from "@/components/previews/input-group"
+import { markerExamples } from "@/components/previews/marker"
 import { masonryExamples } from "@/components/previews/masonry"
 import { mentionExamples } from "@/components/previews/mention"
+import { messageScrollerExamples } from "@/components/previews/message-scroller"
 import { paginationExamples } from "@/components/previews/pagination"
 import { popoverExamples } from "@/components/previews/popover"
 import { progressExamples } from "@/components/previews/progress"
+import { questionnaireExamples } from "@/components/previews/questionnaire"
 import { radioGroupExamples } from "@/components/previews/radio-group"
 import { ratingExamples } from "@/components/previews/rating"
 import { segmentedExamples } from "@/components/previews/segmented"
@@ -62,6 +66,7 @@ const exampleOverrides: Record<string, PreviewExample[]> = {
   alert: alertExamples,
   "alert-dialog": alertDialogExamples,
   anchor: anchorExamples,
+  "aspect-ratio": aspectRatioExamples,
   avatar: avatarExamples,
   badge: badgeExamples,
   breadcrumb: breadcrumbExamples,
@@ -73,21 +78,24 @@ const exampleOverrides: Record<string, PreviewExample[]> = {
   "chat-bubble": chatBubbleExamples,
   checkbox: checkboxExamples,
   combobox: comboboxExamples,
+  "context-menu": contextMenuExamples,
+  "date-picker": datePickerExamples,
   divider: dividerExamples,
   drawer: drawerExamples,
   dropdown: dropdownExamples,
   empty: emptyExamples,
   field: fieldExamples,
   "file-upload": fileUploadExamples,
-  flex: flexExamples,
-  grid: gridExamples,
   input: inputExamples,
   "input-group": inputGroupExamples,
+  marker: markerExamples,
   masonry: masonryExamples,
   mention: mentionExamples,
+  "message-scroller": messageScrollerExamples,
   pagination: paginationExamples,
   popover: popoverExamples,
   progress: progressExamples,
+  questionnaire: questionnaireExamples,
   "radio-group": radioGroupExamples,
   rating: ratingExamples,
   segmented: segmentedExamples,

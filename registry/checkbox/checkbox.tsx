@@ -7,6 +7,10 @@ import { Check, Minus } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+const checkboxDefaults = {
+  size: "default",
+} as const
+
 const checkboxVariants = cva(
   "group peer relative inline-flex shrink-0 items-center justify-center rounded-[0.3rem] bg-checkbox text-checkbox-indicator outline-none transition-[background-color,box-shadow] select-none after:absolute after:-inset-x-2 after:-inset-y-2 focus-visible:ring-3 focus-visible:ring-ring/50 data-checked:bg-checkbox-checked data-indeterminate:bg-checkbox-checked aria-invalid:ring-2 aria-invalid:ring-destructive/40 data-checked:aria-invalid:bg-destructive data-indeterminate:aria-invalid:bg-destructive disabled:cursor-not-allowed disabled:opacity-50 data-disabled:cursor-not-allowed data-disabled:opacity-50",
   {
@@ -17,9 +21,7 @@ const checkboxVariants = cva(
         lg: "size-5 [&_svg]:size-4",
       },
     },
-    defaultVariants: {
-      size: "default",
-    },
+    defaultVariants: checkboxDefaults,
   }
 )
 
