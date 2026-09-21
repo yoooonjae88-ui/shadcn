@@ -120,6 +120,14 @@ const FloatButtonGroupContext =
 // FloatButton
 // ---------------------------------------------------------------------------
 
+const floatButtonDefaults = {
+  type: "default",
+  shape: "circle",
+  size: "default",
+  labelled: false,
+  merged: false,
+} as const
+
 const floatButtonVariants = cva(
   cn(
     "group/float-button relative flex shrink-0 cursor-pointer flex-col items-center justify-center gap-0.5 leading-tight font-medium shadow-lg transition-[background-color,color,box-shadow,transform] outline-none select-none",
@@ -174,13 +182,7 @@ const floatButtonVariants = cva(
         class: "h-auto w-auto min-h-14 min-w-14 px-3 py-2.5",
       },
     ],
-    defaultVariants: {
-      type: "default",
-      shape: "circle",
-      size: "default",
-      labelled: false,
-      merged: false,
-    },
+    defaultVariants: floatButtonDefaults,
   }
 )
 
@@ -208,7 +210,7 @@ interface FloatButtonProps
 function FloatButton({
   className,
   style,
-  type = "default",
+  type = floatButtonDefaults.type,
   shape,
   size,
   icon,
@@ -227,8 +229,8 @@ function FloatButton({
 }: FloatButtonProps) {
   const group = React.useContext(FloatButtonGroupContext)
 
-  const resolvedShape = shape ?? group?.shape ?? "circle"
-  const resolvedSize = size ?? group?.size ?? "default"
+  const resolvedShape = shape ?? group?.shape ?? floatButtonDefaults.shape
+  const resolvedSize = size ?? group?.size ?? floatButtonDefaults.size
   // Ant only shows a description on square buttons — a circle has no room.
   const label = resolvedShape === "square" ? description : undefined
 
@@ -372,14 +374,14 @@ interface FloatButtonGroupProps
 function FloatButtonGroup({
   className,
   style,
-  shape = "circle",
-  size = "default",
+  shape = floatButtonDefaults.shape,
+  size = floatButtonDefaults.size,
   trigger,
   open: openProp,
   defaultOpen = false,
   onOpenChange,
   placement = "top",
-  type = "default",
+  type = floatButtonDefaults.type,
   icon,
   closeIcon,
   description,
