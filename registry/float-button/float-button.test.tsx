@@ -342,6 +342,51 @@ describe("FloatButton.BackTop", () => {
     })
   })
 
+  it("keeps the whole stroke inside the ring's viewport", async () => {
+    // The outer half of the stroke fell outside the viewBox once, and an
+    // SVG clips to it by default: the ring came out flattened on all four
+    // sides. Both shapes are checked against the box they are drawn in.
+    for (const shape of ["circle", "square"] as const) {
+      const view = render(<div />)
+      renderInScroller({ showProgress: true, visibilityHeight: 0, shape }, (el) => {
+        Object.defineProperty(el, "scrollHeight", { value: 1000 })
+        Object.defineProperty(el, "clientHeight", { value: 200 })
+      })
+
+      const scroller = screen.getAllByTestId("scroller").at(-1)!
+      scroller.scrollTop = 500
+      fireEvent.scroll(scroller)
+
+      const ring = await waitFor(() => {
+        const el = document.querySelectorAll(
+          "[data-slot='float-button-progress']"
+        )
+        if (!el.length) throw new Error("no ring")
+        return el[el.length - 1]
+      })
+
+      const [, , boxWidth, boxHeight] = (ring.getAttribute("viewBox") ?? "")
+        .split(" ")
+        .map(Number)
+      const shapeEl = ring.querySelector(shape === "circle" ? "circle" : "rect")!
+      const half = Number(shapeEl.getAttribute("stroke-width")) / 2
+
+      if (shape === "circle") {
+        const r = Number(shapeEl.getAttribute("r"))
+        const centre = Number(shapeEl.getAttribute("cx"))
+        expect(centre).toBe(boxWidth / 2)
+        expect(r + half).toBeLessThanOrEqual(boxWidth / 2)
+      } else {
+        const x = Number(shapeEl.getAttribute("x"))
+        const width = Number(shapeEl.getAttribute("width"))
+        expect(x - half).toBeGreaterThanOrEqual(0)
+        expect(x + width + half).toBeLessThanOrEqual(boxWidth)
+      }
+      expect(boxWidth).toBe(boxHeight)
+      view.unmount()
+    }
+  })
+
   it("traces a square button's outline with a rect", async () => {
     renderInScroller(
       { showProgress: true, visibilityHeight: 0, shape: "square" },

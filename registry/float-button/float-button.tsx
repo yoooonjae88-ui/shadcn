@@ -675,11 +675,13 @@ function FloatButtonProgressRing({
   size: FloatButtonSize
 }) {
   // The stroke is centred `RING_GAP` outside the button, so the box it is
-  // drawn in overhangs the button by that plus half the stroke.
+  // drawn in overhangs the button by that plus half the stroke — which is
+  // exactly the room the stroke's outer half needs, since anything outside
+  // the viewport is clipped away.
   const overhang = RING_GAP + RING_STROKE / 2
   const box = BUTTON_SIZE[size] + overhang * 2
   const span = box - RING_STROKE
-  const radius = cornerRadius(shape, size) + overhang
+  const radius = cornerRadius(shape, size) + RING_GAP
 
   // Where the outline starts, and how long it is: an SVG circle starts at
   // three o'clock, a rect just past its top-left corner, and both run
@@ -707,7 +709,7 @@ function FloatButtonProgressRing({
       aria-hidden
       data-slot="float-button-progress"
       viewBox={`0 0 ${box} ${box}`}
-      className="pointer-events-none absolute stroke-float-button-progress"
+      className="pointer-events-none absolute overflow-visible stroke-float-button-progress"
       // Sized inline: the button sizes every icon it contains through a
       // `[&_svg]` rule, which a width/height attribute would lose to.
       style={{ inset: -overhang, width: box, height: box }}
