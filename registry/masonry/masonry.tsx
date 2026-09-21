@@ -3,14 +3,82 @@
 import * as React from "react"
 import { X } from "lucide-react"
 
-import {
-  resolveResponsiveNumber,
-  useBreakpoint,
-  type Breakpoint,
-  type Gutter,
-  type ResponsiveNumber,
-} from "@/components/ui/grid"
 import { cn } from "@/lib/utils"
+
+/* -------------------------------------------------------------------------------------------------
+ * Responsive helpers
+ *
+ * Masonry positions its items in JavaScript, so the current breakpoint has to
+ * be readable as a value rather than expressed as Tailwind variants.
+ * ------------------------------------------------------------------------------------------------*/
+
+const BREAKPOINTS = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  "2xl": 1536,
+} as const
+
+type Breakpoint = keyof typeof BREAKPOINTS
+
+const BREAKPOINT_ORDER = ["sm", "md", "lg", "xl", "2xl"] as const
+
+function subscribeToBreakpoints(onChange: () => void) {
+  const queries = BREAKPOINT_ORDER.map((breakpoint) =>
+    window.matchMedia(`(min-width: ${BREAKPOINTS[breakpoint]}px)`)
+  )
+  for (const query of queries) query.addEventListener("change", onChange)
+  return () => {
+    for (const query of queries) query.removeEventListener("change", onChange)
+  }
+}
+
+function getBreakpointSnapshot() {
+  return BREAKPOINT_ORDER.filter(
+    (breakpoint) =>
+      window.matchMedia(`(min-width: ${BREAKPOINTS[breakpoint]}px)`).matches
+  ).join(" ")
+}
+
+// On the server no breakpoint matches, so SSR renders the mobile-first base
+// values; useSyncExternalStore re-renders with the real screens after mount.
+function getServerBreakpointSnapshot() {
+  return ""
+}
+
+/** Which Tailwind breakpoints are currently active. */
+function useBreakpoint(): Record<Breakpoint, boolean> {
+  const snapshot = React.useSyncExternalStore(
+    subscribeToBreakpoints,
+    getBreakpointSnapshot,
+    getServerBreakpointSnapshot
+  )
+  return React.useMemo(() => {
+    const active = new Set(snapshot.split(" "))
+    return Object.fromEntries(
+      BREAKPOINT_ORDER.map((breakpoint) => [breakpoint, active.has(breakpoint)])
+    ) as Record<Breakpoint, boolean>
+  }, [snapshot])
+}
+
+type ResponsiveNumber = number | Partial<Record<"base" | Breakpoint, number>>
+
+/** Pick the value for the largest active breakpoint, falling back to `base`. */
+function resolveResponsiveNumber(
+  value: ResponsiveNumber,
+  screens: Record<Breakpoint, boolean>
+): number {
+  if (typeof value === "number") return value
+  let resolved = value.base ?? 0
+  for (const breakpoint of BREAKPOINT_ORDER) {
+    const candidate = value[breakpoint]
+    if (screens[breakpoint] && candidate !== undefined) resolved = candidate
+  }
+  return resolved
+}
+
+type Gutter = ResponsiveNumber
 
 // A masonry grid modeled on Ant Design's Masonry. Items keep their DOM order
 // but are absolutely positioned into columns: each item goes to the currently

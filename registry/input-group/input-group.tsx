@@ -43,6 +43,10 @@ function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+const inputGroupAddonDefaults = {
+      align: "inline-start",
+    } as const
+
 const inputGroupAddonVariants = cva(
   "flex h-auto cursor-text items-center justify-center gap-2 text-sm font-medium text-muted-foreground select-none [&>svg:not([class*='size-'])]:size-4 [&>kbd]:pointer-events-none group-has-[[data-slot=input-group-control]:disabled]/input-group:opacity-50",
   {
@@ -56,15 +60,13 @@ const inputGroupAddonVariants = cva(
           "order-last w-full justify-start px-3 pb-2.5 group-has-[>input]/input-group:pb-2",
       },
     },
-    defaultVariants: {
-      align: "inline-start",
-    },
+    defaultVariants: inputGroupAddonDefaults,
   }
 )
 
 function InputGroupAddon({
   className,
-  align = "inline-start",
+  align = inputGroupAddonDefaults.align,
   onClick,
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof inputGroupAddonVariants>) {

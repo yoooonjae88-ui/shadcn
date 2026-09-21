@@ -38,6 +38,8 @@ function SliderControl({ className, size, ...props }: SliderControlProps) {
   )
 }
 
+const sliderDefaults = { size: "default" } as const
+
 const sliderTrackVariants = cva(
   "relative grow rounded-full bg-slider-track select-none",
   {
@@ -49,7 +51,7 @@ const sliderTrackVariants = cva(
         lg: "data-[orientation=horizontal]:h-2 data-[orientation=vertical]:w-2",
       },
     },
-    defaultVariants: { size: "default" },
+    defaultVariants: sliderDefaults,
   }
 )
 
@@ -82,6 +84,8 @@ function SliderIndicator({
   )
 }
 
+const sliderThumbDefaults = { size: "default" } as const
+
 const sliderThumbVariants = cva(
   "group/slider-thumb rounded-full bg-slider-thumb shadow-sm ring-2 ring-slider-thumb-ring outline-none transition-[box-shadow,transform] select-none hover:ring-[3px] focus-visible:ring-[3px] data-dragging:ring-[3px] data-dragging:scale-110 data-disabled:pointer-events-none data-disabled:opacity-50",
   {
@@ -92,7 +96,7 @@ const sliderThumbVariants = cva(
         lg: "size-5",
       },
     },
-    defaultVariants: { size: "default" },
+    defaultVariants: sliderThumbDefaults,
   }
 )
 
@@ -279,7 +283,7 @@ interface SliderProps
 
 function Slider({
   className,
-  size = "default",
+  size = sliderDefaults.size,
   orientation = "horizontal",
   tooltip = false,
   marks,

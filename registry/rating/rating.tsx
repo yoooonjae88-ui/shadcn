@@ -6,6 +6,10 @@ import { Star } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+const ratingDefaults = {
+  size: "default",
+} as const
+
 const ratingVariants = cva("flex items-center", {
   variants: {
     size: {
@@ -14,10 +18,12 @@ const ratingVariants = cva("flex items-center", {
       lg: "gap-3",
     },
   },
-  defaultVariants: {
-    size: "default",
-  },
+  defaultVariants: ratingDefaults,
 })
+
+const starDefaults = {
+  size: "default",
+} as const
 
 const starVariants = cva("shrink-0", {
   variants: {
@@ -27,10 +33,12 @@ const starVariants = cva("shrink-0", {
       lg: "size-6",
     },
   },
-  defaultVariants: {
-    size: "default",
-  },
+  defaultVariants: starDefaults,
 })
+
+const valueDefaults = {
+  size: "default",
+} as const
 
 const valueVariants = cva("text-muted-foreground tabular-nums", {
   variants: {
@@ -40,9 +48,7 @@ const valueVariants = cva("text-muted-foreground tabular-nums", {
       lg: "text-base",
     },
   },
-  defaultVariants: {
-    size: "default",
-  },
+  defaultVariants: valueDefaults,
 })
 
 type RatingSize = NonNullable<VariantProps<typeof ratingVariants>["size"]>
@@ -82,7 +88,7 @@ interface RatingProps
 function Rating({
   rating,
   maxRating = 5,
-  size = "default",
+  size,
   className,
   starClassName,
   valueClassName,

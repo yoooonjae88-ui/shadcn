@@ -80,21 +80,6 @@
       ]
     },
     {
-      "name": "grid",
-      "type": "registry:ui",
-      "meta": {
-        "group": "Layout"
-      },
-      "title": "Grid",
-      "description": "A 24-column responsive grid system modeled on Ant Design's Grid: Row/Col with span, offset, push/pull, order, horizontal and vertical gutters, justify/align/wrap flex alignment, flex sizing, mobile-first responsive props per breakpoint, and a useBreakpoint hook. Columns whose spans sum past 24 wrap onto a new line.",
-      "files": [
-        {
-          "path": "registry/grid/grid.tsx",
-          "type": "registry:ui"
-        }
-      ]
-    },
-    {
       "name": "divider",
       "type": "registry:ui",
       "meta": {
@@ -105,21 +90,6 @@
       "files": [
         {
           "path": "registry/divider/divider.tsx",
-          "type": "registry:ui"
-        }
-      ]
-    },
-    {
-      "name": "flex",
-      "type": "registry:ui",
-      "meta": {
-        "group": "Layout"
-      },
-      "title": "Flex",
-      "description": "A flexbox container modeled on Ant Design's Flex: horizontal or vertical direction, justify/align placement with any CSS value, wrap, gap presets (small 8px, middle 16px, large 24px) or any number/CSS gap value, a flex shorthand for the container itself, and a component prop to render as any element.",
-      "files": [
-        {
-          "path": "registry/flex/flex.tsx",
           "type": "registry:ui"
         }
       ]
@@ -140,6 +110,22 @@
       ]
     },
     {
+      "name": "marker",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Marker",
+      "description": "Displays an inline status, system note, bordered row or labelled separator in a conversation, following shadcn/ui's Base UI marker. Composes Marker with a decorative MarkerIcon (aria-hidden, so the adjacent text carries the meaning) and MarkerContent. Three variants: `default` for an inline note, `border` for a row closed by a hairline, and `separator` for a centred label with a decorative rule on each side — the rules are ::before/::after, so the label stays the only announced content, and role=\"separator\" should NOT be added or the label would be hidden. The root is polymorphic through Base UI's useRender: `render={<a href=\"...\" />}` or `render={<button />}` makes it a real, focusable link or button, and `role` is forwarded so a streaming step can be role=\"status\". Exports markerVariants for composing the styles into custom components. Every colour resolves from theme tokens.",
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "files": [
+        {
+          "path": "registry/marker/marker.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "masonry",
       "type": "registry:ui",
       "meta": {
@@ -148,7 +134,6 @@
       "title": "Masonry",
       "description": "A masonry grid modeled on Ant Design's Masonry: items of varying heights pack tightly into columns without vertical gaps, flowing into the shortest column (or strictly in source order with sequential), with responsive column counts and horizontal/vertical gutters per breakpoint, a data-driven items/itemRender API alongside plain children, per-item column pinning, and an onLayoutChange callback. Items can be closable (a hover × removes them with the rest animating into the gap, firing onClose) and draggable in the iOS home-screen style: grabbing an item lifts it (mouse drags start immediately; touch uses press-and-hold so swipes still scroll), it follows the pointer while the other items glide out of the way live, an optional wobble makes resting items jiggle during the drag, and on release it settles into its slot, firing onReorder. Item heights are tracked with a ResizeObserver so the layout follows window resizes and content changes.",
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["@private/grid"],
       "files": [
         {
           "path": "registry/masonry/masonry.tsx",
@@ -295,6 +280,22 @@
       "files": [
         {
           "path": "registry/dropdown/dropdown.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Navigation"
+      },
+      "title": "Context Menu",
+      "description": "Displays a menu of actions triggered by a right click (long press on touch), following shadcn/ui's Base UI context-menu and built on Base UI's ContextMenu primitives. Composes ContextMenu / ContextMenuTrigger / ContextMenuContent with ContextMenuGroup and ContextMenuLabel for titled sections, ContextMenuSeparator between them, ContextMenuItem (with an `inset` prop for the indicator column and a `destructive` variant), ContextMenuShortcut for a trailing keyboard hint, ContextMenuCheckboxItem and ContextMenuRadioGroup / ContextMenuRadioItem for toggles and exclusive choices, and ContextMenuSub / ContextMenuSubTrigger / ContextMenuSubContent for nested menus. The content takes side / sideOffset / align / alignOffset to place the popup (including the logical `inline-start` / `inline-end` sides, which mirror under dir=\"rtl\" along with the submenu chevron), flips and scrolls to stay in the viewport, and animates on open and close. Every colour resolves from theme tokens, and the popup and item surfaces are shared with the registry dropdown so both menus look identical.",
+      "dependencies": ["@base-ui/react", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/context-menu/context-menu.tsx",
           "type": "registry:ui"
         }
       ]
@@ -754,6 +755,57 @@
       "files": [
         {
           "path": "registry/combobox/combobox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "message-scroller",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Display"
+      },
+      "title": "Message Scroller",
+      "description": "A chat transcript that follows the live edge while a reply streams, following shadcn/ui's Base UI message-scroller. Like the questionnaire it wraps shadcn's own headless primitive (the @shadcn/react npm package, NOT Base UI), which owns scroll state, opening position, auto-scroll, turn anchoring, scroll commands and visibility tracking. Composes MessageScrollerProvider (autoScroll, defaultScrollPosition of start / end / last-anchor, scrollEdgeThreshold, scrollMargin) around MessageScroller, MessageScrollerViewport (the scrolling element, which preserves the visible row when older messages are prepended), MessageScrollerContent (a role=\"log\" live region so new messages are announced) and one MessageScrollerItem per row — mark the user's turn with `scrollAnchor` and the view settles there rather than yanking to the bottom. MessageScrollerButton scrolls to either end, renders as the registry Button, and slides away while there is nothing in its direction. Also exports the useMessageScroller, useMessageScrollerScrollable and useMessageScrollerVisibility hooks. Carries the `scroll-fade-b` utility in its `css`, which softens the bottom edge while there is more below — it ships with newer versions of shadcn/tailwind.css than this registry pins. Every colour resolves from theme tokens.",
+      "dependencies": ["@shadcn/react", "lucide-react"],
+      "registryDependencies": ["@private/button"],
+      "css": {
+        "@property --scroll-fade-b": {
+          "syntax": "\"<length-percentage>\"",
+          "inherits": "false",
+          "initial-value": "0px"
+        },
+        "@keyframes scroll-fade-reveal-b": {
+          "from": {
+            "--scroll-fade-b": "var(--_scroll-fade-size-b, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))))"
+          },
+          "to": {
+            "--scroll-fade-b": "0px"
+          }
+        },
+        "@utility scroll-fade-b": {
+          "--_scroll-fade-size-b": "var(--scroll-fade-b-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))))",
+          "--scroll-fade-mask": "linear-gradient(to bottom, #000 0, #000 calc(100% - var(--scroll-fade-b, 0px)), transparent 100%)",
+          "-webkit-mask-image": "var(--scroll-fade-mask)",
+          "mask-image": "var(--scroll-fade-mask)",
+          "-webkit-mask-composite": "source-in",
+          "mask-composite": "intersect",
+          "-webkit-mask-repeat": "no-repeat",
+          "mask-repeat": "no-repeat",
+          "@supports (animation-timeline: scroll())": {
+            "animation": "scroll-fade-reveal-b 1ms ease-in-out",
+            "animation-timeline": "scroll(self y)",
+            "animation-range": "calc(100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))) 100%",
+            "animation-fill-mode": "both"
+          },
+          "@supports not (animation-timeline: scroll())": {
+            "--scroll-fade-b": "var(--_scroll-fade-size-b)"
+          }
+        }
+      },
+      "files": [
+        {
+          "path": "registry/message-scroller/message-scroller.tsx",
           "type": "registry:ui"
         }
       ]
@@ -1492,13 +1544,49 @@
       ]
     },
     {
+      "name": "date-picker",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Date Picker",
+      "description": "A date-entry picker modeled on Ant Design's DatePicker, pairing the registry Calendar panel with a Base UI Popover. It speaks en-SG by default: dd-MM-yyyy dates, with month, weekday and day labels named in that locale; a locale prop (plus weekStartsOn) switches the field and the panel together. The field takes free typing with lenient parsing — the token format drives both how the value is displayed and how typed text is read back, so 07-03-2026 is the 7th of March, and tokens can be written dayjs-style (DD-MM-YYYY, MMMM months, ddd weekdays) or the dd-MM-yyyy way — and unparseable, out-of-range or disabled text reverts to the current value. disabledDate plus minDate/maxDate rule out days in the panel and in typed input alike, presets list one-click shortcuts beside the calendar, and the panel exposes the calendar's month & year dropdowns, week numbers and multi-month paging. The field supports controlled/uncontrolled value and open state, allowClear, prefix and a custom suffixIcon, inputReadOnly, four placements, three sizes (small/middle/large), four variants (outlined/filled/borderless/underlined), error/warning status, a \"Today\" footer shortcut and renderExtraFooter, and submits its formatted value through a hidden input when named. DatePicker.RangePicker adds a two-field start → end range: clicking a field chooses which end the next day fills, the span previews as you hover, the half-built range stays staged until both ends are picked, and order sorts them on commit. Every colour resolves from theme tokens.",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "lucide-react",
+        "react-day-picker"
+      ],
+      "registryDependencies": ["@private/calendar"],
+      "cssVars": {
+        "theme": {
+          "color-input-background": "var(--input-background)",
+          "color-input-warning": "var(--input-warning)"
+        },
+        "light": {
+          "input-background": "#f1f5f9",
+          "input-warning": "#d97706"
+        },
+        "dark": {
+          "input-background": "#1d293d",
+          "input-warning": "#f59e0b"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/date-picker/date-picker.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "calendar-view",
       "type": "registry:ui",
       "meta": {
         "group": "Data Display"
       },
       "title": "Calendar View",
-      "description": "A month/week calendar that lays out a list of events: each event bar carries a status stripe on its left edge (blue for busy, purple for out of office), and multi-day events render as one continuous bar spanning their days — continuing across week rows with squared edges — instead of repeating on every date. Days with more overlapping events than maxVisibleLanes collapse into a per-day \"+N more\" button that expands the week inline (or hands off to an onMoreClick callback). The header controls (month and year selects, Month/Week toggle, prev/Today/next) are a separate CalendarViewControls component: compose CalendarViewProvider + CalendarViewControls + any number of CalendarViewGrids to drive several calendars (e.g. one per user) from one outer control, or use the all-in-one CalendarView. Clicking a date selects it (click again to clear); toggling to Week opens the selected date's week, falling back to today's week when nothing is selected. The week view is an Outlook-style time grid: all-day and multi-day events as spanning bars in a top row, timed events (start like \"2026-07-08T10:00\") positioned and sized by their times with overlapping meetings split side by side, hour gridlines, and a current-time indicator on today's column.",
+      "description": "A month/week calendar that lays out a list of events: each event bar carries a status stripe on its left edge (blue for busy, purple for out of office), and multi-day events render as one continuous bar spanning their days — continuing across week rows with squared edges — instead of repeating on every date. Days with more overlapping events than maxVisibleLanes collapse into a per-day \"+N more\" button that expands the week inline (or hands off to an onMoreClick callback). The header controls (month and year selects, Month/Week toggle, prev/Today/next) are a separate CalendarViewControls component: compose CalendarViewProvider + CalendarViewControls + any number of CalendarViewGrids to drive several calendars (e.g. one per user) from one outer control, or use the all-in-one CalendarView. Clicking a date selects it (click again to clear); toggling to Week opens the selected date's week, falling back to today's week when nothing is selected. Takes the full width and height of its parent: the month's week rows divide the available height between them rather than being fixed cells, and the week view's time grid takes whatever is left and scrolls inside it. Both sizes are flex bases rather than fixed heights, so a parent with no height of its own still gets the natural layout — 6rem week rows and a 26rem time grid — and the same markup drops into a page flow unchanged. A container too short for legible rows scrolls instead of overflowing. In Week view the time grid keeps one hour at a readable height and scrolls, which suits a page flow; pass `fitDay` to spread all 24 hours across the available height instead, so a calendar filling a panel shows the whole day at once. Hour lines and event chips are positioned as fractions of the day rather than pixels, so they stay put at any density. The week view is an Outlook-style time grid: all-day and multi-day events as spanning bars in a top row, timed events (start like \"2026-07-08T10:00\") positioned and sized by their times with overlapping meetings split side by side, hour gridlines, and a current-time indicator on today's column.",
       "dependencies": ["lucide-react"],
       "cssVars": {
         "theme": {
@@ -1545,6 +1633,23 @@
       "files": [
         {
           "path": "registry/widget-board/widget-board.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "questionnaire",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Data Entry"
+      },
+      "title": "Questionnaire",
+      "description": "A multi-step question flow, following shadcn/ui's Base UI questionnaire. Unlike the other items here it wraps shadcn's own headless primitive (the @shadcn/react npm package, NOT Base UI), which owns the ordered items, the active item, answer state, validation, progress and keyboard navigation — the page, card or dialog around it owns closing, persistence and transport. Composes Questionnaire with QuestionnaireProgress, QuestionnaireItem (name / required / multiple / disabled), QuestionnaireTitle and QuestionnaireDescription, QuestionnaireChoices holding QuestionnaireChoice (radio by default, checkbox under `multiple`, each with an optional QuestionnaireChoiceDescription) and an optional QuestionnaireInput for a freeform answer, QuestionnaireError for validation, and a QuestionnaireActions row of QuestionnairePrevious / QuestionnaireSkip / QuestionnaireNext / QuestionnaireSubmit that reuse the registry Button's variants and sizes. Inactive items stay mounted as hidden, inert fieldsets so answers and server-rendered markup survive navigation, and the whole thing submits as ordinary form data. Set `shortcuts` to \"letters\" or \"numbers\" to bind and badge per-choice answer keys. Every colour resolves from theme tokens.",
+      "dependencies": ["@shadcn/react", "lucide-react"],
+      "registryDependencies": ["@private/button"],
+      "files": [
+        {
+          "path": "registry/questionnaire/questionnaire.tsx",
           "type": "registry:ui"
         }
       ]

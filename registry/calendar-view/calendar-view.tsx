@@ -51,8 +51,19 @@ const statusStyles: Record<
 
 const DAY_MS = 86_400_000
 
-// Height of one hour on the week view's time grid, in px.
+// The time grid's natural density: one hour is this tall in px when nothing
+// stretches the calendar. It is a floor, not a fixed size — given a taller
+// parent the grid grows and the hours spread out across it.
 const HOUR_HEIGHT = 48
+
+const MINUTES_PER_DAY = 1440
+
+// An event shorter than this has no room for the times under its title at the
+// grid's natural density.
+const MIN_MINUTES_FOR_TIMES = 50
+
+/** A fraction of the day (0-1) as a CSS percentage. */
+const dayPercent = (fraction: number) => `${fraction * 100}%`
 
 function startOfDay(d: Date): Date {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate())
@@ -201,8 +212,13 @@ interface TimedBlock {
   event: CalendarEvent
   startTime: Date
   endTime: Date
+  /** Offset from midnight as a fraction of the day (0-1), not pixels, so the
+   *  block keeps its place when the time grid stretches to fill its parent. */
   top: number
+  /** Displayed length as a fraction of the day. */
   height: number
+  /** Displayed length in minutes — decides whether the times fit in the chip. */
+  durationMin: number
   col: number
   cols: number
 }
@@ -251,8 +267,9 @@ function layoutTimedDay(events: NormalizedEvent[]): TimedBlock[] {
       event: e.event,
       startTime: e.startTime,
       endTime: e.endTime,
-      top: (startMin / 60) * HOUR_HEIGHT,
-      height: ((displayEnd - startMin) / 60) * HOUR_HEIGHT,
+      top: startMin / MINUTES_PER_DAY,
+      height: (displayEnd - startMin) / MINUTES_PER_DAY,
+      durationMin: displayEnd - startMin,
       col,
       cols: 0,
     }
@@ -669,9 +686,11 @@ function EventBarSegment({
 function CalendarViewWeek({
   events,
   onEventClick,
+  fitDay,
 }: {
   events: NormalizedEvent[]
   onEventClick?: (event: CalendarEvent) => void
+  fitDay?: boolean
 }) {
   const {
     cursor,
@@ -696,7 +715,8 @@ function CalendarViewWeek({
 
   // Open the grid scrolled to the start of the working day.
   React.useEffect(() => {
-    scrollEl?.scrollTo({ top: 7.5 * HOUR_HEIGHT })
+    // 7.30am as a share of the grid's height, whatever that height is now.
+    scrollEl?.scrollTo({ top: scrollEl.scrollHeight * (7.5 / 24) })
   }, [scrollEl])
 
   // Share one scrollbar across sibling grids: every time grid registers
@@ -721,11 +741,13 @@ function CalendarViewWeek({
   const { segments } = layoutWeek(days[0], allDayEvents)
 
   const todayCol = days.findIndex((d) => isSameDay(d, today))
-  const nowTop = ((now.getTime() - today.getTime()) / 3_600_000) * HOUR_HEIGHT
+  const nowTop = dayPercent(
+    (now.getTime() - today.getTime()) / (MINUTES_PER_DAY * 60_000)
+  )
   const hours = Array.from({ length: 23 }, (_, i) => i + 1)
 
   return (
-    <div className="flex flex-col">
+    <div className={cn("flex min-h-0 flex-1 flex-col")}>
       {/* Day headings */}
       <div className="grid grid-cols-[3rem_repeat(7,minmax(0,1fr))]">
         <div />
@@ -789,14 +811,27 @@ function CalendarViewWeek({
         data-slot="calendar-view-scroll"
         onScroll={(e) => syncScroll(e.currentTarget)}
         className={cn(
-          "max-h-[26rem] overflow-y-auto rounded-lg bg-muted/40",
+          "overflow-y-auto rounded-lg bg-muted/40",
+          // 26rem is a flex basis, not a cap: with nothing constraining the
+          // calendar the grid settles there (24h of rows would otherwise be
+          // 1536px tall), and inside a sized parent it grows or shrinks to
+          // take exactly the height left over.
+          "h-[26rem] min-h-0 flex-auto",
           hideScrollbar &&
             "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         )}
       >
         <div
           className="relative grid grid-cols-[3rem_repeat(7,minmax(0,1fr))]"
-          style={{ height: 24 * HOUR_HEIGHT }}
+          // Fills the scroller when there is room, and falls back to the
+          // natural 24 x HOUR_HEIGHT density when there is not — at which
+          // point the scroller takes over.
+          style={{
+            height: "100%",
+            // Without fitDay the grid never gets denser than HOUR_HEIGHT, so a
+            // short viewport scrolls instead of squeezing the day illegibly.
+            minHeight: fitDay ? undefined : 24 * HOUR_HEIGHT,
+          }}
         >
           {/* Hour labels */}
           <div className="relative">
@@ -804,7 +839,7 @@ function CalendarViewWeek({
               <span
                 key={h}
                 className="absolute right-2 -translate-y-1/2 text-[10px] text-muted-foreground tabular-nums"
-                style={{ top: h * HOUR_HEIGHT }}
+                style={{ top: dayPercent(h / 24) }}
               >
                 {new Date(2000, 0, 1, h).toLocaleTimeString(undefined, {
                   hour: "numeric",
@@ -822,7 +857,7 @@ function CalendarViewWeek({
               <div
                 key={h}
                 className="absolute inset-x-0 h-px bg-border"
-                style={{ top: h * HOUR_HEIGHT }}
+                style={{ top: dayPercent(h / 24) }}
               />
             ))}
           </div>
@@ -858,8 +893,8 @@ function CalendarViewWeek({
                         styles.chip
                       )}
                       style={{
-                        top: block.top + 1,
-                        height: block.height - 2,
+                        top: `calc(${dayPercent(block.top)} + 1px)`,
+                        height: `calc(${dayPercent(block.height)} - 2px)`,
                         left: `calc(${(block.col * 100) / block.cols}% + 2px)`,
                         width: `calc(${100 / block.cols}% - 4px)`,
                       }}
@@ -875,7 +910,7 @@ function CalendarViewWeek({
                       <span className="truncate font-medium">
                         {block.event.title}
                       </span>
-                      {block.height >= 40 && (
+                      {block.durationMin >= MIN_MINUTES_FOR_TIMES && (
                         <span className="truncate text-[10px] tabular-nums opacity-75">
                           {formatTime(block.startTime)} –{" "}
                           {formatTime(block.endTime)}
@@ -954,7 +989,17 @@ function CalendarViewMonth({
       </div>
 
       {/* Week rows */}
-      <div className="flex flex-col gap-1" role="grid" aria-label={label}>
+      <div
+        className={cn(
+          "flex flex-col gap-1",
+          // Rows share the leftover height, but never shrink past their
+          // min-h-24 floor — so a container too short for six legible weeks
+          // scrolls instead of letting the rows spill out of it.
+          "min-h-0 flex-1 overflow-y-auto [scrollbar-width:thin]"
+        )}
+        role="grid"
+        aria-label={label}
+      >
         {monthWeeks.map((week) => {
           const { segments, laneCount } = layoutWeek(week[0], events)
 
@@ -999,7 +1044,15 @@ function CalendarViewMonth({
             : laneCount + (overflows ? 1 : 0)
 
           return (
-            <div key={weekKey} className="relative min-h-24">
+            <div
+              key={weekKey}
+              // 6rem is a flex basis, not a fixed height: with nothing
+              // constraining the calendar every week row settles there, and
+              // inside a sized parent the rows divide the height between them
+              // — growing past 6rem when there is room, and shrinking toward
+              // the floor (then scrolling) when there is not.
+              className="relative h-24 min-h-12 flex-auto"
+            >
               {/* Background layer: one clickable box per day — clicking
                   anywhere in the box (except an event or "+N more") selects
                   or deselects that date. */}
@@ -1145,6 +1198,16 @@ interface CalendarViewGridProps extends React.ComponentProps<"div"> {
    * or day detail.
    */
   onMoreClick?: (date: Date, events: CalendarEvent[]) => void
+  /**
+   * Week view: spread all 24 hours across the available height instead of
+   * keeping one hour at its natural height and scrolling. Use it when the
+   * calendar has been given a height and the whole day should be visible at
+   * once; leave it off in a page flow, where fitting a day into the grid's
+   * natural 26rem would squeeze an hour down to a few pixels.
+   *
+   * The month view fills its height either way.
+   */
+  fitDay?: boolean
 }
 
 /**
@@ -1157,6 +1220,7 @@ function CalendarViewGrid({
   onEventClick,
   maxVisibleLanes = 3,
   onMoreClick,
+  fitDay = false,
   className,
   ...props
 }: CalendarViewGridProps) {
@@ -1195,11 +1259,18 @@ function CalendarViewGrid({
   return (
     <div
       data-slot="calendar-view-grid"
-      className={cn("@container flex w-full flex-col gap-2", className)}
+      className={cn(
+        "@container flex min-h-0 w-full flex-1 flex-col gap-2",
+        className
+      )}
       {...props}
     >
       {view === "week" ? (
-        <CalendarViewWeek events={normalized} onEventClick={onEventClick} />
+        <CalendarViewWeek
+          events={normalized}
+          onEventClick={onEventClick}
+          fitDay={fitDay}
+        />
       ) : (
         <CalendarViewMonth
           events={normalized}
@@ -1219,19 +1290,29 @@ interface CalendarViewProps
     Omit<CalendarViewProviderProps, "children">,
     Pick<
       CalendarViewGridProps,
-      "events" | "onEventClick" | "maxVisibleLanes" | "onMoreClick"
+      | "events"
+      | "onEventClick"
+      | "maxVisibleLanes"
+      | "onMoreClick"
+      | "fitDay"
     > {}
 
 /**
  * The all-in-one calendar: provider + controls + a single grid. For several
  * calendars sharing one set of controls, compose `CalendarViewProvider`,
  * `CalendarViewControls`, and multiple `CalendarViewGrid`s instead.
+ *
+ * Takes the full width and height of its parent. When the parent has no height
+ * of its own the calendar falls back to its natural size — week rows at 6rem,
+ * the week view's time grid at 26rem — so it drops into a page flow unchanged;
+ * give the parent a height and the rows divide it instead.
  */
 function CalendarView({
   events,
   onEventClick,
   maxVisibleLanes,
   onMoreClick,
+  fitDay,
   month,
   defaultMonth,
   onMonthChange,
@@ -1260,7 +1341,7 @@ function CalendarView({
     >
       <div
         data-slot="calendar-view"
-        className={cn("flex w-full flex-col gap-2", className)}
+        className={cn("flex h-full min-h-0 w-full flex-col gap-2", className)}
         {...props}
       >
         <CalendarViewControls />
@@ -1269,6 +1350,7 @@ function CalendarView({
           onEventClick={onEventClick}
           maxVisibleLanes={maxVisibleLanes}
           onMoreClick={onMoreClick}
+          fitDay={fitDay}
         />
       </div>
     </CalendarViewProvider>

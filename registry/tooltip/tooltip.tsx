@@ -53,6 +53,10 @@ function TooltipTrigger(
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
 }
 
+const tooltipDefaults = {
+  variant: "default",
+} as const
+
 const tooltipVariants = cva(
   cn(
     "z-50 w-fit max-w-xs origin-[var(--transform-origin)] text-balance rounded-md px-3 py-1.5 text-xs font-medium shadow-md outline-none",
@@ -71,9 +75,7 @@ const tooltipVariants = cva(
         info: "bg-tooltip-info text-tooltip-info-foreground",
       },
     },
-    defaultVariants: {
-      variant: "default",
-    },
+    defaultVariants: tooltipDefaults,
   }
 )
 
@@ -93,7 +95,7 @@ const tooltipArrowFill: Record<TooltipVariant, string> = {
 /** The connecting arrow that points from the popup back to the trigger. */
 function TooltipArrow({
   className,
-  variant = "default",
+  variant = tooltipDefaults.variant,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Arrow> & {
   variant?: TooltipVariant
@@ -122,7 +124,7 @@ function TooltipArrow({
 function TooltipContent({
   className,
   children,
-  variant = "default",
+  variant = tooltipDefaults.variant,
   side = "top",
   sideOffset,
   align = "center",

@@ -27,6 +27,10 @@ import { cn } from "@/lib/utils"
 // The wrapper carries the colour so both the visual and any label inherit it.
 // `size` is intentionally omitted here — each variant reads it from the shared
 // size records below, since dots/bars need different geometry than the icons.
+const spinnerDefaults = {
+  color: "default",
+} as const
+
 const spinnerVariants = cva("inline-flex shrink-0 items-center", {
   variants: {
     color: {
@@ -40,9 +44,7 @@ const spinnerVariants = cva("inline-flex shrink-0 items-center", {
       info: "text-spinner-info",
     },
   },
-  defaultVariants: {
-    color: "default",
-  },
+  defaultVariants: spinnerDefaults,
 })
 
 type SpinnerVariantName = "default" | "circle" | "pinwheel" | "dots" | "bars"

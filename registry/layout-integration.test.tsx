@@ -12,8 +12,6 @@ import {
 } from "@/registry/card/card"
 import { Checkbox } from "@/registry/checkbox/checkbox"
 import { Divider } from "@/registry/divider/divider"
-import { Flex } from "@/registry/flex/flex"
-import { Col, Row } from "@/registry/grid/grid"
 import { Input } from "@/registry/input/input"
 import { Masonry } from "@/registry/masonry/masonry"
 import {
@@ -34,22 +32,22 @@ import {
 import { Tag } from "@/registry/tag/tag"
 
 // Cross-cutting integration coverage: registry components rendered INSIDE the
-// layout items (Flex, Grid Row/Col, Space, Space.Compact, Divider, Masonry,
-// Splitter). jsdom does no visual layout, so these tests pin down the
-// structural contracts each layout relies on (direct-child wrappers, portal
-// escape, hidden columns) and that components stay fully interactive once
-// nested in a layout container.
+// layout items (Space, Space.Compact, Divider, Masonry, Splitter) and inside
+// plain Tailwind flex/grid containers, which are what the registry uses for
+// ordinary layout. jsdom does no visual layout, so these tests pin down the
+// structural contracts the layouts rely on (direct-child wrappers, portal
+// escape) and that components stay fully interactive once nested.
 
-describe("components inside Flex", () => {
+describe("components inside a Tailwind flex container", () => {
   it("keeps buttons, inputs and checkboxes interactive", async () => {
     const user = userEvent.setup()
     const onClick = vi.fn()
     render(
-      <Flex data-testid="flex" gap="middle" align="center">
+      <div data-testid="flex" className="flex items-center gap-4">
         <Button onClick={onClick}>Save</Button>
         <Input placeholder="Name" />
         <Checkbox aria-label="Accept" />
-      </Flex>
+      </div>
     )
 
     await user.click(screen.getByRole("button", { name: "Save" }))
@@ -62,10 +60,10 @@ describe("components inside Flex", () => {
     expect(screen.getByRole("checkbox", { name: "Accept" })).toBeChecked()
   })
 
-  it("lets tabs switch panels inside a vertical Flex", async () => {
+  it("lets tabs switch panels inside a flex column", async () => {
     const user = userEvent.setup()
     render(
-      <Flex vertical gap={12}>
+      <div className="flex flex-col gap-3">
         <Tag>Header</Tag>
         <Tabs defaultValue="one">
           <TabsList>
@@ -75,7 +73,7 @@ describe("components inside Flex", () => {
           <TabsContent value="one">First panel</TabsContent>
           <TabsContent value="two">Second panel</TabsContent>
         </Tabs>
-      </Flex>
+      </div>
     )
 
     expect(screen.getByText("First panel")).toBeInTheDocument()
@@ -87,14 +85,14 @@ describe("components inside Flex", () => {
   it("lets a popover escape the flex container through a portal", async () => {
     const user = userEvent.setup()
     render(
-      <Flex data-testid="flex" gap="small">
+      <div data-testid="flex" className="flex gap-2">
         <Popover>
           <PopoverTrigger>Open actions</PopoverTrigger>
           <PopoverContent>
             <PopoverItem>Duplicate</PopoverItem>
           </PopoverContent>
         </Popover>
-      </Flex>
+      </div>
     )
 
     await user.click(screen.getByRole("button", { name: "Open actions" }))
@@ -105,36 +103,31 @@ describe("components inside Flex", () => {
   })
 })
 
-describe("components inside Grid (Row/Col)", () => {
-  it("renders cards into sized columns", () => {
+describe("components inside a Tailwind grid container", () => {
+  it("renders cards into grid columns", () => {
     render(
-      <Row gutter={16}>
-        <Col span={12}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Revenue</CardTitle>
-            </CardHeader>
-            <CardContent>Up 12%</CardContent>
-          </Card>
-        </Col>
-        <Col span={12}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Signups</CardTitle>
-            </CardHeader>
-            <CardContent>Up 4%</CardContent>
-          </Card>
-        </Col>
-      </Row>
+      <div data-testid="grid" className="grid grid-cols-2 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Revenue</CardTitle>
+          </CardHeader>
+          <CardContent>Up 12%</CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Signups</CardTitle>
+          </CardHeader>
+          <CardContent>Up 4%</CardContent>
+        </Card>
+      </div>
     )
 
-    const cols = document.querySelectorAll("[data-slot='col']")
-    expect(cols).toHaveLength(2)
-    for (const col of cols) {
-      expect(col).toHaveStyle({ flex: "0 0 50%", maxWidth: "50%" })
-      // The gutter halves land on the columns, not the cards.
-      expect(col).toHaveStyle({ paddingLeft: "8px", paddingRight: "8px" })
-    }
+    // The cards are direct children of the grid, so the track sizing applies
+    // to them rather than to a wrapper.
+    const cards = screen
+      .getByTestId("grid")
+      .querySelectorAll(":scope > [data-slot='card']")
+    expect(cards).toHaveLength(2)
     expect(screen.getByText("Revenue")).toBeInTheDocument()
     expect(screen.getByText("Signups")).toBeInTheDocument()
   })
@@ -143,37 +136,20 @@ describe("components inside Grid (Row/Col)", () => {
     const user = userEvent.setup()
     const onClick = vi.fn()
     render(
-      <Row gutter={[16, 16]}>
-        <Col span={16}>
+      <div className="grid grid-cols-12 gap-4">
+        <div className="col-span-8">
           <Input placeholder="Search" />
-        </Col>
-        <Col span={8}>
+        </div>
+        <div className="col-span-4">
           <Button onClick={onClick}>Go</Button>
-        </Col>
-      </Row>
+        </div>
+      </div>
     )
 
     await user.type(screen.getByPlaceholderText("Search"), "grid")
     expect(screen.getByPlaceholderText("Search")).toHaveValue("grid")
     await user.click(screen.getByRole("button", { name: "Go" }))
     expect(onClick).toHaveBeenCalledOnce()
-  })
-
-  it("hides a span 0 column together with its content", () => {
-    render(
-      <Row>
-        <Col span={0} data-testid="hidden-col">
-          <Button>Hidden action</Button>
-        </Col>
-        <Col span={24}>
-          <Button>Visible action</Button>
-        </Col>
-      </Row>
-    )
-
-    expect(screen.getByTestId("hidden-col")).toHaveStyle({ display: "none" })
-    expect(screen.getByText("Hidden action")).not.toBeVisible()
-    expect(screen.getByText("Visible action")).toBeVisible()
   })
 })
 
@@ -265,13 +241,13 @@ describe("components inside Space.Compact", () => {
 })
 
 describe("components inside Divider-separated stacks", () => {
-  it("separates components with horizontal dividers in a vertical Flex", () => {
+  it("separates components with horizontal dividers in a flex column", () => {
     render(
-      <Flex vertical>
+      <div className="flex flex-col">
         <Tag>Section one</Tag>
         <Divider>Details</Divider>
         <Tag>Section two</Tag>
-      </Flex>
+      </div>
     )
 
     const separator = screen.getByRole("separator")
@@ -352,36 +328,36 @@ describe("components inside Splitter", () => {
 })
 
 describe("layouts nested in layouts", () => {
-  it("keeps everything working in a Flex > Row/Col > Space composition", async () => {
+  it("keeps everything working in a flex > grid > Space composition", async () => {
     const user = userEvent.setup()
     const onClick = vi.fn()
     render(
-      <Flex vertical gap="large" data-testid="page">
-        <Row gutter={16}>
-          <Col span={18}>
+      <div className="flex flex-col gap-6" data-testid="page">
+        <div className="grid grid-cols-12 gap-4">
+          <div className="col-span-9">
             <Input placeholder="Query" />
-          </Col>
-          <Col span={6}>
+          </div>
+          <div className="col-span-3">
             <Space>
               <Button onClick={onClick}>Search</Button>
               <Checkbox aria-label="Exact match" />
             </Space>
-          </Col>
-        </Row>
+          </div>
+        </div>
         <Divider size="small" />
         <Space split={<Divider type="vertical" />}>
           <Tag>All</Tag>
           <Tag>Recent</Tag>
         </Space>
-      </Flex>
+      </div>
     )
 
-    // The structural chain is intact: space items inside a col inside a row
-    // inside the flex page.
+    // The structural chain is intact: space items inside a grid cell inside
+    // the flex page.
     const page = screen.getByTestId("page")
     expect(
       page.querySelector(
-        "[data-slot='row'] [data-slot='col'] [data-slot='space'] [data-slot='space-item']"
+        ".grid > div > [data-slot='space'] > [data-slot='space-item']"
       )
     ).not.toBeNull()
 

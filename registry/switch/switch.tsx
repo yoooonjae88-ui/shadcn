@@ -7,6 +7,11 @@ import { LoaderCircle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+const switchTrackDefaults = {
+  size: "default",
+  variant: "primary",
+} as const
+
 const switchTrackVariants = cva(
   "peer group/switch relative inline-flex shrink-0 cursor-pointer items-center rounded-full p-0.5 outline-none transition-colors select-none bg-switch focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:ring-2 aria-invalid:ring-destructive/40 disabled:cursor-not-allowed disabled:opacity-50 data-disabled:cursor-not-allowed data-disabled:opacity-50 data-readonly:cursor-default",
   {
@@ -24,12 +29,13 @@ const switchTrackVariants = cva(
         destructive: "data-checked:bg-switch-destructive",
       },
     },
-    defaultVariants: {
-      size: "default",
-      variant: "primary",
-    },
+    defaultVariants: switchTrackDefaults,
   }
 )
+
+const switchThumbDefaults = {
+  size: "default",
+} as const
 
 const switchThumbVariants = cva(
   "pointer-events-none z-10 flex items-center justify-center rounded-full bg-switch-thumb text-switch-thumb-foreground shadow-sm transition-transform",
@@ -41,9 +47,7 @@ const switchThumbVariants = cva(
         lg: "size-5 data-checked:translate-x-5",
       },
     },
-    defaultVariants: {
-      size: "default",
-    },
+    defaultVariants: switchThumbDefaults,
   }
 )
 
@@ -83,8 +87,8 @@ interface SwitchProps
 function Switch({
   className,
   thumbClassName,
-  size = "default",
-  variant = "primary",
+  size = switchTrackDefaults.size,
+  variant,
   thumbIconOn,
   thumbIconOff,
   indicatorOn,

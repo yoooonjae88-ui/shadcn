@@ -55,6 +55,10 @@ function AlertDialogOverlay({
   )
 }
 
+const alertDialogContentDefaults = {
+  size: "default",
+} as const
+
 const alertDialogContentVariants = cva(
   "fixed top-1/2 left-1/2 z-50 grid w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-6 text-popover-foreground shadow-lg outline-none transition-all duration-200 data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0",
   {
@@ -66,15 +70,13 @@ const alertDialogContentVariants = cva(
         xl: "max-w-xl",
       },
     },
-    defaultVariants: {
-      size: "default",
-    },
+    defaultVariants: alertDialogContentDefaults,
   }
 )
 
 function AlertDialogContent({
   className,
-  size = "default",
+  size = alertDialogContentDefaults.size,
   children,
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Popup> &
@@ -145,6 +147,10 @@ function AlertDialogDescription({
 // A circular status badge shown above the title (e.g. a warning triangle for a
 // destructive delete). Colours resolve from the item's --alert-dialog-* tokens
 // so the whole palette restyles from globals.css.
+const alertDialogIconDefaults = {
+  variant: "default",
+} as const
+
 const alertDialogIconVariants = cva(
   "flex size-11 shrink-0 items-center justify-center rounded-full [&_svg]:size-5 [&_svg]:shrink-0",
   {
@@ -158,15 +164,13 @@ const alertDialogIconVariants = cva(
         info: "bg-alert-dialog-info-surface text-alert-dialog-info",
       },
     },
-    defaultVariants: {
-      variant: "default",
-    },
+    defaultVariants: alertDialogIconDefaults,
   }
 )
 
 function AlertDialogIcon({
   className,
-  variant = "default",
+  variant = alertDialogIconDefaults.variant,
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof alertDialogIconVariants>) {
   return (

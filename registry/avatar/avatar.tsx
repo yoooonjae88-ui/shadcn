@@ -10,6 +10,11 @@ import { cn } from "@/lib/utils"
 // (`rounded-[inherit]`), so a single `shape` here rounds the whole avatar.
 // The root is intentionally NOT `overflow-hidden` so indicators/status dots
 // can bleed past its edge — the Image/Fallback clip themselves instead.
+const avatarDefaults = {
+  size: "default",
+  shape: "circle",
+} as const
+
 const avatarVariants = cva(
   "group/avatar relative flex shrink-0 items-center justify-center align-middle",
   {
@@ -26,10 +31,7 @@ const avatarVariants = cva(
         square: "rounded-lg",
       },
     },
-    defaultVariants: {
-      size: "default",
-      shape: "circle",
-    },
+    defaultVariants: avatarDefaults,
   }
 )
 
@@ -87,6 +89,10 @@ function AvatarFallback({
 // A positioned overlay slot pinned to one corner of the avatar. Use it to hang
 // a status dot, a small badge, a verified check, etc. Sits above the clipped
 // image because the root isn't `overflow-hidden`.
+const avatarIndicatorDefaults = {
+  position: "top-end",
+} as const
+
 const avatarIndicatorVariants = cva("absolute z-10 flex items-center justify-center", {
   variants: {
     position: {
@@ -96,9 +102,7 @@ const avatarIndicatorVariants = cva("absolute z-10 flex items-center justify-cen
       "bottom-end": "bottom-0 right-0",
     },
   },
-  defaultVariants: {
-    position: "top-end",
-  },
+  defaultVariants: avatarIndicatorDefaults,
 })
 
 interface AvatarIndicatorProps
@@ -122,6 +126,11 @@ function AvatarIndicator({
 // A presence dot. Colors come from theme tokens (--avatar-online etc.). The
 // `ring` cuts the dot out of the avatar/background so it reads as a badge; a
 // ring is not a border utility, so this respects the no-borders convention.
+const avatarStatusDefaults = {
+  variant: "online",
+  size: "default",
+} as const
+
 const avatarStatusVariants = cva(
   "block rounded-full ring-2 ring-background",
   {
@@ -140,10 +149,7 @@ const avatarStatusVariants = cva(
         xl: "size-3.5",
       },
     },
-    defaultVariants: {
-      variant: "online",
-      size: "default",
-    },
+    defaultVariants: avatarStatusDefaults,
   }
 )
 
@@ -186,7 +192,7 @@ interface AvatarGroupProps extends React.ComponentProps<"div"> {
 // extras collapse into a trailing `+N` avatar.
 function AvatarGroup({
   max,
-  size = "default",
+  size = avatarDefaults.size,
   shape,
   className,
   children,

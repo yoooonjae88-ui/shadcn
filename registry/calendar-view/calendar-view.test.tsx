@@ -7,6 +7,7 @@ import {
   CalendarViewControls,
   CalendarViewGrid,
   CalendarViewProvider,
+  type CalendarEvent,
 } from "@/registry/calendar-view/calendar-view"
 
 const events = [
@@ -384,5 +385,141 @@ describe("CalendarView composition", () => {
       /within a <CalendarViewProvider>/
     )
     error.mockRestore()
+  })
+})
+
+describe("CalendarView sizing", () => {
+  const sizingEvents: CalendarEvent[] = [
+    { id: "a", title: "Design review", start: "2026-07-02" },
+  ]
+
+  function root() {
+    return document.querySelector("[data-slot='calendar-view']") as HTMLElement
+  }
+  function grid() {
+    return document.querySelector(
+      "[data-slot='calendar-view-grid']"
+    ) as HTMLElement
+  }
+
+  it("stretches to the height its parent gives it", () => {
+    render(
+      <CalendarView defaultMonth={new Date(2026, 6, 1)} events={sizingEvents} />
+    )
+    expect(root()).toHaveClass("h-full", "min-h-0")
+    expect(grid()).toHaveClass("flex-1", "min-h-0")
+  })
+
+  it("sizes week rows from a basis so they divide the height, not a fixed cell", () => {
+    render(
+      <CalendarView defaultMonth={new Date(2026, 6, 1)} events={sizingEvents} />
+    )
+    const rows = [...document.querySelectorAll("[role='grid'] > div")]
+    expect(rows.length).toBeGreaterThan(0)
+    for (const row of rows) {
+      // h-24 is the starting size, flex-auto lets it grow or shrink from
+      // there, and min-h-12 stops it collapsing. A fixed min-h-24 would pin
+      // every cell to 6rem no matter how much room there was.
+      expect(row).toHaveClass("h-24", "flex-auto", "min-h-12")
+      expect(row).not.toHaveClass("min-h-24")
+    }
+  })
+
+  it("keeps the month scrollable rather than spilling when space runs out", () => {
+    render(
+      <CalendarView defaultMonth={new Date(2026, 6, 1)} events={sizingEvents} />
+    )
+    expect(document.querySelector("[role='grid']")).toHaveClass(
+      "overflow-y-auto",
+      "min-h-0",
+      "flex-1"
+    )
+  })
+
+  it("treats the week view's 26rem as a basis so it grows and shrinks too", () => {
+    render(
+      <CalendarView
+        defaultView="week"
+        defaultMonth={new Date(2026, 6, 1)}
+        events={sizingEvents}
+      />
+    )
+    const scroll = document.querySelector(
+      "[data-slot='calendar-view-scroll']"
+    ) as HTMLElement
+    expect(scroll).toHaveClass("h-[26rem]", "flex-auto", "min-h-0")
+    // A hard cap would stop it filling a taller parent.
+    expect(scroll).not.toHaveClass("max-h-[26rem]")
+  })
+
+  it("positions the week grid proportionally so it can stretch", () => {
+    render(
+      <CalendarView
+        // Start in week view: the toggle refocuses the cursor on today.
+        defaultView="week"
+        defaultMonth={new Date(2026, 6, 8)}
+        events={[
+          {
+            id: "standup",
+            title: "Standup",
+            start: "2026-07-08T09:00",
+            end: "2026-07-08T09:30",
+          },
+        ]}
+      />
+    )
+
+    // 09:00 is 9/24 of the day, and the chip is placed as a percentage — a
+    // pixel offset would freeze it at one hour height.
+    const chip = document.querySelector(
+      "[data-slot='calendar-view-event']"
+    ) as HTMLElement
+    // Read the percentage back out — the browser rounds the literal.
+    const percent = (value: string) => Number(/([\d.]+)%/.exec(value)![1])
+    expect(percent(chip.style.top)).toBeCloseTo((9 / 24) * 100, 3)
+    expect(percent(chip.style.height)).toBeCloseTo((30 / 1440) * 100, 3)
+    expect(chip.style.top).toContain("+ 1px")
+    expect(chip.style.height).toContain("- 2px")
+  })
+
+  it("keeps a readable hour height by default, and fits the day on request", () => {
+    const gridStyle = () =>
+      (
+        document.querySelector(
+          "[data-slot='calendar-view-scroll']"
+        ) as HTMLElement
+      ).firstElementChild as HTMLElement
+
+    const { rerender } = render(
+      <CalendarView
+        defaultView="week"
+        defaultMonth={new Date(2026, 6, 8)}
+        events={sizingEvents}
+      />
+    )
+    // 24 hours at the natural density; a short viewport scrolls instead.
+    expect(gridStyle().style.minHeight).toBe("1152px")
+    expect(gridStyle().style.height).toBe("100%")
+
+    rerender(
+      <CalendarView
+        fitDay
+        defaultView="week"
+        defaultMonth={new Date(2026, 6, 8)}
+        events={sizingEvents}
+      />
+    )
+    // No floor: the day spreads across whatever height there is.
+    expect(gridStyle().style.minHeight).toBe("")
+    expect(gridStyle().style.height).toBe("100%")
+  })
+
+  it("stretches through the composed provider + grid API too", () => {
+    render(
+      <CalendarViewProvider defaultMonth={new Date(2026, 6, 1)}>
+        <CalendarViewGrid events={sizingEvents} />
+      </CalendarViewProvider>
+    )
+    expect(grid()).toHaveClass("flex-1", "min-h-0")
   })
 })

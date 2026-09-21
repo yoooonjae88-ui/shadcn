@@ -1,0 +1,15 @@
+# Normalise line endings in the repo and on checkout. Without this a Windows
+# clone gets CRLF, which changes the bytes the registry serves to consumers
+# and breaks source-scanning tools that match on "\n".
+* text=auto eol=lf
+
+# Binary assets must never be touched.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.mp4 binary

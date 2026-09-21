@@ -101,6 +101,8 @@ interface MentionProps
 /* Styling — matches the registry Input frame                                */
 /* ------------------------------------------------------------------------ */
 
+const mentionFrameDefaults = { variant: "filled" } as const
+
 const mentionFrame = cva(
   "relative inline-flex w-full min-w-0 cursor-text flex-col items-stretch border border-transparent bg-clip-padding px-2.5 py-1 text-sm text-foreground transition-[color,background-color,border-color,box-shadow] outline-none",
   {
@@ -115,7 +117,7 @@ const mentionFrame = cva(
           "border-b-input px-0 hover:border-b-ring/70 focus-within:border-b-ring hover:focus-within:border-b-ring",
       },
     },
-    defaultVariants: { variant: "filled" },
+    defaultVariants: mentionFrameDefaults,
   }
 )
 
@@ -345,7 +347,7 @@ function MentionBase({
   className,
   popupClassName,
   style,
-  variant = "filled",
+  variant = mentionFrameDefaults.variant,
   status,
   placement = "bottom",
   disabled,

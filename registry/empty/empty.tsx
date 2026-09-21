@@ -9,6 +9,10 @@ import { cn } from "@/lib/utils"
 // actions (buttons, an input, links). No colours are hardcoded: everything
 // resolves from theme tokens so it restyles with the rest of the app.
 
+const emptyDefaults = {
+  variant: "default",
+} as const
+
 const emptyVariants = cva(
   "flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-6 rounded-lg p-6 text-center text-balance md:p-12",
   {
@@ -22,15 +26,13 @@ const emptyVariants = cva(
         background: "bg-gradient-to-b from-muted/50 to-background",
       },
     },
-    defaultVariants: {
-      variant: "default",
-    },
+    defaultVariants: emptyDefaults,
   }
 )
 
 function Empty({
   className,
-  variant = "default",
+  variant = emptyDefaults.variant,
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof emptyVariants>) {
   return (
@@ -59,6 +61,10 @@ function EmptyHeader({ className, ...props }: React.ComponentProps<"div">) {
 // The media slot above the title. `default` renders its child as-is (an
 // illustration, an avatar, an avatar group); `icon` wraps it in a rounded
 // muted tile sized for a single lucide icon.
+const emptyMediaDefaults = {
+  variant: "default",
+} as const
+
 const emptyMediaVariants = cva(
   "mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
@@ -68,15 +74,13 @@ const emptyMediaVariants = cva(
         icon: "size-10 items-center justify-center rounded-lg bg-muted text-foreground [&_svg:not([class*='size-'])]:size-6",
       },
     },
-    defaultVariants: {
-      variant: "default",
-    },
+    defaultVariants: emptyMediaDefaults,
   }
 )
 
 function EmptyMedia({
   className,
-  variant = "default",
+  variant = emptyMediaDefaults.variant,
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof emptyMediaVariants>) {
   return (
