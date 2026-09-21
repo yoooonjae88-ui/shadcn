@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
+import { Plus, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -234,6 +235,18 @@ interface TagProps
   selected?: boolean
   /** Click handler; also makes a group-less Tag interactive. */
   onClick?: React.MouseEventHandler<HTMLElement>
+  /** Show a close button on the chip. */
+  closable?: boolean
+  /** Glyph for the close button. */
+  closeIcon?: React.ReactNode
+  /** Accessible name for the close button. */
+  closeLabel?: string
+  /**
+   * Fired when the close button is used. The Tag does not remove itself —
+   * whoever owns the list decides, which is what lets a set of tags be added
+   * to and removed from (see TagInput).
+   */
+  onClose?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 // Pulsing dot shown for the "processing" status when no explicit icon is set.
@@ -258,6 +271,10 @@ function Tag({
   value,
   selected: selectedProp,
   onClick,
+  closable = false,
+  closeIcon,
+  closeLabel,
+  onClose,
   className,
   children,
   ...props
@@ -295,6 +312,56 @@ function Tag({
     className
   )
 
+  const closeButton = closable ? (
+    <button
+      type="button"
+      data-slot="tag-close"
+      aria-label={closeLabel ?? "Remove"}
+      disabled={isDisabled}
+      onClick={(event) => {
+        // A closable Tag inside a selectable group would otherwise toggle the
+        // selection on its way out.
+        event.stopPropagation()
+        onClose?.(event)
+      }}
+      className="-mr-0.5 inline-flex shrink-0 cursor-pointer items-center rounded-sm opacity-60 transition-opacity hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:pointer-events-none"
+    >
+      {closeIcon ?? <X />}
+    </button>
+  ) : null
+
+  // A close button is interactive content, so it can never sit inside the
+  // <button> a selectable Tag renders. A closable Tag is a <span> chip
+  // instead, with its label as the button when it is also selectable.
+  if (closable) {
+    return (
+      <span
+        data-slot="tag"
+        data-status={status}
+        data-selected={(interactive && selected) || undefined}
+        data-disabled={isDisabled || undefined}
+        className={cn(classes, isDisabled && "opacity-50")}
+        {...props}
+      >
+        {interactive ? (
+          <button
+            type="button"
+            data-slot="tag-label"
+            aria-pressed={selected}
+            disabled={isDisabled}
+            onClick={handleClick}
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:pointer-events-none"
+          >
+            {content}
+          </button>
+        ) : (
+          content
+        )}
+        {closeButton}
+      </span>
+    )
+  }
+
   if (interactive) {
     return (
       <button
@@ -326,12 +393,166 @@ function Tag({
   )
 }
 
+
+// ---------------------------------------------------------------------------
+// TagInput — a set of tags that can be added to and removed from, after Ant
+// Design's "Add & Remove dynamically" Tag demo.
+//
+// The list is the value: each entry renders as a closable Tag, and a trailing
+// "New Tag" control swaps itself for an inline field. Enter commits and keeps
+// the field open for the next one; Escape or clicking away closes it, and
+// Backspace on an empty field takes the last tag back.
+// ---------------------------------------------------------------------------
+
+interface TagInputProps
+  extends Omit<React.ComponentProps<"div">, "onChange" | "defaultValue"> {
+  /** Controlled list of tags. */
+  value?: string[]
+  /** Uncontrolled initial list. */
+  defaultValue?: string[]
+  /** Fired with the next list whenever a tag is added or removed. */
+  onValueChange?: (value: string[]) => void
+  /** Visual treatment passed to every tag. */
+  variant?: TagVariant
+  /** Status colour passed to every tag. */
+  status?: TagStatus
+  /** Label on the control that opens the field. */
+  addLabel?: React.ReactNode
+  /** Placeholder shown in the field. */
+  placeholder?: string
+  /** Most tags allowed; the add control hides once the list is full. */
+  max?: number
+  /** Keep tags that repeat one already in the list. */
+  allowDuplicates?: boolean
+  /** Disables adding and removing. */
+  disabled?: boolean
+}
+
+function TagInput({
+  value: valueProp,
+  defaultValue,
+  onValueChange,
+  variant = tagDefaults.variant,
+  status = tagDefaults.status,
+  addLabel = "New Tag",
+  placeholder = "Tag name",
+  max,
+  allowDuplicates = false,
+  disabled = false,
+  className,
+  ...props
+}: TagInputProps) {
+  const isControlled = valueProp !== undefined
+  const [internalValue, setInternalValue] = React.useState<string[]>(
+    () => defaultValue ?? []
+  )
+  const value = isControlled ? valueProp : internalValue
+
+  const [editing, setEditing] = React.useState(false)
+  const [draft, setDraft] = React.useState("")
+
+  // Focused as it mounts rather than a frame later, so a fast typist cannot
+  // land a keystroke on the page before the field takes it. The callback is
+  // stable, so it runs on mount and unmount only — never stealing focus back
+  // on a later render.
+  const focusOnMount = React.useCallback((node: HTMLInputElement | null) => {
+    node?.focus()
+  }, [])
+
+  const commitValue = (next: string[]) => {
+    if (!isControlled) setInternalValue(next)
+    onValueChange?.(next)
+  }
+
+  const isFull = max !== undefined && value.length >= max
+
+  const addDraft = () => {
+    const tag = draft.trim()
+    setDraft("")
+    if (!tag || isFull) return
+    if (!allowDuplicates && value.includes(tag)) return
+    commitValue([...value, tag])
+  }
+
+  const removeAt = (index: number) => {
+    commitValue(value.filter((_, i) => i !== index))
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault()
+      addDraft()
+    } else if (event.key === "Escape") {
+      setDraft("")
+      setEditing(false)
+    } else if (event.key === "Backspace" && draft === "" && value.length > 0) {
+      removeAt(value.length - 1)
+    }
+  }
+
+  return (
+    <div
+      data-slot="tag-input"
+      className={cn("flex flex-wrap items-center gap-2", className)}
+      {...props}
+    >
+      {value.map((tag, index) => (
+        <Tag
+          key={`${tag}-${index}`}
+          variant={variant}
+          status={status}
+          disabled={disabled}
+          closable
+          closeLabel={`Remove ${tag}`}
+          onClose={() => removeAt(index)}
+        >
+          {tag}
+        </Tag>
+      ))}
+
+      {editing ? (
+        <input
+          ref={focusOnMount}
+          data-slot="tag-input-field"
+          value={draft}
+          placeholder={placeholder}
+          disabled={disabled}
+          onChange={(event) => setDraft(event.target.value)}
+          onKeyDown={handleKeyDown}
+          onBlur={() => {
+            addDraft()
+            setEditing(false)
+          }}
+          // Same box as a chip — the border, padding and text of `tagVariants`
+          // — so the field sits in the row at exactly the tags' height.
+          className="w-24 rounded-md border border-tag-filled-border bg-tag-filled px-2 py-0.5 text-xs leading-4 text-tag-filled-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/50"
+        />
+      ) : (
+        !isFull && (
+          <Tag
+            data-slot="tag-input-add"
+            variant="outlined"
+            className="border-dashed"
+            disabled={disabled}
+            onClick={() => setEditing(true)}
+          >
+            <Plus />
+            {addLabel}
+          </Tag>
+        )
+      )}
+    </div>
+  )
+}
+
 export {
   Tag,
   TagGroup,
+  TagInput,
   tagVariants,
   type TagProps,
   type TagGroupProps,
+  type TagInputProps,
   type TagVariant,
   type TagStatus,
 }

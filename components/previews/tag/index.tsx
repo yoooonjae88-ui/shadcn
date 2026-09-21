@@ -1,5 +1,6 @@
 import type { PreviewExample } from "@/components/previews/types"
 import { TagDisabledExample } from "./tag-disabled"
+import { TagDynamicExample } from "./tag-dynamic"
 import { TagFilledExample } from "./tag-filled"
 import { TagIconsExample } from "./tag-icons"
 import { TagOutlinedExample } from "./tag-outlined"
@@ -24,6 +25,12 @@ export const tagExamples: PreviewExample[] = [
     title: "Outlined",
     component: TagOutlinedExample,
     file: "components/previews/tag/tag-outlined.tsx",
+  },
+  {
+    name: "dynamic",
+    title: "Add & remove",
+    component: TagDynamicExample,
+    file: "components/previews/tag/tag-dynamic.tsx",
   },
   {
     name: "selectable",

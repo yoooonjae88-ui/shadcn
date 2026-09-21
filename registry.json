@@ -1377,8 +1377,8 @@
         "group": "Data Display"
       },
       "title": "Tag",
-      "description": "A compact label with filled, solid and outlined variants across default, success, processing, warning and error statuses. The default filled chip is white at rest and flips to #334F4E on hover/selected; supports a leading icon, a disabled state, and single- or multi-select with deselect via TagGroup. Every colour is tokenised via --tag-* CSS variables.",
-      "dependencies": ["class-variance-authority"],
+      "description": "A compact label with filled, solid and outlined variants across default, success, processing, warning and error statuses. The default filled chip is white at rest and flips to #334F4E on hover/selected; supports a leading icon, a disabled state, and single- or multi-select with deselect via TagGroup. Tags are closable: `closable` puts a × on the chip and reports it through `onClose` without the tag removing itself, so the list's owner decides — and because a close button cannot sit inside the <button> a selectable tag renders, a closable chip becomes a span holding its label and close as separate buttons. TagInput builds the add-and-remove pattern from Ant Design's Tag demo on top of that: the list is the value, each entry is a closable tag, and a trailing \"New Tag\" control swaps itself for an inline field where Enter adds and keeps typing, Escape or clicking away closes it, and Backspace on an empty field takes the last tag back, with max, allowDuplicates, placeholder and disabled to bound it. Every colour is tokenised via --tag-* CSS variables.",
+      "dependencies": ["class-variance-authority", "lucide-react"],
       "cssVars": {
         "theme": {
           "color-tag-filled": "var(--tag-filled)",
