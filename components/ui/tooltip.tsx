@@ -104,11 +104,19 @@ function TooltipArrow({
     <TooltipPrimitive.Arrow
       data-slot="tooltip-arrow"
       className={cn(
-        // The svg below ends in a 2px full-width strip that has to sit
-        // inside the popup, or its two ends show as points either side of
-        // the arrow. The box is 10px on the pointing axis, so the inset is
-        // -(10 - 2); the rotated sides carry the same 2px further in.
-        "data-[side=bottom]:top-[-8px] data-[side=top]:bottom-[-8px] data-[side=top]:rotate-180 data-[side=left]:right-[-13px] data-[side=left]:rotate-90 data-[side=right]:left-[-13px] data-[side=right]:-rotate-90",
+        // The svg below ends in a 2px full-width strip that has to sit inside
+        // the popup, or its two ends show as points either side of the
+        // arrow. The box is 10px on the pointing axis, so top and bottom
+        // inset by -(10 - 2) and the strip lands flush with the edge.
+        //
+        // Left and right need 2px more. Their edge is the popup's short one
+        // — a one-line tooltip is 28px tall with 8px corners, so only 12px
+        // of it is straight — and the 20px strip runs 4px into each corner,
+        // where the edge has curved as much as 1.07px away from under it.
+        // Sinking the strip below the edge covers that; the rotated box is
+        // centred on the 10px the arrow occupies, so it sits 5px further out
+        // again.
+        "data-[side=bottom]:top-[-8px] data-[side=top]:bottom-[-8px] data-[side=top]:rotate-180 data-[side=left]:right-[-11px] data-[side=left]:rotate-90 data-[side=right]:left-[-11px] data-[side=right]:-rotate-90",
         className
       )}
       {...props}

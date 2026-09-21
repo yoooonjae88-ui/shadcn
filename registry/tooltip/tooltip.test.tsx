@@ -116,7 +116,14 @@ describe("Tooltip", () => {
     // Rotated a quarter turn, the 20px box is centred on the 10px the arrow
     // actually occupies, so it sits half that difference further out.
     const rotatedGap = (BOX_ALONG - BOX_ACROSS) / 2
-    expect(inset("left")).toBe(-(BOX_ACROSS - STRIP + rotatedGap))
-    expect(inset("right")).toBe(-(BOX_ACROSS - STRIP + rotatedGap))
+
+    // Those two sides also sink the strip below the edge instead of leaving
+    // it flush. They run along the popup's short side — a one-line tooltip is
+    // 28px tall with 8px corners, so only 12px of it is straight — and the
+    // 20px strip carries on 4px into each corner, where the edge curves as
+    // much as 1.07px out from under it and leaves its ends showing.
+    const CORNER_SINK = 2
+    expect(inset("left")).toBe(-(BOX_ACROSS - STRIP - CORNER_SINK + rotatedGap))
+    expect(inset("right")).toBe(-(BOX_ACROSS - STRIP - CORNER_SINK + rotatedGap))
   })
 })
