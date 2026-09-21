@@ -104,7 +104,11 @@ function TooltipArrow({
     <TooltipPrimitive.Arrow
       data-slot="tooltip-arrow"
       className={cn(
-        "data-[side=bottom]:top-[-9px] data-[side=top]:bottom-[-9px] data-[side=top]:rotate-180 data-[side=left]:right-[-14px] data-[side=left]:rotate-90 data-[side=right]:left-[-14px] data-[side=right]:-rotate-90",
+        // The svg below ends in a 2px full-width strip that has to sit
+        // inside the popup, or its two ends show as points either side of
+        // the arrow. The box is 10px on the pointing axis, so the inset is
+        // -(10 - 2); the rotated sides carry the same 2px further in.
+        "data-[side=bottom]:top-[-8px] data-[side=top]:bottom-[-8px] data-[side=top]:rotate-180 data-[side=left]:right-[-13px] data-[side=left]:rotate-90 data-[side=right]:left-[-13px] data-[side=right]:-rotate-90",
         className
       )}
       {...props}

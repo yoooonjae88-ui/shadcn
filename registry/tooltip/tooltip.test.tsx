@@ -82,4 +82,41 @@ describe("Tooltip", () => {
       document.querySelector("[data-slot='tooltip-arrow']")
     ).not.toBeInTheDocument()
   })
+
+  it("tucks the arrow's base strip inside the popup on every side", async () => {
+    const user = userEvent.setup()
+    renderTooltip()
+    await user.hover(screen.getByText("Hover me"))
+
+    const arrow = await waitFor(() => {
+      const el = document.querySelector("[data-slot='tooltip-arrow']")
+      if (!el) throw new Error("no arrow")
+      return el
+    })
+
+    // The arrow's svg ends in a 2px full-width strip that joins it to the
+    // popup. Leave any of that strip outside and its two ends show as points
+    // either side of the arrow, which is what a 1px-short inset did.
+    const STRIP = 2
+    const BOX_ACROSS = 10 // the box's size along the pointing axis
+    const BOX_ALONG = 20 // and across it, which the rotated sides swap in
+
+    const inset = (side: string) => {
+      const match = arrow.className.match(
+        new RegExp(`data-\\[side=${side}\\]:(?:top|bottom|left|right)-\\[(-?\\d+)px\\]`)
+      )
+      if (!match) throw new Error(`no inset for side=${side}`)
+      return Number(match[1])
+    }
+
+    // Upright: the box hangs out by its height less the strip.
+    expect(inset("top")).toBe(-(BOX_ACROSS - STRIP))
+    expect(inset("bottom")).toBe(-(BOX_ACROSS - STRIP))
+
+    // Rotated a quarter turn, the 20px box is centred on the 10px the arrow
+    // actually occupies, so it sits half that difference further out.
+    const rotatedGap = (BOX_ALONG - BOX_ACROSS) / 2
+    expect(inset("left")).toBe(-(BOX_ACROSS - STRIP + rotatedGap))
+    expect(inset("right")).toBe(-(BOX_ACROSS - STRIP + rotatedGap))
+  })
 })
