@@ -23,13 +23,14 @@ export function FloatButtonBackTopExample() {
       </div>
 
       {/* BackTop watches its target's scroll offset and only appears past
-          `visibilityHeight`. It sits outside the scroller so it stays put. */}
+          `visibilityHeight`. It sits outside the scroller so it stays put,
+          and `showProgress` traces how far down the target it is. */}
       <FloatButton.BackTop
         position="absolute"
         offset={16}
-        type="primary"
         target={() => scrollerRef.current ?? window}
         visibilityHeight={80}
+        showProgress
         tooltip="Back to top"
       />
     </div>

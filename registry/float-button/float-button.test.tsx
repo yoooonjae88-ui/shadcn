@@ -5,6 +5,9 @@ import { describe, expect, it, vi } from "vitest"
 
 import { FloatButton } from "@/registry/float-button/float-button"
 
+const corner = () =>
+  document.querySelector("[data-slot='badge-corner']") as HTMLElement
+
 describe("FloatButton", () => {
   it("renders a button pinned to the bottom-right by default", () => {
     render(<FloatButton aria-label="Help" />)
@@ -67,6 +70,38 @@ describe("FloatButton", () => {
     expect(
       document.querySelector("[data-slot='badge-count']")
     ).toHaveTextContent("5")
+  })
+
+  it("pulls the badge off the bounding box onto the button's edge", () => {
+    // A circle's corner arc has the button's own radius (24px at the default
+    // size), a square's is its 16px `rounded-2xl`; both pull back r(1 − √½).
+    const { rerender } = render(
+      <FloatButton aria-label="Inbox" badge={{ dot: true }} />
+    )
+    expect(corner()).toHaveStyle({
+      transform: "translate(calc(50% + -7px), calc(-50% + 7px))",
+    })
+
+    rerender(
+      <FloatButton aria-label="Inbox" shape="square" badge={{ dot: true }} />
+    )
+    expect(corner()).toHaveStyle({
+      transform: "translate(calc(50% + -5px), calc(-50% + 5px))",
+    })
+
+    rerender(<FloatButton aria-label="Inbox" size="lg" badge={{ dot: true }} />)
+    expect(corner()).toHaveStyle({
+      transform: "translate(calc(50% + -8px), calc(-50% + 8px))",
+    })
+  })
+
+  it("lets a caller override the badge offset", () => {
+    render(
+      <FloatButton aria-label="Inbox" badge={{ dot: true, offset: [4, -4] }} />
+    )
+    expect(corner()).toHaveStyle({
+      transform: "translate(calc(50% + 4px), calc(-50% + -4px))",
+    })
   })
 })
 
@@ -200,12 +235,21 @@ describe("FloatButton.Group", () => {
 })
 
 describe("FloatButton.BackTop", () => {
-  function renderInScroller(props: React.ComponentProps<typeof FloatButton.BackTop> = {}) {
+  function renderInScroller(
+    props: React.ComponentProps<typeof FloatButton.BackTop> = {},
+    measure?: (el: HTMLDivElement) => void
+  ) {
     function Wrapper() {
       const ref = React.useRef<HTMLDivElement>(null)
+      // jsdom does no layout, so a test that needs scroll geometry declares
+      // it on the element as it mounts.
+      const attach = (el: HTMLDivElement | null) => {
+        ref.current = el
+        if (el) measure?.(el)
+      }
       return (
         <div>
-          <div ref={ref} data-testid="scroller" style={{ overflow: "auto" }} />
+          <div ref={attach} data-testid="scroller" style={{ overflow: "auto" }} />
           <FloatButton.BackTop
             target={() => ref.current ?? window}
             visibilityHeight={100}
@@ -230,6 +274,95 @@ describe("FloatButton.BackTop", () => {
     await waitFor(() =>
       expect(button).toHaveAttribute("data-visible", "true")
     )
+  })
+
+  it("has no progress ring by default", async () => {
+    renderInScroller()
+
+    const scroller = screen.getByTestId("scroller")
+    scroller.scrollTop = 250
+    fireEvent.scroll(scroller)
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Back to top" })
+      ).toHaveAttribute("data-visible", "true")
+    )
+    expect(
+      document.querySelector("[data-slot='float-button-progress']")
+    ).not.toBeInTheDocument()
+  })
+
+  it("traces the scrolled fraction around the button with showProgress", async () => {
+    // 1000px of content in a 200px window leaves 800px of travel.
+    renderInScroller({ showProgress: true, visibilityHeight: 0 }, (el) => {
+      Object.defineProperty(el, "scrollHeight", { value: 1000 })
+      Object.defineProperty(el, "clientHeight", { value: 200 })
+    })
+
+    // Nothing is drawn at the top — the ring has no track behind it.
+    expect(
+      document.querySelector("[data-slot='float-button-progress']")
+    ).not.toBeInTheDocument()
+
+    const scroller = screen.getByTestId("scroller")
+    scroller.scrollTop = 200
+    fireEvent.scroll(scroller)
+
+    const circle = await waitFor(() => {
+      const el = document.querySelector(
+        "[data-slot='float-button-progress'] circle"
+      )
+      if (!el) throw new Error("no ring")
+      return el
+    })
+
+    // A quarter of the way down draws a quarter of the outline...
+    const [drawn, gap] = (circle.getAttribute("stroke-dasharray") ?? "")
+      .split(" ")
+      .map(Number)
+    expect(drawn / (drawn + gap)).toBeCloseTo(0.25, 2)
+    // ...starting at twelve o'clock, three quarters along the circle's path.
+    expect(Number(circle.getAttribute("stroke-dashoffset"))).toBeCloseTo(
+      -0.75 * (drawn + gap),
+      2
+    )
+
+    scroller.scrollTop = 800
+    fireEvent.scroll(scroller)
+    await waitFor(() => {
+      const [full, rest] = (
+        document
+          .querySelector("[data-slot='float-button-progress'] circle")
+          ?.getAttribute("stroke-dasharray") ?? ""
+      )
+        .split(" ")
+        .map(Number)
+      expect(full / (full + rest)).toBeCloseTo(1, 2)
+    })
+  })
+
+  it("traces a square button's outline with a rect", async () => {
+    renderInScroller(
+      { showProgress: true, visibilityHeight: 0, shape: "square" },
+      (el) => {
+        Object.defineProperty(el, "scrollHeight", { value: 1000 })
+        Object.defineProperty(el, "clientHeight", { value: 200 })
+      }
+    )
+
+    const scroller = screen.getByTestId("scroller")
+    scroller.scrollTop = 400
+    fireEvent.scroll(scroller)
+
+    await waitFor(() => {
+      expect(
+        document.querySelector("[data-slot='float-button-progress'] rect")
+      ).toBeInTheDocument()
+    })
+    expect(
+      document.querySelector("[data-slot='float-button-progress'] circle")
+    ).not.toBeInTheDocument()
   })
 
   it("scrolls the target back to the top when clicked", async () => {

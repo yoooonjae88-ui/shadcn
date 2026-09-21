@@ -279,6 +279,7 @@
   );
   --color-float-button-primary-hover: var(--float-button-primary-hover);
   --color-float-button-separator: var(--float-button-separator);
+  --color-float-button-progress: var(--float-button-progress);
   /* Splitter — drag bar line + collapse arrow buttons */
   --color-splitter-bar: var(--splitter-bar);
   --color-splitter-bar-hover: var(--splitter-bar-hover);
@@ -664,6 +665,7 @@
     var(--foreground)
   );
   --float-button-separator: var(--border);
+  --float-button-progress: var(--primary);
   /* Splitter — the divider line at rest / hover / while dragging, the lazy
      ghost bar, and the little collapse arrow buttons. All derive from theme
      tokens so the splitter restyles with the palette. */
@@ -1025,6 +1027,7 @@
     var(--background)
   );
   --float-button-separator: var(--border);
+  --float-button-progress: var(--primary);
   /* Splitter for dark mode — same theme-derived recipe; edit independently. */
   --splitter-bar: var(--border);
   --splitter-bar-hover: color-mix(in srgb, var(--primary) 45%, transparent);

@@ -117,6 +117,38 @@ const FloatButtonGroupContext =
   React.createContext<FloatButtonGroupContextValue | null>(null)
 
 // ---------------------------------------------------------------------------
+// Geometry — the pixel sizes the cva variants below render, needed by the
+// pieces that have to be drawn against the button's outline (its corner badge
+// and BackTop's progress ring) rather than its bounding box.
+// ---------------------------------------------------------------------------
+
+/** Diameter of each size, in px. Mirrors the `size` variants. */
+const BUTTON_SIZE: Record<FloatButtonSize, number> = {
+  sm: 40,
+  default: 48,
+  lg: 56,
+}
+
+/** Corner radius of a square button, in px (`rounded-2xl`). */
+const SQUARE_RADIUS = 16
+
+const cornerRadius = (shape: FloatButtonShape, size: FloatButtonSize) =>
+  shape === "circle" ? BUTTON_SIZE[size] / 2 : SQUARE_RADIUS
+
+/**
+ * A badge pinned to the button's bounding box hangs off a rounded corner in
+ * mid-air, so it is pulled back along the diagonal onto the edge itself: the
+ * point on a corner arc at 45° sits `r(1 − √½)` inside the box's corner.
+ */
+function badgeCornerOffset(
+  shape: FloatButtonShape,
+  size: FloatButtonSize
+): [number, number] {
+  const inset = Math.round(cornerRadius(shape, size) * (1 - Math.SQRT1_2))
+  return [-inset, inset]
+}
+
+// ---------------------------------------------------------------------------
 // FloatButton
 // ---------------------------------------------------------------------------
 
@@ -307,7 +339,12 @@ function FloatButton({
 
   if (badge) {
     node = (
-      <Badge data-slot="float-button-badge" className="flex" {...badge}>
+      <Badge
+        data-slot="float-button-badge"
+        className="flex"
+        offset={badgeCornerOffset(resolvedShape, resolvedSize)}
+        {...badge}
+      >
         {node}
       </Badge>
     )
@@ -598,6 +635,99 @@ function setScrollTop(target: ScrollTarget, value: number) {
   }
 }
 
+/** How far the target can still be scrolled, in px. */
+function getScrollRange(target: ScrollTarget): number {
+  if (isWindow(target)) {
+    return target.document.documentElement.scrollHeight - target.innerHeight
+  }
+  const el = target instanceof Document ? target.documentElement : target
+  return el.scrollHeight - el.clientHeight
+}
+
+/** How far through the target the user has scrolled, from 0 to 1. */
+function getScrollProgress(target: ScrollTarget): number {
+  const range = getScrollRange(target)
+  if (range <= 0) return 0
+  return Math.min(1, Math.max(0, getScrollTop(target) / range))
+}
+
+/** Thickness of the progress ring, in px. */
+const RING_STROKE = 2
+/** Gap between the button's edge and the ring's centreline, in px. */
+const RING_GAP = 1
+
+/**
+ * Traces the button's own outline — a circle or a rounded square — filling it
+ * clockwise from twelve o'clock as `progress` runs 0 → 1. There is no track
+ * behind it: the untravelled part of the ring is simply not drawn.
+ *
+ * It is sized from the `size` variant, so it belongs on an icon-only button
+ * (one carrying a `description` grows to fit its label and the ring would no
+ * longer follow its edge).
+ */
+function FloatButtonProgressRing({
+  progress,
+  shape,
+  size,
+}: {
+  progress: number
+  shape: FloatButtonShape
+  size: FloatButtonSize
+}) {
+  // The stroke is centred `RING_GAP` outside the button, so the box it is
+  // drawn in overhangs the button by that plus half the stroke.
+  const overhang = RING_GAP + RING_STROKE / 2
+  const box = BUTTON_SIZE[size] + overhang * 2
+  const span = box - RING_STROKE
+  const radius = cornerRadius(shape, size) + overhang
+
+  // Where the outline starts, and how long it is: an SVG circle starts at
+  // three o'clock, a rect just past its top-left corner, and both run
+  // clockwise — so each needs its own shift to begin at twelve.
+  const [length, start] =
+    shape === "circle"
+      ? [2 * Math.PI * radius, 2 * Math.PI * radius * 0.75]
+      : [4 * (span - 2 * radius) + 2 * Math.PI * radius, span / 2 - radius]
+
+  const drawn = length * Math.min(1, Math.max(0, progress))
+  // A zero-length dash with a round cap renders as a dot, so nothing is drawn
+  // until there is an arc to draw.
+  if (drawn < 0.5) return null
+
+  const stroke = {
+    fill: "none",
+    strokeWidth: RING_STROKE,
+    strokeLinecap: "round" as const,
+    strokeDasharray: `${drawn} ${length - drawn}`,
+    strokeDashoffset: -start,
+  }
+
+  return (
+    <svg
+      aria-hidden
+      data-slot="float-button-progress"
+      viewBox={`0 0 ${box} ${box}`}
+      className="pointer-events-none absolute stroke-float-button-progress"
+      // Sized inline: the button sizes every icon it contains through a
+      // `[&_svg]` rule, which a width/height attribute would lose to.
+      style={{ inset: -overhang, width: box, height: box }}
+    >
+      {shape === "circle" ? (
+        <circle cx={box / 2} cy={box / 2} r={radius} {...stroke} />
+      ) : (
+        <rect
+          x={RING_STROKE / 2}
+          y={RING_STROKE / 2}
+          width={span}
+          height={span}
+          rx={radius}
+          {...stroke}
+        />
+      )}
+    </svg>
+  )
+}
+
 // Ant's scroll easing.
 function easeInOutCubic(t: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
@@ -637,19 +767,26 @@ interface FloatButtonBackTopProps
   target?: () => ScrollTarget
   /** Length of the scroll animation, in ms. */
   duration?: number
+  /** Trace the target's scroll progress around the button's outline. */
+  showProgress?: boolean
 }
 
 function FloatButtonBackTop({
   visibilityHeight = 400,
   target,
   duration = 450,
+  showProgress = false,
+  shape,
+  size,
   icon,
   onClick,
   className,
+  children,
   ...props
 }: FloatButtonBackTopProps) {
   const group = React.useContext(FloatButtonGroupContext)
   const [visible, setVisible] = React.useState(visibilityHeight === 0)
+  const [progress, setProgress] = React.useState(0)
   // `target` is usually an inline arrow, so it is read through a ref: the
   // scroll listener is bound to whichever element it resolves to at mount.
   const targetRef = React.useRef(target)
@@ -660,7 +797,10 @@ function FloatButtonBackTop({
   React.useEffect(() => {
     const scroller: ScrollTarget = targetRef.current?.() ?? window
     const emitter: EventTarget = scroller
-    const sync = () => setVisible(getScrollTop(scroller) >= visibilityHeight)
+    const sync = () => {
+      setVisible(getScrollTop(scroller) >= visibilityHeight)
+      if (showProgress) setProgress(getScrollProgress(scroller))
+    }
 
     sync()
     emitter.addEventListener("scroll", sync, { passive: true })
@@ -669,7 +809,7 @@ function FloatButtonBackTop({
       emitter.removeEventListener("scroll", sync)
       window.removeEventListener("resize", sync)
     }
-  }, [visibilityHeight])
+  }, [showProgress, visibilityHeight])
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     scrollToTop(targetRef.current?.() ?? window, duration)
@@ -695,8 +835,19 @@ function FloatButtonBackTop({
           ),
         className
       )}
+      shape={shape}
+      size={size}
       {...props}
-    />
+    >
+      {showProgress && (
+        <FloatButtonProgressRing
+          progress={progress}
+          shape={shape ?? group?.shape ?? floatButtonDefaults.shape}
+          size={size ?? group?.size ?? floatButtonDefaults.size}
+        />
+      )}
+      {children}
+    </FloatButton>
   )
 }
 
