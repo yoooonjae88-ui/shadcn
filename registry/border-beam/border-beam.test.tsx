@@ -31,16 +31,18 @@ describe("BorderBeam", () => {
     expect(wrapper().className).toContain("pointer-events-none")
   })
 
-  it("laps its parent's own border box by default", () => {
-    render(<BorderBeam />)
-    // The utility resolves to `border-box` where supported, with a rounded
-    // rect behind it — so nothing is pinned inline.
-    expect(glow().className).toContain("border-beam-track")
-    expect(glow().style.offsetPath).toBe("")
+  it("rounds the lap to the beam's own length by default", () => {
+    // This is what keeps a corner a gentle turn. `offset-rotate` swings the
+    // beam through the whole right angle over that arc, so a lap pinned to a
+    // tight radius whips round instead: measured on a 630x92 card, a 12px lap
+    // peaks at ~1170deg/s against ~290deg/s here. The mask keeps the light on
+    // the border either way, so the lap is free to be the rounder one.
+    render(<BorderBeam size={80} />)
+    expect(glow().style.offsetPath).toBe("rect(0 auto auto 0 round 80px)")
   })
 
   it("pins the lap when given a radius", () => {
-    render(<BorderBeam radius={20} />)
+    render(<BorderBeam size={80} radius={20} />)
     expect(glow().style.offsetPath).toBe("rect(0 auto auto 0 round 20px)")
   })
 

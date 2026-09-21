@@ -70,27 +70,14 @@
 /* ---------------------------------------------------------------------------
  * border-beam
  *
- * Carries the @private/border-beam item's light around its parent's border.
- * One lap of the element's `offset-path`; mirrored in that item's `css` field
- * so consumers get it on install.
+ * Drives the @private/border-beam item's light around one lap of its
+ * `offset-path`; mirrored in that item's `css` field so consumers get it on
+ * install.
  * ------------------------------------------------------------------------- */
 
 @keyframes border-beam {
   to {
     offset-distance: 100%;
-  }
-}
-
-@utility border-beam-track {
-  /* Where a browser knows `offset-path: <coord-box>`, the beam laps the
-     containing block's own border box — corner radius and all — so it fits
-     whatever it is dropped into with nothing to configure. Older ones get a
-     lap of a rounded rectangle at the radius cards use here, which the
-     item's `radius` prop overrides inline. */
-  offset-path: rect(0 auto auto 0 round 12px);
-
-  @supports (offset-path: border-box) {
-    offset-path: border-box;
   }
 }
 

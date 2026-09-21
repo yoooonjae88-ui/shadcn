@@ -28,9 +28,10 @@ interface BorderBeamProps extends React.ComponentProps<"div"> {
   /** Thickness of the border it travels, in px. */
   borderWidth?: number
   /**
-   * Pin the lap to a fixed corner radius, in px. By default the beam follows
-   * the parent's own radius, and only a browser without
-   * `offset-path: <coord-box>` needs telling.
+   * Corner radius of the lap the beam travels, in px. It defaults to the
+   * beam's own length, which is what keeps each corner a gentle turn: the
+   * beam swings through a right angle over the whole of that arc, so a lap
+   * pinned tight to a small radius whips round its corners instead.
    */
   radius?: number
   /** Colour the beam fades in from. Any CSS colour. */
@@ -87,15 +88,16 @@ function BorderBeam({
     >
       <div
         data-slot="border-beam-glow"
-        className="border-beam-track absolute aspect-square animate-(--border-beam-motion) motion-reduce:animate-none"
+        className="absolute aspect-square animate-(--border-beam-motion) motion-reduce:animate-none"
         style={
           {
             width: size,
-            // Only a pinned radius is set here, where it beats the lap the
-            // `border-beam-track` utility picks.
-            ...(radius === undefined
-              ? null
-              : { offsetPath: `rect(0 auto auto 0 round ${radius}px)` }),
+            // The mask keeps the light on the border however the lap is
+            // shaped, so the lap is free to round its corners generously —
+            // which is the whole reason it can turn them smoothly. A browser
+            // clamps the rounding to half the box, so a short box or a pill
+            // simply laps a stadium.
+            offsetPath: `rect(0 auto auto 0 round ${radius ?? size}px)`,
             backgroundImage: `linear-gradient(to left, ${from}, ${to}, transparent)`,
             "--border-beam-motion": `border-beam ${duration}s linear ${offsetDelay}s infinite ${
               reverse ? "reverse" : "normal"
