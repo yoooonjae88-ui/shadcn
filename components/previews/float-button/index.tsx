@@ -4,6 +4,7 @@ import { FloatButtonBadgeExample } from "./float-button-badge"
 import { FloatButtonBasicExample } from "./float-button-basic"
 import { FloatButtonControlledExample } from "./float-button-controlled"
 import { FloatButtonDescriptionExample } from "./float-button-description"
+import { FloatButtonDraggableExample } from "./float-button-draggable"
 import { FloatButtonGroupExample } from "./float-button-group"
 import { FloatButtonMenuExample } from "./float-button-menu"
 import { FloatButtonPlacementExample } from "./float-button-placement"
@@ -71,6 +72,12 @@ export const floatButtonExamples: PreviewExample[] = [
     title: "Controlled menu",
     component: FloatButtonControlledExample,
     file: "components/previews/float-button/float-button-controlled.tsx",
+  },
+  {
+    name: "draggable",
+    title: "Draggable",
+    component: FloatButtonDraggableExample,
+    file: "components/previews/float-button/float-button-draggable.tsx",
   },
   {
     name: "back-top",
