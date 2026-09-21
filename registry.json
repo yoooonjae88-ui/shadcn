@@ -1467,6 +1467,48 @@
       ]
     },
     {
+      "name": "border-beam",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Others"
+      },
+      "title": "Border Beam",
+      "description": "A light that travels around an element's border, in the style of Magic UI's BorderBeam. It renders as an overlay that masks itself down to the border ring, so it traces whatever corner radius its parent has — give the parent `relative` and a radius and drop a BorderBeam inside it. The beam is a square of gradient riding an offset-path lap of the box, driven by a single CSS keyframe rather than JS ticks, and it stops under prefers-reduced-motion. Props cover the beam's size, lap duration, start delay, border width, the radius of the lap it travels, both gradient ends, an anticlockwise reverse, and an initialOffset that starts it part-way round — so two beams on opposite sides of the same box are one extra element. Both colours resolve from --border-beam-* tokens unless the caller passes their own.",
+      "cssVars": {
+        "theme": {
+          "color-border-beam-from": "var(--border-beam-from)",
+          "color-border-beam-to": "var(--border-beam-to)"
+        },
+        "light": {
+          "border-beam-from": "var(--chart-2)",
+          "border-beam-to": "var(--primary)"
+        },
+        "dark": {
+          "border-beam-from": "var(--chart-2)",
+          "border-beam-to": "var(--primary)"
+        }
+      },
+      "css": {
+        "@keyframes border-beam": {
+          "to": {
+            "offset-distance": "100%"
+          }
+        },
+        "@utility border-beam-track": {
+          "offset-path": "rect(0 auto auto 0 round 12px)",
+          "@supports (offset-path: border-box)": {
+            "offset-path": "border-box"
+          }
+        }
+      },
+      "files": [
+        {
+          "path": "registry/border-beam/border-beam.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "pigeon",
       "type": "registry:ui",
       "meta": {

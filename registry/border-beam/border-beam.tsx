@@ -1,0 +1,110 @@
+"use client"
+
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+
+/* -------------------------------------------------------------------------- *
+ * Border Beam
+ *
+ * A light that travels around an element's border. It renders as an overlay
+ * that masks itself down to the border ring, so it traces whatever corner
+ * radius its parent has: give the parent `relative` and a radius, and drop a
+ * BorderBeam inside it.
+ *
+ * The beam is a square of gradient riding an `offset-path` lap of the box,
+ * animated by one CSS keyframe — no JS ticks, and it stops under
+ * prefers-reduced-motion. Both gradient ends resolve from a --border-beam-*
+ * theme token unless the caller passes colours of their own.
+ * -------------------------------------------------------------------------- */
+
+interface BorderBeamProps extends React.ComponentProps<"div"> {
+  /** Length of the beam along the border, in px. */
+  size?: number
+  /** Seconds the beam takes to travel all the way round. */
+  duration?: number
+  /** Seconds to wait before it sets off. */
+  delay?: number
+  /** Thickness of the border it travels, in px. */
+  borderWidth?: number
+  /**
+   * Pin the lap to a fixed corner radius, in px. By default the beam follows
+   * the parent's own radius, and only a browser without
+   * `offset-path: <coord-box>` needs telling.
+   */
+  radius?: number
+  /** Colour the beam fades in from. Any CSS colour. */
+  colorFrom?: string
+  /** Colour the beam fades out to. Any CSS colour. */
+  colorTo?: string
+  /** Travel anticlockwise. */
+  reverse?: boolean
+  /** How far into the lap the beam starts, 0–100. */
+  initialOffset?: number
+}
+
+function BorderBeam({
+  className,
+  style,
+  size = 64,
+  duration = 6,
+  delay = 0,
+  borderWidth = 2,
+  radius,
+  colorFrom,
+  colorTo,
+  reverse = false,
+  initialOffset = 0,
+  ...props
+}: BorderBeamProps) {
+  const from = colorFrom ?? "var(--border-beam-from)"
+  const to = colorTo ?? "var(--border-beam-to)"
+
+  // A negative delay starts the beam that far into its lap, so `initialOffset`
+  // is just the slice of the duration it skips. A `delay` of its own adds to
+  // it, holding the beam at that starting point for a moment first.
+  const offsetDelay = delay - duration * (initialOffset / 100)
+
+  return (
+    <div
+      data-slot="border-beam"
+      aria-hidden
+      className={cn(
+        // Two mask layers intersect to leave only the border ring: one clipped
+        // to the padding box that hides everything inside it, one clipped to
+        // the border box that keeps the rest. Their colours are stencil
+        // values, not theme colours — only their alpha matters.
+        "pointer-events-none absolute inset-0 rounded-[inherit]",
+        "[mask-image:linear-gradient(transparent,transparent),linear-gradient(#000,#000)]",
+        "[mask-clip:padding-box,border-box] [mask-composite:intersect]",
+        className
+      )}
+      style={{
+        border: `${borderWidth}px solid transparent`,
+        ...style,
+      }}
+      {...props}
+    >
+      <div
+        data-slot="border-beam-glow"
+        className="border-beam-track absolute aspect-square animate-(--border-beam-motion) motion-reduce:animate-none"
+        style={
+          {
+            width: size,
+            // Only a pinned radius is set here, where it beats the lap the
+            // `border-beam-track` utility picks.
+            ...(radius === undefined
+              ? null
+              : { offsetPath: `rect(0 auto auto 0 round ${radius}px)` }),
+            backgroundImage: `linear-gradient(to left, ${from}, ${to}, transparent)`,
+            "--border-beam-motion": `border-beam ${duration}s linear ${offsetDelay}s infinite ${
+              reverse ? "reverse" : "normal"
+            }`,
+          } as React.CSSProperties
+        }
+      />
+    </div>
+  )
+}
+
+export { BorderBeam, type BorderBeamProps }

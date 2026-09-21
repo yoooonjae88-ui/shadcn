@@ -67,6 +67,32 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+ * border-beam
+ *
+ * Carries the @private/border-beam item's light around its parent's border.
+ * One lap of the element's `offset-path`; mirrored in that item's `css` field
+ * so consumers get it on install.
+ * ------------------------------------------------------------------------- */
+
+@keyframes border-beam {
+  to {
+    offset-distance: 100%;
+  }
+}
+
+@utility border-beam-track {
+  /* Where a browser knows `offset-path: <coord-box>`, the beam laps the
+     containing block's own border box — corner radius and all — so it fits
+     whatever it is dropped into with nothing to configure. Older ones get a
+     lap of a rounded rectangle at the radius cards use here, which the
+     item's `radius` prop overrides inline. */
+  offset-path: rect(0 auto auto 0 round 12px);
+
+  @supports (offset-path: border-box) {
+    offset-path: border-box;
+  }
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -280,6 +306,9 @@
   --color-float-button-primary-hover: var(--float-button-primary-hover);
   --color-float-button-separator: var(--float-button-separator);
   --color-float-button-progress: var(--float-button-progress);
+  /* Border Beam — the two ends of the travelling gradient. */
+  --color-border-beam-from: var(--border-beam-from);
+  --color-border-beam-to: var(--border-beam-to);
   /* Splitter — drag bar line + collapse arrow buttons */
   --color-splitter-bar: var(--splitter-bar);
   --color-splitter-bar-hover: var(--splitter-bar-hover);
@@ -666,6 +695,10 @@
   );
   --float-button-separator: var(--border);
   --float-button-progress: var(--primary);
+  /* Border Beam — an amber head fading back through the primary hue into
+     nothing, both straight from the palette. */
+  --border-beam-from: var(--chart-2);
+  --border-beam-to: var(--primary);
   /* Splitter — the divider line at rest / hover / while dragging, the lazy
      ghost bar, and the little collapse arrow buttons. All derive from theme
      tokens so the splitter restyles with the palette. */
@@ -1028,6 +1061,10 @@
   );
   --float-button-separator: var(--border);
   --float-button-progress: var(--primary);
+  /* Border Beam — an amber head fading back through the primary hue into
+     nothing, both straight from the palette. */
+  --border-beam-from: var(--chart-2);
+  --border-beam-to: var(--primary);
   /* Splitter for dark mode — same theme-derived recipe; edit independently. */
   --splitter-bar: var(--border);
   --splitter-bar-hover: color-mix(in srgb, var(--primary) 45%, transparent);

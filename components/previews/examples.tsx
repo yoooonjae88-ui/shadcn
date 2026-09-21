@@ -10,6 +10,7 @@ import { anchorExamples } from "@/components/previews/anchor"
 import { aspectRatioExamples } from "@/components/previews/aspect-ratio"
 import { avatarExamples } from "@/components/previews/avatar"
 import { badgeExamples } from "@/components/previews/badge"
+import { borderBeamExamples } from "@/components/previews/border-beam"
 import { breadcrumbExamples } from "@/components/previews/breadcrumb"
 import { buttonExamples } from "@/components/previews/button"
 import { calendarExamples } from "@/components/previews/calendar"
@@ -70,6 +71,7 @@ const exampleOverrides: Record<string, PreviewExample[]> = {
   "aspect-ratio": aspectRatioExamples,
   avatar: avatarExamples,
   badge: badgeExamples,
+  "border-beam": borderBeamExamples,
   breadcrumb: breadcrumbExamples,
   button: buttonExamples,
   calendar: calendarExamples,

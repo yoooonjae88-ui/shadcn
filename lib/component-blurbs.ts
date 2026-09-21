@@ -10,6 +10,7 @@ const useCases: Record<string, string> = {
   "aspect-ratio": "locking images, video, and embeds to a fixed shape",
   avatar: "profile pictures, presence indicators, and team lists",
   badge: "counts, statuses, and notification dots",
+  "border-beam": "drawing the eye to a card, banner, or call to action",
   breadcrumb: "showing users where they are in your app",
   button: "actions in forms, dialogs, and toolbars",
   calendar: "date selection, scheduling flows, and booking interfaces",
