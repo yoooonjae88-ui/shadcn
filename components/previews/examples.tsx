@@ -10,6 +10,7 @@ import { anchorExamples } from "@/components/previews/anchor"
 import { aspectRatioExamples } from "@/components/previews/aspect-ratio"
 import { avatarExamples } from "@/components/previews/avatar"
 import { badgeExamples } from "@/components/previews/badge"
+import { borderBeamExamples } from "@/components/previews/border-beam"
 import { breadcrumbExamples } from "@/components/previews/breadcrumb"
 import { buttonExamples } from "@/components/previews/button"
 import { calendarExamples } from "@/components/previews/calendar"
@@ -27,6 +28,7 @@ import { dropdownExamples } from "@/components/previews/dropdown"
 import { emptyExamples } from "@/components/previews/empty"
 import { fieldExamples } from "@/components/previews/field"
 import { fileUploadExamples } from "@/components/previews/file-upload"
+import { floatButtonExamples } from "@/components/previews/float-button"
 import { inputExamples } from "@/components/previews/input"
 import { inputGroupExamples } from "@/components/previews/input-group"
 import { markerExamples } from "@/components/previews/marker"
@@ -69,6 +71,7 @@ const exampleOverrides: Record<string, PreviewExample[]> = {
   "aspect-ratio": aspectRatioExamples,
   avatar: avatarExamples,
   badge: badgeExamples,
+  "border-beam": borderBeamExamples,
   breadcrumb: breadcrumbExamples,
   button: buttonExamples,
   calendar: calendarExamples,
@@ -86,6 +89,7 @@ const exampleOverrides: Record<string, PreviewExample[]> = {
   empty: emptyExamples,
   field: fieldExamples,
   "file-upload": fileUploadExamples,
+  "float-button": floatButtonExamples,
   input: inputExamples,
   "input-group": inputGroupExamples,
   marker: markerExamples,

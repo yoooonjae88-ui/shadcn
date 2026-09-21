@@ -67,6 +67,19 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+ * border-beam
+ *
+ * Drives the @private/border-beam item's light around one lap of its
+ * `offset-path`; mirrored in that item's `css` field so consumers get it on
+ * install.
+ * ------------------------------------------------------------------------- */
+
+@keyframes border-beam {
+  to {
+    offset-distance: 100%;
+  }
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -268,6 +281,21 @@
   --color-anchor-link: var(--anchor-link);
   --color-anchor-link-hover: var(--anchor-link-hover);
   --color-anchor-link-active: var(--anchor-link-active);
+  /* Float Button — the floating action surface at rest / hover, its primary
+     counterpart, and the hairline between merged buttons in a square stack */
+  --color-float-button: var(--float-button);
+  --color-float-button-foreground: var(--float-button-foreground);
+  --color-float-button-hover: var(--float-button-hover);
+  --color-float-button-primary: var(--float-button-primary);
+  --color-float-button-primary-foreground: var(
+    --float-button-primary-foreground
+  );
+  --color-float-button-primary-hover: var(--float-button-primary-hover);
+  --color-float-button-separator: var(--float-button-separator);
+  --color-float-button-progress: var(--float-button-progress);
+  /* Border Beam — the two ends of the travelling gradient. */
+  --color-border-beam-from: var(--border-beam-from);
+  --color-border-beam-to: var(--border-beam-to);
   /* Splitter — drag bar line + collapse arrow buttons */
   --color-splitter-bar: var(--splitter-bar);
   --color-splitter-bar-hover: var(--splitter-bar-hover);
@@ -638,6 +666,26 @@
   --anchor-link: var(--muted-foreground);
   --anchor-link-hover: var(--foreground);
   --anchor-link-active: var(--primary);
+  /* Float Button — a raised surface that floats over the page: the popover
+     fill at rest, a subtle accent wash on hover, the primary variant and the
+     hairline separating merged buttons. All derive from theme tokens so the
+     float buttons restyle with the palette. */
+  --float-button: var(--popover);
+  --float-button-foreground: var(--popover-foreground);
+  --float-button-hover: color-mix(in srgb, var(--popover), var(--foreground) 6%);
+  --float-button-primary: var(--primary);
+  --float-button-primary-foreground: var(--primary-foreground);
+  --float-button-primary-hover: color-mix(
+    in srgb,
+    var(--primary) 88%,
+    var(--foreground)
+  );
+  --float-button-separator: var(--border);
+  --float-button-progress: var(--primary);
+  /* Border Beam — an amber head fading back through the primary hue into
+     nothing, both straight from the palette. */
+  --border-beam-from: var(--chart-2);
+  --border-beam-to: var(--primary);
   /* Splitter — the divider line at rest / hover / while dragging, the lazy
      ghost bar, and the little collapse arrow buttons. All derive from theme
      tokens so the splitter restyles with the palette. */
@@ -982,6 +1030,28 @@
   --anchor-link: var(--muted-foreground);
   --anchor-link-hover: var(--foreground);
   --anchor-link-active: var(--primary);
+  /* Float Button for dark mode — same theme-derived recipe; edit
+     independently. */
+  --float-button: var(--popover);
+  --float-button-foreground: var(--popover-foreground);
+  --float-button-hover: color-mix(
+    in srgb,
+    var(--popover),
+    var(--foreground) 10%
+  );
+  --float-button-primary: var(--primary);
+  --float-button-primary-foreground: var(--primary-foreground);
+  --float-button-primary-hover: color-mix(
+    in srgb,
+    var(--primary) 88%,
+    var(--background)
+  );
+  --float-button-separator: var(--border);
+  --float-button-progress: var(--primary);
+  /* Border Beam — an amber head fading back through the primary hue into
+     nothing, both straight from the palette. */
+  --border-beam-from: var(--chart-2);
+  --border-beam-to: var(--primary);
   /* Splitter for dark mode — same theme-derived recipe; edit independently. */
   --splitter-bar: var(--border);
   --splitter-bar-hover: color-mix(in srgb, var(--primary) 45%, transparent);

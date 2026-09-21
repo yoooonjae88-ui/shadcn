@@ -34,16 +34,50 @@
       ]
     },
     {
-      "name": "aspect-ratio",
+      "name": "float-button",
       "type": "registry:ui",
       "meta": {
-        "group": "Layout"
+        "group": "General"
       },
-      "title": "Aspect Ratio",
-      "description": "Displays content within a desired ratio, following shadcn/ui's Base UI aspect-ratio. Base UI ships no aspect-ratio primitive, so this is plain CSS and pulls in no npm dependency: the required numeric `ratio` prop rides in on a `--ratio` custom property and Tailwind's `aspect-(--ratio)` turns it into `aspect-ratio: var(--ratio)`. Pass the ratio as a division — `ratio={16 / 9}`, `{1 / 1}`, `{9 / 16}` — and the box holds that shape at any width, so an image, video or embed inside reserves its height before it loads instead of shifting the page. The element is positioned, so children fill it with `absolute inset-0 size-full object-cover` (or next/image's `fill`). Accepts every div prop, merges `className` and `style`, and carries `data-slot=\"aspect-ratio\"`.",
+      "title": "Float Button",
+      "description": "A floating action button modeled on Ant Design's FloatButton: a circular or square button pinned to a corner of the viewport (or of any positioned container via position=\"absolute\") for the action that should follow the user everywhere. Default and primary colours, three sizes, an optional description label on square buttons, a tooltip that opens to the side, a count/dot badge on the corner, and a link mode via href. FloatButton.Group either stacks its buttons permanently (square stacks merge into one slab with hairline separators) or hides them behind a trigger that opens them as a menu on click or hover, flying out top/bottom/left/right with a staggered animation, controllable via open/onOpenChange and closing on an outside click or Escape. FloatButton.BackTop watches its target's scroll offset, appears past visibilityHeight and eases the scroller back to the top, honouring prefers-reduced-motion; showProgress traces that scroll progress clockwise around the button's own outline, circle or rounded square, with no track behind it. Every colour resolves from a --float-button-* token.",
+      "dependencies": ["class-variance-authority", "lucide-react"],
+      "registryDependencies": ["@private/badge", "@private/tooltip"],
+      "cssVars": {
+        "theme": {
+          "color-float-button": "var(--float-button)",
+          "color-float-button-foreground": "var(--float-button-foreground)",
+          "color-float-button-hover": "var(--float-button-hover)",
+          "color-float-button-primary": "var(--float-button-primary)",
+          "color-float-button-primary-foreground": "var(--float-button-primary-foreground)",
+          "color-float-button-primary-hover": "var(--float-button-primary-hover)",
+          "color-float-button-separator": "var(--float-button-separator)",
+          "color-float-button-progress": "var(--float-button-progress)"
+        },
+        "light": {
+          "float-button": "var(--popover)",
+          "float-button-foreground": "var(--popover-foreground)",
+          "float-button-hover": "color-mix(in srgb, var(--popover), var(--foreground) 6%)",
+          "float-button-primary": "var(--primary)",
+          "float-button-primary-foreground": "var(--primary-foreground)",
+          "float-button-primary-hover": "color-mix(in srgb, var(--primary) 88%, var(--foreground))",
+          "float-button-separator": "var(--border)",
+          "float-button-progress": "var(--primary)"
+        },
+        "dark": {
+          "float-button": "var(--popover)",
+          "float-button-foreground": "var(--popover-foreground)",
+          "float-button-hover": "color-mix(in srgb, var(--popover), var(--foreground) 10%)",
+          "float-button-primary": "var(--primary)",
+          "float-button-primary-foreground": "var(--primary-foreground)",
+          "float-button-primary-hover": "color-mix(in srgb, var(--primary) 88%, var(--background))",
+          "float-button-separator": "var(--border)",
+          "float-button-progress": "var(--primary)"
+        }
+      },
       "files": [
         {
-          "path": "registry/aspect-ratio/aspect-ratio.tsx",
+          "path": "registry/float-button/float-button.tsx",
           "type": "registry:ui"
         }
       ]
@@ -1343,8 +1377,8 @@
         "group": "Data Display"
       },
       "title": "Tag",
-      "description": "A compact label with filled, solid and outlined variants across default, success, processing, warning and error statuses. The default filled chip is white at rest and flips to #334F4E on hover/selected; supports a leading icon, a disabled state, and single- or multi-select with deselect via TagGroup. Every colour is tokenised via --tag-* CSS variables.",
-      "dependencies": ["class-variance-authority"],
+      "description": "A compact label with filled, solid and outlined variants across default, success, processing, warning and error statuses. The default filled chip is white at rest and flips to #334F4E on hover/selected; supports a leading icon, a disabled state, and single- or multi-select with deselect via TagGroup. Tags are closable: `closable` puts a × on the chip and reports it through `onClose` without the tag removing itself, so the list's owner decides — and because a close button cannot sit inside the <button> a selectable tag renders, a closable chip becomes a span holding its label and close as separate buttons. TagInput builds the add-and-remove pattern from Ant Design's Tag demo on top of that: the list is the value, each entry is a closable tag, and a trailing \"New Tag\" control swaps itself for an inline field where Enter adds and keeps typing, Escape or clicking away closes it, and Backspace on an empty field takes the last tag back, with max, allowDuplicates, placeholder and disabled to bound it. Every colour is tokenised via --tag-* CSS variables.",
+      "dependencies": ["class-variance-authority", "lucide-react"],
       "cssVars": {
         "theme": {
           "color-tag-filled": "var(--tag-filled)",
@@ -1428,6 +1462,42 @@
       "files": [
         {
           "path": "registry/typography/typography.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "border-beam",
+      "type": "registry:ui",
+      "meta": {
+        "group": "Others"
+      },
+      "title": "Border Beam",
+      "description": "A light that travels around an element's border, in the style of Magic UI's BorderBeam. It renders as an overlay that masks itself down to the border ring, so it traces whatever corner radius its parent has — give the parent `relative` and a radius and drop a BorderBeam inside it. The beam is a square of gradient riding an offset-path lap of the box, driven by a single CSS keyframe rather than JS ticks, and it stops under prefers-reduced-motion. The lap's corner radius defaults to the beam's own length, which is what keeps each corner a gentle turn rather than a whip through a right angle. Props cover the beam's size, lap duration, start delay, border width, that lap radius, both gradient ends, an anticlockwise reverse, and an initialOffset that starts it part-way round — so two beams on opposite sides of the same box are one extra element. Both colours resolve from --border-beam-* tokens unless the caller passes their own.",
+      "cssVars": {
+        "theme": {
+          "color-border-beam-from": "var(--border-beam-from)",
+          "color-border-beam-to": "var(--border-beam-to)"
+        },
+        "light": {
+          "border-beam-from": "var(--chart-2)",
+          "border-beam-to": "var(--primary)"
+        },
+        "dark": {
+          "border-beam-from": "var(--chart-2)",
+          "border-beam-to": "var(--primary)"
+        }
+      },
+      "css": {
+        "@keyframes border-beam": {
+          "to": {
+            "offset-distance": "100%"
+          }
+        }
+      },
+      "files": [
+        {
+          "path": "registry/border-beam/border-beam.tsx",
           "type": "registry:ui"
         }
       ]
