@@ -25,6 +25,7 @@ import { emptyExamples } from "@/components/previews/empty"
 import { fieldExamples } from "@/components/previews/field"
 import { fileUploadExamples } from "@/components/previews/file-upload"
 import { flexExamples } from "@/components/previews/flex"
+import { floatButtonExamples } from "@/components/previews/float-button"
 import { gridExamples } from "@/components/previews/grid"
 import { inputExamples } from "@/components/previews/input"
 import { inputGroupExamples } from "@/components/previews/input-group"
@@ -80,6 +81,7 @@ const exampleOverrides: Record<string, PreviewExample[]> = {
   field: fieldExamples,
   "file-upload": fileUploadExamples,
   flex: flexExamples,
+  "float-button": floatButtonExamples,
   grid: gridExamples,
   input: inputExamples,
   "input-group": inputGroupExamples,

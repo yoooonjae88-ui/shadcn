@@ -34,6 +34,52 @@
       ]
     },
     {
+      "name": "float-button",
+      "type": "registry:ui",
+      "meta": {
+        "group": "General"
+      },
+      "title": "Float Button",
+      "description": "A floating action button modeled on Ant Design's FloatButton: a circular or square button pinned to a corner of the viewport (or of any positioned container via position=\"absolute\") for the action that should follow the user everywhere. Default and primary colours, three sizes, an optional description label on square buttons, a tooltip that opens to the side, a count/dot badge on the corner, and a link mode via href. FloatButton.Group either stacks its buttons permanently (square stacks merge into one slab with hairline separators) or hides them behind a trigger that opens them as a menu on click or hover, flying out top/bottom/left/right with a staggered animation, controllable via open/onOpenChange and closing on an outside click or Escape. FloatButton.BackTop watches its target's scroll offset, appears past visibilityHeight and eases the scroller back to the top, honouring prefers-reduced-motion. Every colour resolves from a --float-button-* token.",
+      "dependencies": ["class-variance-authority", "lucide-react"],
+      "registryDependencies": ["@private/badge", "@private/tooltip"],
+      "cssVars": {
+        "theme": {
+          "color-float-button": "var(--float-button)",
+          "color-float-button-foreground": "var(--float-button-foreground)",
+          "color-float-button-hover": "var(--float-button-hover)",
+          "color-float-button-primary": "var(--float-button-primary)",
+          "color-float-button-primary-foreground": "var(--float-button-primary-foreground)",
+          "color-float-button-primary-hover": "var(--float-button-primary-hover)",
+          "color-float-button-separator": "var(--float-button-separator)"
+        },
+        "light": {
+          "float-button": "var(--popover)",
+          "float-button-foreground": "var(--popover-foreground)",
+          "float-button-hover": "color-mix(in srgb, var(--popover), var(--foreground) 6%)",
+          "float-button-primary": "var(--primary)",
+          "float-button-primary-foreground": "var(--primary-foreground)",
+          "float-button-primary-hover": "color-mix(in srgb, var(--primary) 88%, var(--foreground))",
+          "float-button-separator": "var(--border)"
+        },
+        "dark": {
+          "float-button": "var(--popover)",
+          "float-button-foreground": "var(--popover-foreground)",
+          "float-button-hover": "color-mix(in srgb, var(--popover), var(--foreground) 10%)",
+          "float-button-primary": "var(--primary)",
+          "float-button-primary-foreground": "var(--primary-foreground)",
+          "float-button-primary-hover": "color-mix(in srgb, var(--primary) 88%, var(--background))",
+          "float-button-separator": "var(--border)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/float-button/float-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "grid",
       "type": "registry:ui",
       "meta": {

@@ -28,6 +28,7 @@ const useCases: Record<string, string> = {
   field: "form layouts with labels, hints, and errors",
   "file-upload": "attachments, image uploads, and drag-and-drop",
   flex: "aligning and spacing content",
+  "float-button": "always-visible actions, quick menus, and back-to-top",
   grid: "responsive page layouts and dashboards",
   input: "forms, search fields, and text entry",
   "input-group": "search bars, URL fields, and composer toolbars",
